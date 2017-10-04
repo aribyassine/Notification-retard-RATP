@@ -1,12 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.heroku.sample</groupId>
-  <artifactId>embeddedTomcatSample</artifactId>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+  <artifactId>notificationretardratp</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>embeddedTomcatSample Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <name>NotificationRetardRATP</name>
   <properties>
     <tomcat.version>8.5.2</tomcat.version>
   </properties>
@@ -41,6 +39,12 @@
         <artifactId>tomcat-jsp-api</artifactId>
         <version>${tomcat.version}</version>
     </dependency>
+    
+    <dependency>
+    	<groupId>org.hibernate.javax.persistence</groupId>
+	    <artifactId>hibernate-jpa-2.0-api</artifactId>
+	    <version>1.0.1.Final</version>
+	</dependency>
   </dependencies>
   <build>
     <finalName>embeddedTomcatSample</finalName>
@@ -69,4 +73,5 @@
         </plugin>
     </plugins>
   </build>
+  <groupId>fr.upmc</groupId>
 </project>
