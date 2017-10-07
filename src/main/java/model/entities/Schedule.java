@@ -1,14 +1,18 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,7 +24,7 @@ import javax.persistence.Table;
 @Table(name = "SCHEDULE")
 public class Schedule implements Serializable {
 
-	static enum Day {
+	public static enum Day {
 		sunday, monday, theursday, wendesday, tuesday, friday, saturday
 	}
 
@@ -29,23 +33,31 @@ public class Schedule implements Serializable {
 	@Id
 	@Column(name = "SCHEDULE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private int scheduleId;
 
 	@Column(name = "HOUR")
 	private int hour;
-	
+
 	@Column(name = "MINUTE")
 	private int minute;
 
 	@Column(name = "DAY")
 	private Day day;
 
-	public int getId() {
-		return id;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "schedule")
+	private List<LineSchedule> ScheduledLines;
+
+
+	public List<Line> getScheduledLines() {
+		return ScheduledLines.stream().map(ls -> ls.getLine()).collect(Collectors.toList());
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public int getScheduleId() {
+		return scheduleId;
+	}
+
+	public void setScheduleId(int id) {
+		this.scheduleId = id;
 	}
 
 	public int getHour() {
@@ -72,6 +84,10 @@ public class Schedule implements Serializable {
 	public void setDay(Day day) {
 		this.day = day;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Schedule [id=" + scheduleId + ", hour=" + hour + ", minute=" + minute + ", day=" + day + "]";
+	}
+
 }

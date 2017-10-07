@@ -36,5 +36,6 @@
 
 		<mapping class="model.entities.Line" />
 		<mapping class="model.entities.Schedule" />
+		<mapping class="model.entities.LineSchedule" />
 	</session-factory>
 </hibernate-configuration>

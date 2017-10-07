@@ -1,14 +1,18 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -29,16 +33,24 @@ public class Line implements Serializable {
 	@Id
 	@Column(name = "LINE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private int lineId;
 
 	@Column(name = "LINE_NAME")
 	private String lineName;
 
 	@Column(name = "LINE_TYPE")
 	private LineType lineType;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "schedule")
+	private List<LineSchedule> lineSchedules;
 
-	public int getId() {
-		return id;
+
+	public List<Schedule> getlineSchedules() {
+		return lineSchedules.stream().map(ls -> ls.getSchedule()).collect(Collectors.toList());
+	}
+
+	public int getLineId() {
+		return lineId;
 	}
 
 	@Enumerated(EnumType.STRING)
@@ -50,8 +62,8 @@ public class Line implements Serializable {
 		return lineName;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setLineId(int id) {
+		this.lineId = id;
 	}
 
 	public void setLineName(String lineId) {
@@ -61,4 +73,11 @@ public class Line implements Serializable {
 	public void setLineType(LineType lineType) {
 		this.lineType = lineType;
 	}
+
+	@Override
+	public String toString() {
+		return "Line [id=" + lineId + ", lineName=" + lineName + ", lineType=" + lineType + "]";
+	}
+	
+	
 }
