@@ -2,14 +2,15 @@ package model;
 
 import static org.junit.Assert.assertTrue;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.Test;
 
+import model.dao.DAOFactory;
+import model.dao.LineDAO;
+import model.dao.ScheduleDAO;
+import model.dao.ScheduledLineDAO;
 import model.entities.Line;
 import model.entities.Schedule;
 import model.entities.ScheduledLine;
-import util.HibernateUtil;
 
 /**
  * @author Mohamed T. KASSAR
@@ -20,70 +21,68 @@ public class EntitiesTest {
 
 	@Test
 	public void scheduledLineTest() {
-		SessionFactory factory = HibernateUtil.getSessionFactory();
-		Session s = factory.openSession();
-		
-		s.beginTransaction();
+		initDB();
+		Schedule sc = DAOFactory.scheduleDAO().getById(1);
+		assertTrue(sc.getHour() == 8);
+		assertTrue(sc.getScheduledLines().size() == 2);
+		System.err.println( "hour : " + sc.getHour() + ", " + sc.getScheduledLines());
+
+	}
+	
+	private void initDB() {
+		LineDAO ld = DAOFactory.lineDAO();
+
 
 		Line line11 = new Line();
 		line11.setLineName("11express");
 		line11.setLineType(Line.LineType.tramway);
-		s.save(line11);
+		ld.save(line11);
 
 		Line lineB = new Line();
 		lineB.setLineName("b");
 		lineB.setLineType(Line.LineType.rer);
-		s.save(lineB);
+		ld.save(lineB);
 
 		Line lineD = new Line();
-		lineB.setLineName("d");
-		lineB.setLineType(Line.LineType.rer);
-		s.save(lineD);
+		lineD.setLineName("d");
+		lineD.setLineType(Line.LineType.rer);
+		ld.save(lineD);
 
+		
+		ScheduleDAO sd = DAOFactory.scheduleDAO();
+		
 		Schedule sat8am = new Schedule();
 		sat8am.setDay(Schedule.Day.saturday);
 		sat8am.setHour(8);
-		s.save(sat8am);
+		sd.save(sat8am);
 
 		Schedule sat9am = new Schedule();
 		sat9am.setDay(Schedule.Day.saturday);
 		sat9am.setHour(9);
-		s.save(sat9am);
+		sd.save(sat9am);
 
+		
+		ScheduledLineDAO sld = DAOFactory.scheduledLineDAO();
+		
 		ScheduledLine ls = new ScheduledLine();
 		ls.setLine(line11);
 		ls.setSchedule(sat9am);
-		s.save(ls);
+		sld.save(ls);
 
 		ls = new ScheduledLine();
 		ls.setLine(line11);
 		ls.setSchedule(sat8am);
-		s.save(ls);
+		sld.save(ls);
 
 		ls = new ScheduledLine();
 		ls.setLine(lineB);
 		ls.setSchedule(sat9am);
-		s.save(ls);
+		sld.save(ls);
 
 		ls = new ScheduledLine();
 		ls.setLine(lineB);
 		ls.setSchedule(sat8am);
-		s.save(ls);
+		sld.save(ls);
 
-		s.getTransaction().commit();
-
-		s.close();
-
-		s = factory.openSession();
-		s.beginTransaction();
-		Schedule sc = (Schedule) s.get(Schedule.class, 1);
-		// s.getTransaction().commit();
-
-		s.close();
-		// s;
-		
-		assertTrue(sc.getHour() == 8);
-		assertTrue(sc.getScheduledLines().size() == 2);
-		System.out.println( "hour : " + sc.getHour() + ", " + sc.getScheduledLines());
 	}
 }
