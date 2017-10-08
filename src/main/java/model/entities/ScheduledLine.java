@@ -1,14 +1,17 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -18,26 +21,38 @@ import javax.persistence.UniqueConstraint;
  */
 
 @Entity
-@Table(name = "LINE_SCHEDULE", uniqueConstraints = @UniqueConstraint(columnNames = { "SCHEDULE", "LINE" }))
-public class LineSchedule implements Serializable {
+@Table(name = "SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "SCHEDULE", "LINE" }))
+public class ScheduledLine implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "LINE_SCHEDULE_ID")
+	@Column(name = "SCHEDULED_LINE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int lineScheduleId;
 
 	@ManyToOne
 	@JoinColumn(name = "SCHEDULE")
-	// @Column(name = "SCHEDULE")
 	private Schedule schedule;
 
 	@ManyToOne
 	@JoinColumn(name = "LINE")
-	// @Column(name = "LINE")
 	private Line line;
 
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "scheduledLine")
+	private List<UserScheduledLine> affectedUsers;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "scheduledLine")
+	private List<Notification> notifications;
+	
+	public List<UserScheduledLine> getAffectedUsers() {
+		return affectedUsers;
+	}
+	
+	public List<Notification> getNotifications() {
+		return notifications;
+	}
+	
 	public int getLineScheduleId() {
 		return lineScheduleId;
 	}

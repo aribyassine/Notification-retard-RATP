@@ -2,7 +2,6 @@ package model.entities;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,11 +44,12 @@ public class Schedule implements Serializable {
 	private Day day;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "schedule")
-	private List<LineSchedule> ScheduledLines;
+	private List<ScheduledLine> scheduledLines;
 
-
-	public List<Line> getScheduledLines() {
-		return ScheduledLines.stream().map(ls -> ls.getLine()).collect(Collectors.toList());
+	public List<ScheduledLine> getScheduledLines() {
+		// return ScheduledLines.stream().map(ls ->
+		// ls.getLine()).collect(Collectors.toList());
+		return scheduledLines;
 	}
 
 	public int getScheduleId() {

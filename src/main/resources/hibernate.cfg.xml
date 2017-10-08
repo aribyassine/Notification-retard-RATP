@@ -36,6 +36,11 @@
 
 		<mapping class="model.entities.Line" />
 		<mapping class="model.entities.Schedule" />
-		<mapping class="model.entities.LineSchedule" />
+		<mapping class="model.entities.ScheduledLine" />
+		<mapping class="model.entities.User" />
+		<mapping class="model.entities.UserScheduledLine" />
+		<mapping class="model.entities.Notification" />
+		<mapping class="model.entities.Comment" />
+		
 	</session-factory>
 </hibernate-configuration>

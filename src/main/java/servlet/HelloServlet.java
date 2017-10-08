@@ -13,7 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import model.entities.Line;
-import model.entities.LineSchedule;
+import model.entities.ScheduledLine;
 import model.entities.Schedule;
 import util.HibernateUtil;
 
@@ -54,22 +54,22 @@ public class HelloServlet extends HttpServlet {
 		sat9am.setHour(9);
 		s.save(sat9am);
 
-		LineSchedule ls = new LineSchedule();
+		ScheduledLine ls = new ScheduledLine();
 		ls.setLine(line11);
 		ls.setSchedule(sat9am);
 		s.save(ls);
 
-		ls = new LineSchedule();
+		ls = new ScheduledLine();
 		ls.setLine(line11);
 		ls.setSchedule(sat8am);
 		s.save(ls);
 
-		ls = new LineSchedule();
+		ls = new ScheduledLine();
 		ls.setLine(lineB);
 		ls.setSchedule(sat9am);
 		s.save(ls);
 
-		ls = new LineSchedule();
+		ls = new ScheduledLine();
 		ls.setLine(lineB);
 		ls.setSchedule(sat8am);
 		s.save(ls);
