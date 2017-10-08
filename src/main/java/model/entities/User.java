@@ -1,7 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,16 +35,16 @@ public class User implements Serializable {
 	private String password;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private List<UserScheduledLine> affectedScheduledLine;
+	private Set<UserScheduledLine> affectedScheduledLine;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private List<Comment> comments;
+	private Set<Comment> comments;
 	
-	public List<Comment> getComments() {
+	public Set<Comment> getComments() {
 		return comments;
 	}
 	
-	public List<UserScheduledLine> getAffectedScheduledLine() {
+	public Set<UserScheduledLine> getAffectedScheduledLine() {
 		return affectedScheduledLine;
 	}
 	

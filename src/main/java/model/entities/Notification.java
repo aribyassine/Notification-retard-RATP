@@ -2,7 +2,7 @@ package model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,9 +45,9 @@ public class Notification implements Serializable { // TODO : remove notificatio
 	private String notificationText;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notification")
-	private List<Comment> comments;
+	private Set<Comment> comments;
 	
-	public List<Comment> getComments() {
+	public Set<Comment> getComments() {
 		return comments;
 	}
 	

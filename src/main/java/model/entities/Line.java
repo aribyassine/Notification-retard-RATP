@@ -1,7 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,9 +41,9 @@ public class Line implements Serializable {
 	private LineType lineType;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "schedule")
-	private List<ScheduledLine> lineSchedules;
+	private Set<ScheduledLine> lineSchedules;
 
-	public List<ScheduledLine> getlineSchedules() {
+	public Set<ScheduledLine> getlineSchedules() {
 		// return lineSchedules.stream().map(ls ->
 		// ls.getSchedule()).collect(Collectors.toList());
 		return lineSchedules;

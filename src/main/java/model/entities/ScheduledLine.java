@@ -1,7 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,16 +40,16 @@ public class ScheduledLine implements Serializable {
 	private Line line;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "scheduledLine")
-	private List<UserScheduledLine> affectedUsers;
+	private Set<UserScheduledLine> affectedUsers;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "scheduledLine")
-	private List<Notification> notifications;
+	private Set<Notification> notifications;
 	
-	public List<UserScheduledLine> getAffectedUsers() {
+	public Set<UserScheduledLine> getAffectedUsers() {
 		return affectedUsers;
 	}
 	
-	public List<Notification> getNotifications() {
+	public Set<Notification> getNotifications() {
 		return notifications;
 	}
 	
