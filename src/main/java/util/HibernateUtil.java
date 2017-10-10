@@ -14,13 +14,13 @@ public class HibernateUtil {
 			System.out.println("helllo ........");
 
 			Configuration configuration = new Configuration().configure();
-			
+
 			ServiceRegistryBuilder registry = new ServiceRegistryBuilder();
 			registry.applySettings(configuration.getProperties());
 			ServiceRegistry serviceRegistry = registry.buildServiceRegistry();
 
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-		
+
 		} catch (Throwable ex) {
 			// Make sure you log the exception, as it might be swallowed
 			System.err.println("Initial SessionFactory creation failed." + ex);
