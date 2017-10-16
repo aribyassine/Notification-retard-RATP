@@ -27,4 +27,32 @@ public class UserDAO extends DAO<User> implements IDAO<User> {
 
 		return entity;
 	}
+	
+	public User getByMail(String email) {
+		String jpql = "select t from " + User.class.getSimpleName() + " t where email = :x";
+
+		SessionFactory factory = HibernateUtil.getSessionFactory();
+		Session s = factory.openSession();
+		Query q = s.createQuery(jpql);
+		q.setParameter("x", email);
+
+		User entity = q.list().size() == 0 ? null : (User) q.list().get(0);
+		s.close();
+
+		return entity;
+	}
+	
+	public User getByPhoneNumber(String phoneNumber) {
+		String jpql = "select t from " + User.class.getSimpleName() + " t where phoneNumber = :x";
+
+		SessionFactory factory = HibernateUtil.getSessionFactory();
+		Session s = factory.openSession();
+		Query q = s.createQuery(jpql);
+		q.setParameter("x", phoneNumber);
+
+		User entity = q.list().size() == 0 ? null : (User) q.list().get(0);
+		s.close();
+
+		return entity;
+	}
 }

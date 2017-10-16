@@ -17,7 +17,7 @@ public class AuthentificationController {
 
 	public boolean checkLogin(String userName, String password) throws DataException {
 		User user = DAOFactory.userDAO().getByName(userName);
-		if (user == null
+		if (user == null || userName.isEmpty() || password.isEmpty()
 				|| !user.getPassword().equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString()))
 			throw new DataException("Invalid user name or password");
 		return true;
@@ -26,20 +26,31 @@ public class AuthentificationController {
 	public boolean registerUser(String userName, String email, String phoneNumber, String password)
 			throws DataException {
 
+		if (userName.isEmpty())
+			throw new DataException("User name cannot be empty");
+
+		if (password.isEmpty())
+			throw new DataException("Password cannot be empty");
+
 		if (!email.matches("[a-zA-Z0-9._-]{1,64}@[a-zA-Z0-9-]{2,252}(\\.[a-zA-Z]{2,6})+"))
 			throw new DataException("Invalid mail address");
 
 		if (!validatePhoneNumber(phoneNumber))
 			throw new DataException("Invalid phone number");
 
-		User user = DAOFactory.userDAO().getByName(userName);
+		if (DAOFactory.userDAO().getByMail(email) != null)
+			throw new DataException("E-Mail already used");
 		
+		if (DAOFactory.userDAO().getByPhoneNumber(phoneNumber) != null)
+			throw new DataException("Phone number already used");
+
+		User user = DAOFactory.userDAO().getByName(userName);
+
 		if (user != null)
 			throw new DataException("user name alredy existant");
 
 		String hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
 
-		System.err.println("before : " + password + ", after : " + hashedPassword);
 		user = new User();
 		user.setEmail(email);
 		user.setUserName(userName);
