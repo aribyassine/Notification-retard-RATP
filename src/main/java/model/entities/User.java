@@ -82,7 +82,12 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [userName=" + userName + ", email=" + email + ", phoneNumber=" + phoneNumber + "]";
+		return "User{" +
+				"userName='" + userName + '\'' +
+				", email='" + email + '\'' +
+				", phoneNumber='" + phoneNumber + '\'' +
+				", affectedScheduledLine=" + affectedScheduledLine +
+				", comments=" + comments +
+				'}';
 	}
-
 }

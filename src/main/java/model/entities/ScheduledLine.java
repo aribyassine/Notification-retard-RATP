@@ -77,4 +77,14 @@ public class ScheduledLine implements Serializable {
 		this.line = line;
 	}
 
+	@Override
+	public String toString() {
+		return "ScheduledLine{" +
+				"lineScheduleId=" + lineScheduleId +
+				", schedule=" + schedule +
+				", line=" + line +
+				", affectedUsers=" + affectedUsers +
+				", notifications=" + notifications +
+				'}';
+	}
 }

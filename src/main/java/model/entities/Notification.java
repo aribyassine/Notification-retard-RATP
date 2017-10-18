@@ -82,4 +82,15 @@ public class Notification implements Serializable { // TODO : remove notificatio
 	public void setNotificationText(String notificationText) {
 		this.notificationText = notificationText;
 	}
+
+	@Override
+	public String toString() {
+		return "Notification{" +
+				"notificationId=" + notificationId +
+				", scheduledLine=" + scheduledLine +
+				", date=" + date +
+				", notificationText='" + notificationText + '\'' +
+				", comments=" + comments +
+				'}';
+	}
 }

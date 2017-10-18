@@ -87,7 +87,12 @@ public class Schedule implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Schedule [id=" + scheduleId + ", hour=" + hour + ", minute=" + minute + ", day=" + day + "]";
+		return "Schedule{" +
+				"scheduleId=" + scheduleId +
+				", hour=" + hour +
+				", minute=" + minute +
+				", day=" + day +
+				", scheduledLines=" + scheduledLines +
+				'}';
 	}
-
 }

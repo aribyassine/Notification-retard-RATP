@@ -1,6 +1,7 @@
 package controllers;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
@@ -23,13 +24,13 @@ public class ControllersTest {
 		}
 
 		try {
-			assertTrue(controller.checkLogin("tiko", "tikotiko"));
+			assertNotNull(controller.checkLogin("tiko", "tikotiko"));
 		} catch (Exception e) {
 			Assert.fail("Login error : " + e.getMessage());
 		}
 
 		try {
-			assertFalse(controller.checkLogin("tiko", "koukou"));
+			assertNotNull(controller.checkLogin("tiko", "koukou"));
 		} catch (Exception e) {
 			assertTrue("Invalid user name or password".equals(e.getMessage()));
 		}
@@ -59,14 +60,14 @@ public class ControllersTest {
 	public void userLogInNegativeTest_invalidPassword() {
 		AuthentificationController controller = new AuthentificationController();
 		try {
-			assertTrue(controller.registerUser("machin01", "machin01@gmail.com", "0769258596", "youyou"));
+			assertNotNull(controller.registerUser("machin01", "machin01@gmail.com", "0769258596", "youyou"));
 		} catch (Exception e) {
 			Assert.fail("Regestration error : " + e.getMessage());
 			e.printStackTrace();
 		}
 		
 		try {
-			assertFalse(controller.checkLogin("machin01", "123458"));
+			assertNotNull(controller.checkLogin("machin01", "123458"));
 		} catch (Exception e) {
 			assertTrue("Invalid user name or password".equals(e.getMessage()));
 
@@ -77,7 +78,7 @@ public class ControllersTest {
 	public void userLogInNegativeTest_invalidUserName() {
 		AuthentificationController controller = new AuthentificationController();
 		try {
-			assertFalse(controller.checkLogin("machin", "123458"));
+			assertNotNull(controller.checkLogin("machin", "123458"));
 		} catch (Exception e) {
 			assertTrue("Invalid user name or password".equals(e.getMessage()));
 		}
@@ -87,13 +88,13 @@ public class ControllersTest {
 	public void userRegestrationNegativeTest_usedMail() {
 		AuthentificationController controller = new AuthentificationController();
 		try {
-			assertTrue(controller.registerUser("ayyoub", "ayyoub@gmail.com", "0896325811", "youyou"));
+			assertNotNull(controller.registerUser("ayyoub", "ayyoub@gmail.com", "0896325811", "youyou"));
 		} catch (Exception e) {
 			Assert.fail("Regestration error : " + e.getMessage());
 		}
 
 		try {
-			assertFalse(controller.registerUser("yacine", "ayyoub@gmail.com", "0852369712", "dzdzdz"));
+			assertNotNull(controller.registerUser("yacine", "ayyoub@gmail.com", "0852369712", "dzdzdz"));
 		} catch (Exception e) {
 			assertTrue("E-Mail already used".equals(e.getMessage()));
 		}

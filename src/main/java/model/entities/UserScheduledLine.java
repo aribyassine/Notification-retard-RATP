@@ -59,5 +59,12 @@ public class UserScheduledLine implements Serializable{
 		this.scheduledLine = scheduledLine;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "UserScheduledLine{" +
+				"userScheduledLineId=" + userScheduledLineId +
+				", user=" + user +
+				", scheduledLine=" + scheduledLine +
+				'}';
+	}
 }
