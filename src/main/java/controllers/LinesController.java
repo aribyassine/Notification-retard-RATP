@@ -25,6 +25,11 @@ public class LinesController {
 		return lines;
 	}
 
+	public static void main(String[] args) throws DataException {
+		System.out.println(new LinesController().getLinesOnJSON());
+		System.out.println(lines);
+	}
+
 	public static void updateLinesFromServer() throws DataException {
 		URL url;
 		try {
@@ -34,20 +39,19 @@ public class LinesController {
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Content-Type", "application/json");
 
-			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 
 				String output;
 				Files.deleteIfExists(Paths.get("Lines.json"));
 
 				while ((output = br.readLine()) != null) {
-					Files.write(Paths.get("Lines.json"), output.replaceAll("é", "�").getBytes(),
+					Files.write(Paths.get("Lines.json"), output.replaceAll("é", "e").getBytes(),
 							StandardOpenOption.WRITE, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
 				}
 				conn.disconnect();
-			}else {
-				updateLinesFromFile();
 			}
+			updateLinesFromFile();
 		} catch (IOException e) {
 			updateLinesFromFile();
 		}
@@ -55,7 +59,8 @@ public class LinesController {
 
 	public static void updateLinesFromFile() throws DataException {
 		try {
-			lines = Files.readAllLines(Paths.get("Lines.json")).stream().reduce("", (a, b) -> a + b);
+			lines="";
+			Files.readAllLines(Paths.get("Lines.json")).forEach(line -> lines+=line);
 		} catch (IOException e) {
 			throw new DataException("Unable to load lines");
 		}
