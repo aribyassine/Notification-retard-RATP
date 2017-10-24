@@ -1,6 +1,8 @@
 package model.dao;
 
 import model.dao.interfaces.IDAO;
+import model.entities.Line;
+import model.entities.Schedule;
 import model.entities.UserScheduledLine;
 
 /**
@@ -8,5 +10,6 @@ import model.entities.UserScheduledLine;
  *
  */
 public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO<UserScheduledLine> {
-
+	
+	
 }
