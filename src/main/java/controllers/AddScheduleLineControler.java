@@ -107,7 +107,13 @@ public class AddScheduleLineControler {
 			
 		DAOFactory.lineDAO().save(line);
 		DAOFactory.scheduleDAO().save(schedule);
-		ScheduledLine s= DAOFactory.scheduledLineDAO().saveScheduledLine(line, schedule);
+		
+		ScheduledLine s= new ScheduledLine();
+		s.setLine(line);
+		s.setSchedule(schedule);
+		
+		DAOFactory.scheduledLineDAO().save(s);
+		
 		UserScheduledLine userSL = new UserScheduledLine();
 		userSL.setUser(user);
 		userSL.setScheduledLine(s);
