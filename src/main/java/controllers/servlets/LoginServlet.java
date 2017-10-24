@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
             out.close();
         } catch (DataException e) {
             e.printStackTrace();
-            resp.sendRedirect("");
+            resp.sendError(403,e.getMessage());
         }
     }
 

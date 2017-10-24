@@ -21,6 +21,7 @@ public class LinesController {
 	public String getLinesOnJSON() throws DataException {
 		if (lines == null) {
 			updateLinesFromServer();
+            updateLinesFromFile();
 		}
 		return lines;
 	}
@@ -34,14 +35,15 @@ public class LinesController {
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Content-Type", "application/json");
 
-			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 
 				String output;
+
 				Files.deleteIfExists(Paths.get("Lines.json"));
 
 				while ((output = br.readLine()) != null) {
-					Files.write(Paths.get("Lines.json"), output.replaceAll("é", "�").getBytes(),
+					Files.write(Paths.get("Lines.json"), output.replaceAll("Ã©", "é").getBytes(),
 							StandardOpenOption.WRITE, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
 				}
 				conn.disconnect();

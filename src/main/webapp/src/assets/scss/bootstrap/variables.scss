@@ -1,0 +1,8 @@
+/** * Toute cette partie permet de surcharger les variables de bootstrap */
+
+/* La je modifie la couleur principale */
+$icon-font-path: "/node_modules/bootstrap-sass/assets/fonts/bootstrap";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+
+/** * J'importe enfin le fichier de variables par défaut de bootstrap qui va permettre de définir les variables que je n'ai pas surchargées */
+

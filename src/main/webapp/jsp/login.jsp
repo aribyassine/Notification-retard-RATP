@@ -16,11 +16,11 @@
             <form method="post" action="login">
                 <div class="form-group">
                     <label for="login">User name</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder="User name">
+                    <input type="text" class="form-control" id="login" name="login" placeholder="User name" required>
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password</label>
-                    <input type="password" class="form-control" id="pwd" name="pwd"placeholder="Password">
+                    <input type="password" class="form-control" id="pwd" name="pwd"placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
