@@ -23,8 +23,10 @@ import javax.persistence.Table;
 @Table(name = "SCHEDULE")
 public class Schedule implements Serializable {
 
+	//TODO: should make hour,minute,day as unique !!
+	
 	public static enum Day {
-		sunday, monday, theursday, wendesday, tuesday, friday, saturday
+		sunday, monday, thursday, wendesday, tuesday, friday, saturday
 	}
 
 	private static final long serialVersionUID = 1L;

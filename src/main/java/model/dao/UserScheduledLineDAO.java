@@ -8,5 +8,5 @@ import model.entities.UserScheduledLine;
  *
  */
 public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO<UserScheduledLine> {
-
+	
 }

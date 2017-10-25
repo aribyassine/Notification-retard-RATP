@@ -16,19 +16,19 @@
             <form method="post" action="register">
                 <div class="form-group">
                     <label for="login">User name</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder="Login">
+                    <input type="text" class="form-control" id="login" name="login" placeholder="Login" required>
                 </div>
                 <div class="form-group">
                     <label for="login">Email address</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
                     <label for="login">Phone number</label>
-                    <input type="text" pattern="[0-9]{10}" class="form-control" id="phone" name="phone" placeholder="Phone number">
+                    <input type="text" pattern="[0-9]{10}" class="form-control" id="phone" name="phone" placeholder="Phone number" required>
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password</label>
-                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
+                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>

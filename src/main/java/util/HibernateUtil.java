@@ -11,8 +11,6 @@ public class HibernateUtil {
 
 	static {
 		try {
-			System.out.println("helllo ........");
-
 			Configuration configuration = new Configuration().configure();
 
 			ServiceRegistryBuilder registry = new ServiceRegistryBuilder();
