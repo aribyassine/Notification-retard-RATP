@@ -9,4 +9,8 @@ import model.entities.Schedule;
  */
 public class ScheduleDAO extends DAO<Schedule> implements IDAO<Schedule> {
 
+	//TODO
+	public Schedule getBySchedule(int hour, int minute, String day) {
+		return null;
+	}
 }
