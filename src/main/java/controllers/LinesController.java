@@ -25,11 +25,6 @@ public class LinesController {
 		return lines;
 	}
 
-	public static void main(String[] args) throws DataException {
-		System.out.println(new LinesController().getLinesOnJSON());
-		System.out.println(lines);
-	}
-
 	public static void updateLinesFromServer() throws DataException {
 		URL url;
 		try {
