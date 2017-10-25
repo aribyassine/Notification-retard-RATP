@@ -9,4 +9,6 @@ import model.entities.Line;
  */
 public class LineDAO extends DAO<Line> implements IDAO<Line> {
 
+	
+	
 }

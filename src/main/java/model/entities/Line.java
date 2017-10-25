@@ -28,12 +28,13 @@ public class Line implements Serializable {
 	}
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@Column(name = "LINE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int lineId;
-
+	
+	//TODO: Line name unique, dao dont add if it already exists
 	@Column(name = "LINE_NAME")
 	private String lineName;
 

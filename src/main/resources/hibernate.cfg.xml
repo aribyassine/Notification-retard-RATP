@@ -29,7 +29,7 @@
 
 		<!-- Drop and re-create the database schema on startup -->
 
-		<property name="hbm2ddl.auto">update</property>
+		<property name="hbm2ddl.auto">create-drop</property>
 
 		<!-- <mapping resource="dao/Categorie.hbm.xml"/> -->
 		<!-- <mapping resource="dao/produit.hbm.xml"/> -->

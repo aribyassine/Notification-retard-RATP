@@ -100,7 +100,7 @@ public class ScheduledLineController {
 		schedule.setDay(d);
 		schedule.setHour(hour);
 		schedule.setMinute(minute);
-
+		
 		DAOFactory.lineDAO().save(line); // TODO : check if this line already exist in the DB, you should not duplicate lines !!!!, call me before you change this !. Tarek
 		DAOFactory.scheduleDAO().save(schedule); // TODO : same thing !!
 

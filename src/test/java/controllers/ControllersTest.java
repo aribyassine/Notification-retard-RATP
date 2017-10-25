@@ -3,6 +3,8 @@ package controllers;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import javax.validation.constraints.AssertTrue;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -97,6 +99,31 @@ public class ControllersTest {
 		} catch (Exception e) {
 			assertTrue("E-Mail already used".equals(e.getMessage()));
 		}
+
+	}
+	
+	@Test
+	public void addScheduleLinePositiveTest() {
+		ScheduledLineController controller = new ScheduledLineController();
+		try {
+			assertNotNull(controller.addScheduledLine("b", "rer", 1, 2, "friday", "ayyoub", true));
+		} catch (Exception e) {
+			Assert.fail("add schedule line error : " + e.getMessage());
+		}
+
+		
+
+	}
+	@Test
+	public void addScheduleLine_negativeTest_unknownUser() {
+		ScheduledLineController controller = new ScheduledLineController();
+		try {
+			assertNotNull(controller.addScheduledLine("b", "rer", 1, 2, "friday", "aa", true));
+		} catch (Exception e) {
+			assertTrue("User was not found".equals(e.getMessage()));
+		}
+
+		
 
 	}
 }
