@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.dao.interfaces.IDAO;
+import model.entities.ScheduledLine;
 import model.entities.UserScheduledLine;
 
 /**
@@ -9,4 +10,8 @@ import model.entities.UserScheduledLine;
  */
 public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO<UserScheduledLine> {
 	
+	//TODO
+	public UserScheduledLine getUserScheduledLineByScheduledLine(ScheduledLine scheduledLine ) {
+		return null;
+	}
 }

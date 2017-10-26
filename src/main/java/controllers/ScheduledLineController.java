@@ -92,28 +92,52 @@ public class ScheduledLineController {
 		if (user == null)
 			throw new DataException("User was not found");
 
-		Line line = new Line();
-		line.setLineName(LineName);
-		line.setLineType(linetype);
 
-		Schedule schedule = new Schedule();
-		schedule.setDay(d);
-		schedule.setHour(hour);
-		schedule.setMinute(minute);
+
+
+		Line line= 	DAOFactory.lineDAO().getByName(LineName);
+		if(line==null) {
+			line= new Line();
+			line.setLineName(LineName);
+			line.setLineType(linetype);
+			DAOFactory.lineDAO().save(line); 
+		}
+		Schedule schedule =DAOFactory.scheduleDAO().getBySchedule(hour, minute, d);
+		if(schedule==null) {
+			schedule = new Schedule();
+			schedule.setDay(d);
+			schedule.setHour(hour);
+			schedule.setMinute(minute);
+			DAOFactory.scheduleDAO().save(schedule);
+		}
 		
-		DAOFactory.lineDAO().save(line); // TODO : check if this line already exist in the DB, you should not duplicate lines !!!!, call me before you change this !. Tarek
-		DAOFactory.scheduleDAO().save(schedule); // TODO : same thing !!
+		ScheduledLine s = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(line, schedule);
+		UserScheduledLine userSL ;
+		if(s==null) {
+			s=new ScheduledLine();
+			s.setLine(line);
+			s.setSchedule(schedule);
+			DAOFactory.scheduledLineDAO().save(s);
+			
+			userSL= new UserScheduledLine();
+			userSL.setUser(user);
+			userSL.setScheduledLine(s);
+			DAOFactory.userScheduledLineDAO().save(userSL);
+		}
+		else {
+			userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLine(s);
+			if(userSL == null) {
+				userSL= new UserScheduledLine();
+				userSL.setUser(user);
+				userSL.setScheduledLine(s);
+				DAOFactory.userScheduledLineDAO().save(userSL);
+			}
+		}
+	
 
-		ScheduledLine s = new ScheduledLine();
-		s.setLine(line);
-		s.setSchedule(schedule);
-
-		DAOFactory.scheduledLineDAO().save(s); // TODO : same thing !! your user can reschedule the same line at the same time !!!!
-
-		UserScheduledLine userSL = new UserScheduledLine();
-		userSL.setUser(user);
-		userSL.setScheduledLine(s);
-		DAOFactory.userScheduledLineDAO().save(userSL);
+	
+		
+		
 
 		return user;
 
