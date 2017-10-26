@@ -16,10 +16,8 @@ import model.entities.UserScheduledLine;
 
 public class ScheduledLineController {
 
-	public User addScheduledLine(String LineName, String type, int minute, int hour, String day, String userName,
-			Boolean isConnected) throws DataException {
-		if (!isConnected)
-			throw new DataException("User logged out");
+	public User addScheduledLine(String LineName, String type, int minute, int hour, String day, String userName) throws DataException {
+		
 
 		if (userName.isEmpty())
 			throw new DataException("User name is empty");
