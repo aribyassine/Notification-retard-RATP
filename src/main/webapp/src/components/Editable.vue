@@ -1,33 +1,33 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-md-12">
-              <autocomplete @update="updated"></autocomplete>
-            </div>
-            <div class="col-md-12 slider">
-              <vue-slider v-model="interval" :data="intervals"></vue-slider>
-            </div>
-            <div class="col-md-12 days">
-              <switches v-model="days.lun" label="lundi" theme="custom" color="blue"></switches>
-              <switches v-model="days.mar" label="mardi" theme="custom" color="blue"></switches>
-              <switches v-model="days.mer" label="mercredi" theme="custom" color="blue"></switches>
-              <switches v-model="days.jeu" label="jeudi" theme="custom" color="blue"></switches>
-              <switches v-model="days.ven" label="vendredi" theme="custom" color="blue"></switches>
-              <switches v-model="days.sam" label="samedi" theme="custom" color="blue"></switches>
-              <switches v-model="days.dim" label="dimanche" theme="custom" color="blue"></switches>
-              <switches v-model="everyDay" label="Tous les jours" theme="custom" color="green"></switches>
-              <switches v-model="exceptWeekEnd" label="De lundi à vendredi" theme="custom" color="green"></switches>
-            </div>
-          </div>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-12">
+          <autocomplete @update="updated" :fuse="fuse"></autocomplete>
+        </div>
+        <div class="col-md-12 slider">
+          <vue-slider v-model="interval" :data="intervals"></vue-slider>
+        </div>
+        <div class="col-md-12 days">
+          <switches v-model="days.lun" label="lundi" theme="custom" color="blue"></switches>
+          <switches v-model="days.mar" label="mardi" theme="custom" color="blue"></switches>
+          <switches v-model="days.mer" label="mercredi" theme="custom" color="blue"></switches>
+          <switches v-model="days.jeu" label="jeudi" theme="custom" color="blue"></switches>
+          <switches v-model="days.ven" label="vendredi" theme="custom" color="blue"></switches>
+          <switches v-model="days.sam" label="samedi" theme="custom" color="blue"></switches>
+          <switches v-model="days.dim" label="dimanche" theme="custom" color="blue"></switches>
+          <switches v-model="everyDay" label="Tous les jours" theme="custom" color="green"></switches>
+          <switches v-model="exceptWeekEnd" label="De lundi à vendredi" theme="custom" color="green"></switches>
         </div>
       </div>
     </div>
+
     <ul>
-      <li>{{ligne}}</li>
+      <li>{{ligne.name}}</li>
       <li>{{interval}}</li>
+      <li>{{value.days}}</li>
+      <li>{{days}}</li>
       <li v-for="(v, k) in days" v-if="v">{{k}}</li>
     </ul>
   </div>
@@ -40,6 +40,11 @@
   import Switches from 'vue-switches'
 
   export default {
+    name: 'Editable',
+    props: {
+      fuse: {required: true},
+      value: {required: true}
+    },
     components: {
       'autocomplete': Autocomplete,
       'vue-slider': vueSlider,
@@ -47,18 +52,10 @@
     },
     data () {
       return {
-        ligne: null,
-        interval: ['07:00', '08:00'],
+        ligne: this.value.ligne,
+        interval: this.value.interval,
         intervals: null,
-        days: {
-          lun: false,
-          mar: false,
-          mer: false,
-          jeu: false,
-          ven: false,
-          sam: false,
-          dim: false
-        }
+        days: this.value.days
       }
     },
     created: function () {
@@ -98,7 +95,7 @@
     },
     methods: {
       updated (item) {
-        this.ligne = item.name
+        this.ligne = item
       }
     }
   }
