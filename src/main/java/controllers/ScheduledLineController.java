@@ -66,7 +66,7 @@ public class ScheduledLineController {
 			d = Day.tuesday;
 			break;
 		case "wendesday":
-			d = Day.wendesday;
+			d = Day.wednesday;
 			break;
 		case "thursday":
 			d = Day.thursday;
