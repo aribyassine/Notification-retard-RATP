@@ -7,46 +7,23 @@
 <script>
   import ligneTemplate from './AutocompleteLigneTemplate.vue'
   import Autocomplete from 'v-autocomplete'
-  import Fuse from 'fuse.js'
 
   export default {
     name: 'Autocomplete',
     components: {'v-autocomplete': Autocomplete},
+    props: { fuse: { required: true } },
     data () {
       return {
-        lines: [],
         linesAutocomplete: [],
-        template: ligneTemplate,
-        fuse: null
+        template: ligneTemplate
       }
-    },
-    mounted: function () {
-      // `this` est une référence à l'instance de vm
-      this.$http.get('lines').then(response => {
-        let options = {
-          shouldSort: true,
-          tokenize: true,
-          keys: [{
-            name: 'directions',
-            weight: 0.2
-          }, {
-            name: 'name',
-            weight: 0.8
-          }]
-        }
-        let res = response.body.result
-        for (let type in res) {
-          res[type].forEach((ligne) => this.lines.push(ligne))
-        }
-        this.fuse = new Fuse(this.lines, options)
-      })
     },
     methods: {
       itemSelected (item) {
         this.$emit('update', item)
       },
       getLabel (item) {
-        return item.name
+        return item.name + ' ' + item.directions
       },
       updateAutocomplete (text) {
         this.linesAutocomplete = this.fuse.search(text).slice(0, 15)
@@ -63,31 +40,32 @@
         font-size 1.5em
         padding 10px 15px
         box-shadow none
-        border 1px solid #157977
+        border 1px solid #1997d9
         width 100%
         outline none
         background-color #eee
       &.v-autocomplete-selected
         .v-autocomplete-input
-          color green
-          background-color #f2fff2
+          color #1997d9
+          background-color #eee
     .v-autocomplete-list
       display block
       position absolute
-      width 100%
+      z-index 4
+      width calc(100% - 30px)
       text-align left
       border none
       border-top none
       max-height 380px
       overflow-y auto
-      border-bottom 1px solid #157977
+      border-bottom 1px solid #1997d9
       .v-autocomplete-list-item
         cursor pointer
         background-color #fff
         padding 10px
-        border-bottom 1px solid #157977
-        border-left 1px solid #157977
-        border-right 1px solid #157977
+        border-bottom 1px solid #1997d9
+        border-left 1px solid #1997d9
+        border-right 1px solid #1997d9
         &:last-child
           border-bottom none
         &:hover
