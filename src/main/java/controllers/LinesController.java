@@ -21,7 +21,6 @@ public class LinesController {
 	public String getLinesOnJSON() throws DataException {
 		if (lines == null) {
 			updateLinesFromServer();
-            updateLinesFromFile();
 		}
 		return lines;
 	}
@@ -39,17 +38,15 @@ public class LinesController {
 				BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 
 				String output;
-
 				Files.deleteIfExists(Paths.get("Lines.json"));
 
 				while ((output = br.readLine()) != null) {
-					Files.write(Paths.get("Lines.json"), output.replaceAll("Ã©", "é").getBytes(),
+					Files.write(Paths.get("Lines.json"), output.replaceAll("é", "e").getBytes(),
 							StandardOpenOption.WRITE, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
 				}
 				conn.disconnect();
-			}else {
-				updateLinesFromFile();
 			}
+			updateLinesFromFile();
 		} catch (IOException e) {
 			updateLinesFromFile();
 		}
@@ -57,7 +54,8 @@ public class LinesController {
 
 	public static void updateLinesFromFile() throws DataException {
 		try {
-			lines = Files.readAllLines(Paths.get("Lines.json")).stream().reduce("", (a, b) -> a + b);
+			lines="";
+			Files.readAllLines(Paths.get("Lines.json")).forEach(line -> lines+=line);
 		} catch (IOException e) {
 			throw new DataException("Unable to load lines");
 		}

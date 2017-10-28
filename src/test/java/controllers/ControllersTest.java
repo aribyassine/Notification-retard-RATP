@@ -99,4 +99,29 @@ public class ControllersTest {
 		}
 
 	}
+	
+	@Test
+	public void addScheduleLinePositiveTest() {
+		ScheduledLineController controller = new ScheduledLineController();
+		try {
+			assertNotNull(controller.addScheduledLine("b", "rer", 1, 2, "friday", "ayyoub"));
+		} catch (Exception e) {
+			Assert.fail("add schedule line error : " + e.getMessage());
+		}
+
+		
+
+	}
+	@Test
+	public void addScheduleLine_negativeTest_unknownUser() {
+		ScheduledLineController controller = new ScheduledLineController();
+		try {
+			assertNotNull(controller.addScheduledLine("b", "rer", 1, 2, "friday", "aa"));
+		} catch (Exception e) {
+			assertTrue("User was not found".equals(e.getMessage()));
+		}
+
+		
+
+	}
 }
