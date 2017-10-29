@@ -8,6 +8,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import controllers.exceptions.DataException;
 
@@ -54,11 +57,27 @@ public class LinesController {
 
 	public static void updateLinesFromFile() throws DataException {
 		try {
-			lines="";
-			Files.readAllLines(Paths.get("Lines.json")).forEach(line -> lines+=line);
+			lines = "";
+			Files.readAllLines(Paths.get("Lines.json")).forEach(line -> lines += line);
 		} catch (IOException e) {
 			throw new DataException("Unable to load lines");
 		}
 	}
 
+	
+	public static void startLinesUpdater() {
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1, (Runnable r) -> {
+			Thread t = Executors.defaultThreadFactory().newThread(r);
+			t.setDaemon(true);
+			return t;
+		});
+		
+		scheduler.scheduleAtFixedRate(() -> {
+			try {
+				updateLinesFromServer();
+			} catch (DataException e) {
+				// TODO SMS
+			}
+		}, 1, 1, TimeUnit.DAYS);
+	}
 }

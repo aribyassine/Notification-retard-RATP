@@ -19,9 +19,7 @@ public interface IDAO<E> {
 
 	Set<E> selectAll();
 
-	E findOne(String paramName, Object paramValue);
-
-	E findOne(String[] paramNames, Object[] paramValues);
-
+	// E findOne(String paramName, Object paramValue);
+	// E findOne(String[] paramNames, Object[] paramValues);
 	// int findCountBy(String paramName, Object paramValue);
 }

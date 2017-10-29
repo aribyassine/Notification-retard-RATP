@@ -21,7 +21,7 @@ import javax.persistence.UniqueConstraint;
  */
 
 @Entity
-@Table(name = "SCHEDULE", uniqueConstraints = @UniqueConstraint(columnNames = { "HOUR", "MINUTE", "DAY"}))
+@Table(name = "SCHEDULE", uniqueConstraints = @UniqueConstraint(columnNames = { "HOUR", "MINUTE", "DAY" }))
 public class Schedule implements Serializable {
 
 	public static enum Day {
@@ -74,7 +74,7 @@ public class Schedule implements Serializable {
 	}
 
 	public void setMinute(int minute) {
-		this.minute = minute;
+		this.minute = minute - minute % 5;
 	}
 
 	@Enumerated(EnumType.STRING)
@@ -88,12 +88,7 @@ public class Schedule implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Schedule{" +
-				"scheduleId=" + scheduleId +
-				", hour=" + hour +
-				", minute=" + minute +
-				", day=" + day +
-				", scheduledLines=" + scheduledLines +
-				'}';
+		return "Schedule{" + "scheduleId=" + scheduleId + ", hour=" + hour + ", minute=" + minute + ", day=" + day
+				+ ", scheduledLines=" + scheduledLines + '}';
 	}
 }

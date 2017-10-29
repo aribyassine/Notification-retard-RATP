@@ -2,6 +2,7 @@ package model.dao;
 
 import model.dao.interfaces.IDAO;
 import model.entities.Line;
+import model.entities.Line.LineType;
 
 /**
  * @author Mohamed T. KASSAR
@@ -9,11 +10,8 @@ import model.entities.Line;
  */
 public class LineDAO extends DAO<Line> implements IDAO<Line> {
 	
-	//TODO 
-	public Line getByName(String name) {
-		return null;
+	public Line getByNameNType(String name, LineType type) {
+		return findOne(new String[] {"lineName", "lineType"}, new Object[] {name, type});
 	}
-
-	
 	
 }

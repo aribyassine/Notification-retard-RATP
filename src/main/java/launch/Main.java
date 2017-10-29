@@ -13,6 +13,8 @@ import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.EmptyResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
+import controllers.LinesController;
+
 
 public class Main {
 
@@ -81,6 +83,9 @@ public class Main {
 
 		
 		tomcat.start();
+		
+		LinesController.startLinesUpdater();
+		
 		tomcat.getServer().await();
 	}
 }

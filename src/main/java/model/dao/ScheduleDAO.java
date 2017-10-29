@@ -10,8 +10,7 @@ import model.entities.Schedule.Day;
  */
 public class ScheduleDAO extends DAO<Schedule> implements IDAO<Schedule> {
 
-	//TODO
 	public Schedule getBySchedule(int hour, int minute, Day day) {
-		return null;
+		return findOne(new String[] { "hour", "minute", "day" }, new Object[] { hour, minute, day });
 	}
 }

@@ -78,13 +78,11 @@ public class DAO<E> implements IDAO<E> {
 		return set;
 	}
 
-	@Override
-	public E findOne(String paramName, Object paramValue) {
+	protected E findOne(String paramName, Object paramValue) {
 		return findOne(new String[] { paramName }, new Object[] { paramValue });
 	}
 
-	@Override
-	public E findOne(String[] paramNames, Object[] paramValues) {
+	protected E findOne(String[] paramNames, Object[] paramValues) {
 
 		if (paramNames.length != paramValues.length)
 			return null;

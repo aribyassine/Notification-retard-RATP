@@ -18,9 +18,6 @@ import controllers.LinesController;
 @WebServlet(name = "lines", urlPatterns = {"/lines"})
 public class LinesServlet extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override

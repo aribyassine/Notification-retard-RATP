@@ -11,9 +11,7 @@ import model.entities.ScheduledLine;
  */
 public class ScheduledLineDAO extends DAO<ScheduledLine> implements IDAO<ScheduledLine> {
 
-	//TODO
 	public ScheduledLine getScheduledLineByObjects(Line line,Schedule schedule ) {
-		
-		return null;
+		return findOne(new String[] {"line", "schedule"}, new Object[] {line, schedule});
 	}
 }

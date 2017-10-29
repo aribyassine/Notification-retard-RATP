@@ -47,12 +47,14 @@ public class ScheduledLineController {
 			linetype = LineType.tramway;
 			break;
 		default:
-			linetype = null;
-			break;
+			throw new DataException("Invalid line type");
+
+//			linetype = null;
+//			break;
 		}
 
-		if (linetype == null)
-			throw new DataException("Invalid line type");
+//		if (linetype == null)
+//			throw new DataException("Invalid line type");
 
 		Day d;
 		switch (day.toLowerCase()) {
@@ -78,12 +80,13 @@ public class ScheduledLineController {
 			d = Day.saturday;
 			break;
 		default:
-			d = null;
-			break;
+			throw new DataException("Invalid day");
+//			d = null;
+//			break;
 		}
 
-		if (d == null)
-			throw new DataException("Invalid day");
+//		if (d == null)
+//			throw new DataException("Invalid day");
 
 		User user = DAOFactory.userDAO().getByName(userName);
 
@@ -93,7 +96,7 @@ public class ScheduledLineController {
 
 
 
-		Line line= 	DAOFactory.lineDAO().getByName(LineName);
+		Line line= 	DAOFactory.lineDAO().getByNameNType(LineName, linetype); // TODO: are you sure that we can't find the same name in different types ?
 		if(line==null) {
 			line= new Line();
 			line.setLineName(LineName);
@@ -123,7 +126,7 @@ public class ScheduledLineController {
 			DAOFactory.userScheduledLineDAO().save(userSL);
 		}
 		else {
-			userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLine(s);
+			userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLineNUser(s, user);
 			if(userSL == null) {
 				userSL= new UserScheduledLine();
 				userSL.setUser(user);
