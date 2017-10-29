@@ -11,6 +11,6 @@ import model.entities.Schedule.Day;
 public class ScheduleDAO extends DAO<Schedule> implements IDAO<Schedule> {
 
 	public Schedule getBySchedule(int hour, int minute, Day day) {
-		return findOne(new String[] { "hour", "minute", "day" }, new Object[] { hour, minute, day });
+		return findOne(new String[] { "hour", "minute", "day" }, new Object[] { hour, minute - minute % 5, day });
 	}
 }
