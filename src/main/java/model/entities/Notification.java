@@ -24,7 +24,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "NOTIFICATION")
-public class Notification implements Serializable { // TODO : remove notificationId and make scheduledLine as ID
+public class Notification implements Serializable { 
+	
+	// remove notificationId and make scheduledLine as ID
+	// NOT TODO : NO, we can't make scheduledLine ad ID, a scheduledLine may have many notifications
+	// On the other hand we can make scheduledLine and date as a compound key but it is DJEBDA in hibernate
 
 	private static final long serialVersionUID = 1L;
 

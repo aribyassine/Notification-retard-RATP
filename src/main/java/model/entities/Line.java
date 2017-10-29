@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author Mohamed T. KASSAR
@@ -20,7 +21,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "LINE")
+@Table(name = "LINE" , uniqueConstraints = @UniqueConstraint(columnNames = { "LINE_NAME", "LINE_TYPE" }))
 public class Line implements Serializable {
 
 	public static enum LineType {
@@ -34,7 +35,6 @@ public class Line implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int lineId;
 	
-	//TODO: Line name unique, dao dont add if it already exists
 	@Column(name = "LINE_NAME")
 	private String lineName;
 

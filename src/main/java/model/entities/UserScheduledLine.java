@@ -16,6 +16,7 @@ import javax.persistence.UniqueConstraint;
  * @author Mohamed T. KASSAR
  *
  */
+
 @Entity
 @Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "SCHEDULED_LINE", "USER" }))
 public class UserScheduledLine implements Serializable{

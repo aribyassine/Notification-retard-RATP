@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author Mohamed T. KASSAR
@@ -20,11 +21,9 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "SCHEDULE")
+@Table(name = "SCHEDULE", uniqueConstraints = @UniqueConstraint(columnNames = { "HOUR", "MINUTE", "DAY"}))
 public class Schedule implements Serializable {
 
-	//TODO: should make hour,minute,day as unique !!
-	
 	public static enum Day {
 		sunday, monday, thursday, wednesday, tuesday, friday, saturday
 	}
