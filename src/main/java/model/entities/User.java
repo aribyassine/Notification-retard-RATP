@@ -39,15 +39,15 @@ public class User implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<Comment> comments;
-	
+
 	public Set<Comment> getComments() {
 		return comments;
 	}
-	
+
 	public Set<UserScheduledLine> getAffectedScheduledLine() {
 		return affectedScheduledLine;
 	}
-	
+
 	public String getUserName() {
 		return userName;
 	}
@@ -81,13 +81,16 @@ public class User implements Serializable {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof User) {
+			return userName.equals(((User) obj).getUserName());
+		}
+		return false;
+	}
+
+	@Override
 	public String toString() {
-		return "User{" +
-				"userName='" + userName + '\'' +
-				", email='" + email + '\'' +
-				", phoneNumber='" + phoneNumber + '\'' +
-				", affectedScheduledLine=" + affectedScheduledLine +
-				", comments=" + comments +
-				'}';
+		return "User{" + "userName='" + userName + '\'' + ", email='" + email + '\'' + ", phoneNumber='" + phoneNumber
+				+ '\'' + ", affectedScheduledLine=" + affectedScheduledLine + ", comments=" + comments + '}';
 	}
 }
