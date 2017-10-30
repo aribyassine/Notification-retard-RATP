@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,10 +19,12 @@ import javax.mail.internet.MimeMessage;
 
 import model.dao.DAOFactory;
 import model.entities.Line;
+import model.entities.Notification;
 import model.entities.Schedule;
 import model.entities.Schedule.Day;
 import model.entities.ScheduledLine;
 import model.entities.User;
+import model.entities.UserScheduledLine;
 
 /**
  * @author Mohamed T. KASSAR
@@ -66,25 +67,54 @@ public class LatesController {
 
 		Set<ScheduledLine> scheduledLines = schedule.getScheduledLines();
 
-		HashMap<Line, Set<User>> map = new HashMap<>();
 		scheduledLines.forEach(sl -> {
-			if (sl.getAffectedUsers().size() > 0) {
-				map.put(sl.getLine(), filterUsers(
-						sl.getAffectedUsers().stream().map(usl -> usl.getUser()).collect(Collectors.toSet())));
-			}
-		});
+			Set<UserScheduledLine> affectedUsers = sl.getAffectedUsers();
 
-		map.entrySet().forEach(entry -> {
-			if (thereAreLatesForLine(entry.getKey())) {
-				entry.getValue().forEach(user -> {
-					notifyUser(user, entry.getKey());
-				});
+			if (!affectedUsers.isEmpty()) {
+				Set<User> users = filterUsers(
+						affectedUsers.stream().map(usl -> usl.getUser()).collect(Collectors.toSet()), sl, localDate);
+
+				if (users.isEmpty())
+					return;
+
+				if (thereAreLatesForLine(sl.getLine())) {
+					users.forEach(user -> {
+						notifyUser(user, sl.getLine());
+					});
+				}
 			}
 		});
 	}
 
-	private Set<User> filterUsers(Set<User> users) {
-		// TODO
+	private Set<User> filterUsers(Set<User> users, ScheduledLine sl, LocalDate date) {
+		// TODO je vire les utilisateurs qui ont reçu une notification pour cette ligne
+		// durant les 6 dernières schedule (30 min**) pour cette ligne (sl), PS: code KHMADJ si vous arrivez à l'améliorer mere7ba
+		
+		// j'ai mis 7 et non pas 6 car je vérifie le schedule courant aussi, en cas où !!! 
+		for (int i = 0; i < 7; i++) {
+			Set<Notification> todaysNotifications = sl.getNotifications().stream()
+					.filter(notification -> notification.getDate().equals(date)).collect(Collectors.toSet());
+			
+			if (todaysNotifications.isEmpty())
+				continue;
+
+			sl.getAffectedUsers().forEach(au -> {
+				users.remove(au.getUser());
+			});
+
+			int hour = sl.getSchedule().getHour();
+			int minute = sl.getSchedule().getMinute();
+
+			if (minute == 0) {
+				minute = 55;
+				hour--;
+				if (hour < 0)
+					return users;
+			}
+
+			sl = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(sl.getLine(),
+					DAOFactory.scheduleDAO().getBySchedule(hour, minute, sl.getSchedule().getDay()));
+		}
 		return users;
 	}
 
@@ -97,10 +127,15 @@ public class LatesController {
 		String message = null; // TODO : generate message
 
 		// TODO save notification in the database
-		sendMail(user.getEmail(), message, line);
+		sendMail(user.getEmail(), decorateEmailMessage(message), line);
 		sendSMS(user.getPhoneNumber(), message, line);
 	}
 
+	private static String decorateEmailMessage(String message) {
+		//TODO add prefix and postfix 
+		return message;
+	}
+	
 	private static void sendSMS(String phoneNumber, String message, Line line) {
 		// TODO intercept error and try to send with another server
 
@@ -120,7 +155,7 @@ public class LatesController {
 
 	}
 
-	private static void sendMail(String email, String message, Line line) {
+	private static void sendMail(String email, String mailText, Line line) {
 		try {
 			String host = "smtp.gmail.com";
 			String user = "mailnotification12@gmail.com"; // TODO : to be changed
@@ -128,7 +163,7 @@ public class LatesController {
 			String to = email;
 			String from = "RATP-NOTIFICATIONS";
 			String subject = "NoReply - Late notification for " + line.getLineType() + " " + line.getLineName();
-			String messageText = message;
+			String messageText = mailText;
 			boolean sessionDebug = false;
 
 			Properties props = System.getProperties();
