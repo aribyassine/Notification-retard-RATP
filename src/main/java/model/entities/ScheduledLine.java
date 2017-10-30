@@ -81,8 +81,8 @@ public class ScheduledLine implements Serializable {
 	public String toString() {
 		return "ScheduledLine{" +
 				"lineScheduleId=" + lineScheduleId +
-				", schedule=" + schedule +
-				", line=" + line +
+//				", schedule=" + schedule + TODO
+//				", line=" + line + TODO
 				", affectedUsers=" + affectedUsers +
 				", notifications=" + notifications +
 				'}';

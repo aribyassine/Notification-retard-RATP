@@ -19,6 +19,7 @@ public class EntitiesTest {
 	public void scheduledLineTest() {
 		DBInitialisation.initScheduledLines();
 		Schedule sc = DAOFactory.scheduleDAO().getById(1);
+		
 		assertTrue(sc.getHour() == 8);
 		assertTrue(sc.getScheduledLines().size() == 2);
 		System.err.println("hour : " + sc.getHour() + ", " + sc.getScheduledLines());

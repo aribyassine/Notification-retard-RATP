@@ -91,7 +91,7 @@ public class Notification implements Serializable {
 	public String toString() {
 		return "Notification{" +
 				"notificationId=" + notificationId +
-				", scheduledLine=" + scheduledLine +
+//				", scheduledLine=" + scheduledLine + TODO
 				", date=" + date +
 				", notificationText='" + notificationText + '\'' +
 				", comments=" + comments +

@@ -17,9 +17,6 @@ import controllers.exceptions.DataException;
 @WebServlet(name = "scheduledline", urlPatterns = {"/scheduledline"})
 public class ScheduledLineServlet extends HttpServlet{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private ScheduledLineController slc = new ScheduledLineController();
 
