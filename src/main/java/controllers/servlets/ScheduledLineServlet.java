@@ -33,9 +33,18 @@ public class ScheduledLineServlet extends HttpServlet{
 
 		String LineName = req.getParameter("lineName");
 		String type = req.getParameter("type");
-		String minute = req.getParameter("minute");
-		String hour = req.getParameter("hour");
-		String day = req.getParameter("day");
+		String minute = req.getParameter("minuteBegin");
+		String hour = req.getParameter("hourEnd");
+		String[] days = new String[7];
+		days[0]= req.getParameter("lundi");
+		days[1] = req.getParameter("mardi");
+		days[2] = req.getParameter("mercredi");
+		days[3] = req.getParameter("jeudi");
+		days[4]= req.getParameter("vendredi");
+		days[5] = req.getParameter("samedi");
+		days[6] = req.getParameter("dimanche");
+	
+		
 		req.getParameterMap().forEach((key, value) -> System.out.println(key + " " + Arrays.toString(value)));
 		
 		try {
@@ -46,7 +55,7 @@ public class ScheduledLineServlet extends HttpServlet{
 			if(login.isEmpty())
 				throw new DataException("cookie missing");
 			ServletOutputStream out = resp.getOutputStream();
-			slc.addScheduledLine(LineName, type,  Integer.parseInt(minute),  Integer.parseInt(hour), day, login);
+			slc.addScheduledLine(LineName, type,  minute,  hour, days, login);
 			out.write("schedule added".toString().getBytes());
 			out.flush();
 			out.close();
