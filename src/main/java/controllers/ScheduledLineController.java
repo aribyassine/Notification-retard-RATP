@@ -17,7 +17,7 @@ import model.entities.UserScheduledLine;
 public class ScheduledLineController {
 
 	public User addScheduledLine(String LineName, String type, int minute, int hour, String day, String userName) throws DataException {
-		
+
 
 		if (userName.isEmpty())
 			throw new DataException("User name is empty");
@@ -48,13 +48,7 @@ public class ScheduledLineController {
 			break;
 		default:
 			throw new DataException("Invalid line type");
-
-//			linetype = null;
-//			break;
 		}
-
-//		if (linetype == null)
-//			throw new DataException("Invalid line type");
 
 		Day d;
 		switch (day.toLowerCase()) {
@@ -81,12 +75,8 @@ public class ScheduledLineController {
 			break;
 		default:
 			throw new DataException("Invalid day");
-//			d = null;
-//			break;
 		}
 
-//		if (d == null)
-//			throw new DataException("Invalid day");
 
 		User user = DAOFactory.userDAO().getByName(userName);
 
@@ -111,7 +101,7 @@ public class ScheduledLineController {
 			schedule.setMinute(minute);
 			DAOFactory.scheduleDAO().save(schedule);
 		}
-		
+
 		ScheduledLine s = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(line, schedule);
 		UserScheduledLine userSL ;
 		if(s==null) {
@@ -119,7 +109,7 @@ public class ScheduledLineController {
 			s.setLine(line);
 			s.setSchedule(schedule);
 			DAOFactory.scheduledLineDAO().save(s);
-			
+
 			userSL= new UserScheduledLine();
 			userSL.setUser(user);
 			userSL.setScheduledLine(s);
@@ -127,18 +117,37 @@ public class ScheduledLineController {
 		}
 		else {
 			userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLineNUser(s, user);
-			if(userSL == null) {
-				userSL= new UserScheduledLine();
-				userSL.setUser(user);
-				userSL.setScheduledLine(s);
-				DAOFactory.userScheduledLineDAO().save(userSL);
+			if(userSL != null) {
+				throw new DataException("User scheduled line already exists");
 			}
-		}
-	
+			userSL= new UserScheduledLine();
+			userSL.setUser(user);
+			userSL.setScheduledLine(s);
+			DAOFactory.userScheduledLineDAO().save(userSL);
 
-	
-		
-		
+		}
+		//	
+		//		Line line= new Line();
+		//		line.setLineName(LineName);
+		//		line.setLineType(linetype);
+		//		Schedule schedule = new Schedule();
+		//		schedule.setDay(d);
+		//		schedule.setHour(hour);
+		//		schedule.setMinute(minute);
+		//		ScheduledLine s=new ScheduledLine();
+		//		s.setLine(line);
+		//		s.setSchedule(schedule);
+		//		DAOFactory.lineDAO().save(line); 
+		//		DAOFactory.scheduleDAO().save(schedule);
+		//		DAOFactory.scheduledLineDAO().save(s);
+		//		UserScheduledLine userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLineNUser(s, user);
+		//		if(userSL == null) {
+		//			userSL= new UserScheduledLine();
+		//			userSL.setUser(user);
+		//			userSL.setScheduledLine(s);
+		//			DAOFactory.userScheduledLineDAO().save(userSL);
+		//		}
+		//		
 
 		return user;
 
