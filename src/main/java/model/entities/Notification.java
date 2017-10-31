@@ -2,6 +2,7 @@ package model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class Notification implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "NOTIFICATION_DATE")
-	private LocalDate date;
+	private Date date;
 
 	@Column(name = "NOTIFICATION_TEXT")
 	private String notificationText;
@@ -73,11 +74,11 @@ public class Notification implements Serializable {
 	}
 
 	public LocalDate getDate() {
-		return date;
+		return date.toInstant().atZone(ZoneId.of("GMT+01:00")).toLocalDate();
 	}
 
 	public void setDate(LocalDate date) {
-		this.date = date;
+		this.date = Date.from(date.atStartOfDay(ZoneId.of("GMT+01:00")).toInstant());
 	}
 
 	public String getNotificationText() {
