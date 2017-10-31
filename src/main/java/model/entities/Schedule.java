@@ -25,7 +25,7 @@ import javax.persistence.UniqueConstraint;
 public class Schedule implements Serializable {
 
 	public static enum Day {
-		sunday, monday, thursday, wednesday, tuesday, friday, saturday
+		 monday, tuesday, wednesday, thursday, friday, saturday,sunday
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -74,7 +74,9 @@ public class Schedule implements Serializable {
 	}
 
 	public void setMinute(int minute) {
+		
 		this.minute = minute - minute % 5;
+		
 	}
 
 	@Enumerated(EnumType.STRING)

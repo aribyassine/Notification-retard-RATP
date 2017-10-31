@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
 import model.entities.Line;
@@ -16,17 +18,90 @@ import model.entities.UserScheduledLine;
 
 public class ScheduledLineController {
 
-	public User addScheduledLine(String LineName, String type, int minute, int hour, String day, String userName) throws DataException {
+	public User addScheduledLine(String LineName, String type, String debut , String fin, String[] days, String userName) throws DataException {
 
 
 		if (userName.isEmpty())
 			throw new DataException("User name is empty");
+		
 
-		if (LineName.isEmpty() || type.isEmpty() || day.isEmpty())
+
+		if (LineName.isEmpty() || type.isEmpty()  || debut.isEmpty() || fin.isEmpty())
 			throw new DataException("Not enough infos");
 
-		if (minute >= 60 || minute < 0 || hour >= 24 || hour < 0)
+		String timeDebut [] =  debut.split(":");
+		if(timeDebut.length>2)
 			throw new DataException("Time is invalid");
+
+		String timeFin [] =  fin.split(":");
+		if(timeFin.length>2)
+			throw new DataException("Time is invalid");
+		int hourDebut = 0 ;
+		int minuteDebut = 0;
+		int hourfin = 0;
+		int minuteFin = 0 ;
+
+		try {
+			hourDebut = Integer.parseInt(timeDebut[0]);
+			minuteDebut = Integer.parseInt(timeDebut[1]);
+			hourfin = Integer.parseInt(timeFin[0]);
+			minuteFin = Integer.parseInt(timeFin[1]);
+		}
+		catch(Exception e) {
+			throw new DataException("Time is invalid");
+		}
+		if(hourfin<0 || hourfin > 23 || hourDebut<0 || hourfin> 23 || minuteDebut<0 || minuteDebut > 59 || minuteFin<0 || minuteFin >59 )
+
+			if(hourDebut == hourfin) {
+				if(minuteDebut>=minuteFin)
+					throw new DataException("Time is invalid");
+			}
+			else if(hourDebut>hourfin)
+				throw new DataException("Time is invalid");
+
+		ArrayList<Integer> minute = new ArrayList<>();
+		ArrayList<Integer> hour = new ArrayList<>();
+
+
+		int j=0;
+		minute.add(minuteDebut);
+
+		hour.add(hourDebut);
+
+		if(minute.get(j)>=55)
+			hour.add((hour.get(j)+1)%24);
+		else
+			hour.add((hour.get(j))%24);
+
+
+		minute.add((minute.get(j++)+5) %60);
+
+
+
+
+		while( ( minute.get(j) < minuteFin  && hour.get(j) <= hourfin ) ||
+				(minute.get(j) > minuteFin && hour.get(j) < hourfin)) {
+
+			if(minute.get(j)>=55)
+				hour.add((hour.get(j)+1)%24);
+			else
+				hour.add((hour.get(j))%24);
+			minute.add((minute.get(j++)+5) %60);
+
+
+
+		}
+		System.out.println("hour=" + hour.toString());
+		System.out.println("minute=" + minute.toString());
+
+
+		for (int i = 0; i < hour.size(); i++) {
+			if (minute.get(i) >= 60 || minute.get(i) < 0 || hour.get(i) >= 24 || hour.get(i) < 0)
+				throw new DataException("Time is invalid");
+		}
+
+
+
 
 		LineType linetype;
 
@@ -50,33 +125,43 @@ public class ScheduledLineController {
 			throw new DataException("Invalid line type");
 		}
 
-		Day d;
-		switch (day.toLowerCase()) {
-		case "sunday":
-			d = Day.sunday;
-			break;
-		case "monday":
-			d = Day.monday;
-			break;
-		case "tuesday":
-			d = Day.tuesday;
-			break;
-		case "wendesday":
-			d = Day.wednesday;
-			break;
-		case "thursday":
-			d = Day.thursday;
-			break;
-		case "friday":
-			d = Day.friday;
-			break;
-		case "Saturday":
-			d = Day.saturday;
-			break;
-		default:
-			throw new DataException("Invalid day");
+
+		ArrayList<Day> d = new ArrayList<>();
+		int g=0;
+		for (int k = 0; k < days.length; k++) {
+
+			if(days[k].matches("true")) {
+				g=1;
+				switch (k) {
+				case 6:
+					d.add(Day.sunday);
+					break;
+				case 0:
+					d.add (Day.monday);
+					break;
+				case 1:
+					d.add( Day.tuesday);
+					break;
+				case 2:
+					d.add (Day.wednesday);
+					break;
+				case 3:
+					d.add (Day.thursday);
+					break;
+				case 4:
+					d.add(Day.friday);
+					break;
+				case 5:
+					d.add( Day.saturday);
+					break;
+				default:
+					throw new DataException("Server broke down");
+				}
+			}
 		}
 
+		if(g==0)
+			throw new DataException("Invalid day infos");
 
 		User user = DAOFactory.userDAO().getByName(userName);
 
@@ -86,70 +171,72 @@ public class ScheduledLineController {
 
 
 
-		Line line= 	DAOFactory.lineDAO().getByNameNType(LineName, linetype); // TODO: are you sure that we can't find the same name in different types ?
+		Line line= 	DAOFactory.lineDAO().getByNameNType(LineName, linetype); 
 		if(line==null) {
 			line= new Line();
 			line.setLineName(LineName);
 			line.setLineType(linetype);
 			DAOFactory.lineDAO().save(line); 
 		}
-		Schedule schedule =DAOFactory.scheduleDAO().getBySchedule(hour, minute, d);
-		if(schedule==null) {
-			schedule = new Schedule();
-			schedule.setDay(d);
-			schedule.setHour(hour);
-			schedule.setMinute(minute);
-			DAOFactory.scheduleDAO().save(schedule);
-		}
 
-		ScheduledLine s = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(line, schedule);
-		UserScheduledLine userSL ;
-		if(s==null) {
-			s=new ScheduledLine();
-			s.setLine(line);
-			s.setSchedule(schedule);
-			DAOFactory.scheduledLineDAO().save(s);
+		Schedule schedule[] = new Schedule[hour.size()*d.size()];
+		int z=0;
+		for (int i = 0; i < hour.size(); i++) {
+			for (int k = 0; k < d.size(); k++) {
 
-			userSL= new UserScheduledLine();
-			userSL.setUser(user);
-			userSL.setScheduledLine(s);
-			DAOFactory.userScheduledLineDAO().save(userSL);
-		}
-		else {
-			userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLineNUser(s, user);
-			if(userSL != null) {
-				throw new DataException("User scheduled line already exists");
+				schedule[z]=DAOFactory.scheduleDAO().getBySchedule(hour.get(i), minute.get(i), d.get(k));
+				if(schedule[z]==null) {
+					schedule[z] = new Schedule();
+					schedule[z].setDay(d.get(k));
+					schedule[z].setHour(hour.get(i));
+					schedule[z].setMinute(minute.get(i));
+					//					System.out.println(hour.get(i).toString());
+					//					System.out.println(minute.get(i) - minute.get(i)%5 );
+					//					System.out.println(minute.get(i));
+					//					System.out.println(schedule[z].getMinute());
+					//					System.out.println(schedule[z].toString());
+
+					DAOFactory.scheduleDAO().save(schedule[z]);
+				}
+				z++;
+
 			}
-			userSL= new UserScheduledLine();
-			userSL.setUser(user);
-			userSL.setScheduledLine(s);
-			DAOFactory.userScheduledLineDAO().save(userSL);
+
+
 
 		}
-		//	
-		//		Line line= new Line();
-		//		line.setLineName(LineName);
-		//		line.setLineType(linetype);
-		//		Schedule schedule = new Schedule();
-		//		schedule.setDay(d);
-		//		schedule.setHour(hour);
-		//		schedule.setMinute(minute);
-		//		ScheduledLine s=new ScheduledLine();
-		//		s.setLine(line);
-		//		s.setSchedule(schedule);
-		//		DAOFactory.lineDAO().save(line); 
-		//		DAOFactory.scheduleDAO().save(schedule);
-		//		DAOFactory.scheduledLineDAO().save(s);
-		//		UserScheduledLine userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLineNUser(s, user);
-		//		if(userSL == null) {
-		//			userSL= new UserScheduledLine();
-		//			userSL.setUser(user);
-		//			userSL.setScheduledLine(s);
-		//			DAOFactory.userScheduledLineDAO().save(userSL);
-		//		}
-		//		
+		ScheduledLine s ;
+		UserScheduledLine userSL ;
+		for (int i = 0; i < schedule.length; i++) {
+			s= DAOFactory.scheduledLineDAO().getScheduledLineByObjects(line, schedule[i]);
+			if(s==null) {
+
+				s=new ScheduledLine();
+				s.setLine(line);
+				s.setSchedule(schedule[i]);
+				DAOFactory.scheduledLineDAO().save(s);
+
+				userSL= new UserScheduledLine();
+				userSL.setUser(user);
+				userSL.setScheduledLine(s);
+				DAOFactory.userScheduledLineDAO().save(userSL);
+			}
+			else {
+				userSL=DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLineNUser(s, user);
+				if(userSL != null) {
+					throw new DataException("User scheduled line already exists");
+				}
+				userSL= new UserScheduledLine();
+				userSL.setUser(user);
+				userSL.setScheduledLine(s);
+				DAOFactory.userScheduledLineDAO().save(userSL);
+			}
+		}
+
+
 
 		return user;
 
 	}
+
 }
