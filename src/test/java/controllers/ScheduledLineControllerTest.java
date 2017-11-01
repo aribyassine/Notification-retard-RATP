@@ -14,94 +14,8 @@ import org.junit.internal.runners.statements.Fail;
  *
  */
 
-public class ControllersTest {
+public class ScheduledLineControllerTest {
 
-	@Test
-	public void userRegestrationAndLogInPositiveTest() {
-		AuthentificationController controller = new AuthentificationController();
-		try {
-			controller.registerUser("tiko", "ktarek1994@gmail.com", "0769128018", "tikotiko");
-		} catch (Exception e) {
-			Assert.fail("Regestration error : " + e.getMessage());
-		}
-
-		try {
-			assertNotNull(controller.checkLogin("tiko", "tikotiko"));
-		} catch (Exception e) {
-			Assert.fail("Login error : " + e.getMessage());
-		}
-
-		try {
-			assertNotNull(controller.checkLogin("tiko", "koukou"));
-		} catch (Exception e) {
-			assertTrue("Invalid user name or password".equals(e.getMessage()));
-		}
-	}
-
-	@Test
-	public void userRegestrationNegativeTest_emptyUserName() {
-		AuthentificationController controller = new AuthentificationController();
-		try {
-			controller.registerUser("", "ktarek1994@gmail.com", "0769128018", "tikotiko");
-		} catch (Exception e) {
-			assertTrue("User name cannot be empty".equals(e.getMessage()));
-		}
-	}
-
-	@Test
-	public void userRegestrationNegativeTest_emptyPassword() {
-		AuthentificationController controller = new AuthentificationController();
-		try {
-			controller.registerUser("holoulou", "ktarek1994@gmail.com", "0769128018", "");
-		} catch (Exception e) {
-			assertTrue("Password cannot be empty".equals(e.getMessage()));
-		}
-	}
-
-	@Test
-	public void userLogInNegativeTest_invalidPassword() {
-		AuthentificationController controller = new AuthentificationController();
-		try {
-			assertNotNull(controller.registerUser("machin01", "machin01@gmail.com", "0769258596", "youyou"));
-		} catch (Exception e) {
-			Assert.fail("Regestration error : " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		try {
-			assertNotNull(controller.checkLogin("machin01", "123458"));
-		} catch (Exception e) {
-			assertTrue("Invalid user name or password".equals(e.getMessage()));
-
-		}
-	}
-
-	@Test
-	public void userLogInNegativeTest_invalidUserName() {
-		AuthentificationController controller = new AuthentificationController();
-		try {
-			assertNotNull(controller.checkLogin("machin", "123458"));
-		} catch (Exception e) {
-			assertTrue("Invalid user name or password".equals(e.getMessage()));
-		}
-	}
-
-	@Test
-	public void userRegestrationNegativeTest_usedMail() {
-		AuthentificationController controller = new AuthentificationController();
-		try {
-			assertNotNull(controller.registerUser("ayyoub", "ayyoub@gmail.com", "0896325811", "youyou"));
-		} catch (Exception e) {
-			Assert.fail("Regestration error : " + e.getMessage());
-		}
-
-		try {
-			assertNotNull(controller.registerUser("yacine", "ayyoub@gmail.com", "0852369712", "dzdzdz"));
-		} catch (Exception e) {
-			assertTrue("E-Mail already used".equals(e.getMessage()));
-		}
-
-	}
 
 	@Test
 	public void addScheduleLine_PositiveTest() {
@@ -122,7 +36,7 @@ public class ControllersTest {
 		}
 		
 		try {
-			assertNotNull(controller.addScheduledLine("b", "rer", "10:00", "10:04", days, "tikooo"));
+			assertNotNull(controller.addUserScheduledLine("b", "rer", "10:00", "10:04", days, "tikooo"));
 		} catch (Exception e) {
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}
@@ -168,7 +82,7 @@ public class ControllersTest {
 		days[3]="true";
 		days[4]="true";
 		try {
-			assertNotNull(controller.addScheduledLine("b", "rer","10:56", "11:05",days, "aa"));
+			assertNotNull(controller.addUserScheduledLine("b", "rer","10:56", "11:05",days, "aa"));
 			assertFalse(true);
 		} catch (Exception e) {
 			assertTrue("User was not found".equals(e.getMessage()));
@@ -197,12 +111,12 @@ public class ControllersTest {
 		}
 		
 		try {
-			assertNotNull(controller.addScheduledLine("2", "metro", "10:56", "11:05", days, "azaz"));
+			assertNotNull(controller.addUserScheduledLine("2", "metro", "10:56", "11:05", days, "azaz"));
 		} catch (Exception e) {
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}
 		try {
-			assertNotNull(controller.addScheduledLine("2", "metro","10:56", "11:05", days,"azaz"));
+			assertNotNull(controller.addUserScheduledLine("2", "metro","10:56", "11:05", days,"azaz"));
 			assertFalse(true);
 		}
 		catch (Exception e) {
@@ -230,7 +144,7 @@ public class ControllersTest {
 		
 	
 		try {
-			assertNotNull(controller.addScheduledLine("2", "metro", "10:56", "11:05", days, "azaz"));
+			assertNotNull(controller.addUserScheduledLine("2", "metro", "10:56", "11:05", days, "azaz"));
 			assertFalse(true);
 		}
 		catch (Exception e) {
@@ -260,7 +174,7 @@ public class ControllersTest {
 		
 	
 		try {
-			assertNotNull(controller.addScheduledLine("2", "rr","10:56", "11:05", days,"azaz"));
+			assertNotNull(controller.addUserScheduledLine("2", "rr","10:56", "11:05", days,"azaz"));
 			assertFalse(true);
 		}
 		catch (Exception e) {
@@ -290,7 +204,7 @@ public class ControllersTest {
 		
 	
 		try {
-			assertNotNull(controller.addScheduledLine("2", "rer", "10:60", "11:05", days, "azaz"));
+			assertNotNull(controller.addUserScheduledLine("2", "rer", "10:60", "11:05", days, "azaz"));
 			assertFalse(true);
 		}
 		catch (Exception e) {
@@ -320,7 +234,7 @@ public class ControllersTest {
 		
 	
 		try {
-			assertNotNull(controller.addScheduledLine("2", "rer", "11:05", "10:55", days, "azaztt"));
+			assertNotNull(controller.addUserScheduledLine("2", "rer", "11:05", "10:55", days, "azaztt"));
 			assertFalse(true);
 		}
 		catch (Exception e) {
@@ -350,7 +264,7 @@ public class ControllersTest {
 		
 	
 		try {
-			assertNotNull(controller.addScheduledLine("2", "rer", "11:0", "10:59", days, "azazttt"));
+			assertNotNull(controller.addUserScheduledLine("2", "rer", "11:0", "10:59", days, "azazttt"));
 				assertFalse(true);
 		}
 		catch (Exception e) {
@@ -381,7 +295,7 @@ public class ControllersTest {
 	
 		try {
 			
-			assertNotNull(controller.addScheduledLine("2", "rer", "11:05:4", "11:08", days, "azeazttt"));
+			assertNotNull(controller.addUserScheduledLine("2", "rer", "11:05:4", "11:08", days, "azeazttt"));
 			assertFalse(true);
 		}
 		catch (Exception e) {

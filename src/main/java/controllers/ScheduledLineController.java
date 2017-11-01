@@ -18,7 +18,7 @@ import model.entities.UserScheduledLine;
 
 public class ScheduledLineController {
 
-	public User addScheduledLine(String LineName, String type, String debut , String fin, String[] days, String userName) throws DataException {
+	public UserScheduledLine addUserScheduledLine(String LineName, String type, String debut , String fin, String[] days, String userName) throws DataException {
 
 
 		if (userName.isEmpty())
@@ -209,7 +209,7 @@ public class ScheduledLineController {
 
 		}
 		ScheduledLine s ;
-		UserScheduledLine userSL ;
+		UserScheduledLine userSL =null ;
 		for (int i = 0; i < schedule.length; i++) {
 			s= DAOFactory.scheduledLineDAO().getScheduledLineByObjects(line, schedule[i]);
 			if(s==null) {
@@ -238,7 +238,7 @@ public class ScheduledLineController {
 
 
 
-		return user;
+		return userSL;
 
 	}
 

@@ -52,7 +52,7 @@ public class ScheduledLineServlet extends HttpServlet{
 			if(login.isEmpty())
 				throw new DataException("cookie missing");
 			ServletOutputStream out = resp.getOutputStream();
-			slc.addScheduledLine(LineName, type,  minute,  hour, days, login);
+			slc.addUserScheduledLine(LineName, type,  minute,  hour, days, login);
 			out.write("schedule added".toString().getBytes());
 			out.flush();
 			out.close();
