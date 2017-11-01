@@ -41,10 +41,7 @@
 
   export default {
     name: 'Editable',
-    props: {
-      fuse: {required: true},
-      value: {required: true}
-    },
+
     components: {
       'autocomplete': Autocomplete,
       'vue-slider': vueSlider,
