@@ -1,10 +1,13 @@
 package controllers;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 
 /**
  * @author Mohamed T. KASSAR
@@ -119,9 +122,8 @@ public class ControllersTest {
 		}
 		
 		try {
-			assertNotNull(controller.addScheduledLine("b", "rer", "10:56", "11:05", days, "tikooo"));
+			assertNotNull(controller.addScheduledLine("b", "rer", "10:00", "10:04", days, "tikooo"));
 		} catch (Exception e) {
-			e.printStackTrace(System.out);
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}
 
@@ -167,6 +169,7 @@ public class ControllersTest {
 		days[4]="true";
 		try {
 			assertNotNull(controller.addScheduledLine("b", "rer","10:56", "11:05",days, "aa"));
+			assertFalse(true);
 		} catch (Exception e) {
 			assertTrue("User was not found".equals(e.getMessage()));
 		}
@@ -200,7 +203,7 @@ public class ControllersTest {
 		}
 		try {
 			assertNotNull(controller.addScheduledLine("2", "metro","10:56", "11:05", days,"azaz"));
-
+			assertFalse(true);
 		}
 		catch (Exception e) {
 			assertTrue("User scheduled line already exists".equals(e.getMessage()));
@@ -228,7 +231,7 @@ public class ControllersTest {
 	
 		try {
 			assertNotNull(controller.addScheduledLine("2", "metro", "10:56", "11:05", days, "azaz"));
-
+			assertFalse(true);
 		}
 		catch (Exception e) {
 			//e.printStackTrace(System.out);
@@ -258,7 +261,7 @@ public class ControllersTest {
 	
 		try {
 			assertNotNull(controller.addScheduledLine("2", "rr","10:56", "11:05", days,"azaz"));
-
+			assertFalse(true);
 		}
 		catch (Exception e) {
 			assertTrue("Invalid line type".equals(e.getMessage()));
@@ -288,7 +291,7 @@ public class ControllersTest {
 	
 		try {
 			assertNotNull(controller.addScheduledLine("2", "rer", "10:60", "11:05", days, "azaz"));
-
+			assertFalse(true);
 		}
 		catch (Exception e) {
 			assertTrue("Time is invalid".equals(e.getMessage()));
@@ -318,7 +321,7 @@ public class ControllersTest {
 	
 		try {
 			assertNotNull(controller.addScheduledLine("2", "rer", "11:05", "10:55", days, "azaztt"));
-
+			assertFalse(true);
 		}
 		catch (Exception e) {
 			assertTrue("Time is invalid".equals(e.getMessage()));
@@ -347,14 +350,46 @@ public class ControllersTest {
 		
 	
 		try {
-			assertNotNull(controller.addScheduledLine("2", "rer", "11:05", "11:02", days, "azazttt"));
-
+			assertNotNull(controller.addScheduledLine("2", "rer", "11:0", "10:59", days, "azazttt"));
+				assertFalse(true);
 		}
 		catch (Exception e) {
 			assertTrue("Time is invalid".equals(e.getMessage()));
 		}
 	}
 	
+	@Test
+	public void addScheduleLine_NegativeTest7() {
+		AuthentificationController controller1 = new AuthentificationController();
+		ScheduledLineController controller = new ScheduledLineController();
+		String[] days = new String[7];
+		days[0]="f";
+		days[1]="f";
+		days[2]="f";
+		days[5]="f";
+		days[6]="true";
+		days[3]="true";
+		days[4]="true";
+		
+		
+		try {
+			controller1.registerUser("azeazttt", "aaatss6e@gmail.com", "0769188078", "tikotiko");
+		} catch (Exception e) {
+			Assert.fail("Regestration error : " + e.getMessage());
+		}
+		
+	
+		try {
+			
+			assertNotNull(controller.addScheduledLine("2", "rer", "11:05:4", "11:08", days, "azeazttt"));
+			assertFalse(true);
+		}
+		catch (Exception e) {
+			
+
+			assertTrue("Time is invalid".equals(e.getMessage()));
+		}
+	}
 //	
 //	@Test
 //	public void addScheduleLine_NegativeTest2_emptyInfos() {

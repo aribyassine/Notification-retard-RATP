@@ -51,22 +51,25 @@ public class ScheduledLineController {
 			throw new DataException("Time is invalid");
 		}
 		if(hourfin<0 || hourfin > 23 || hourDebut<0 || hourfin> 23 || minuteDebut<0 || minuteDebut > 59 || minuteFin<0 || minuteFin >59 )
-
+			throw new DataException("Time is invalid");
+		
 			if(hourDebut == hourfin) {
 				if(minuteDebut>=minuteFin)
 					throw new DataException("Time is invalid");
 			}
 			else if(hourDebut>hourfin)
 				throw new DataException("Time is invalid");
+		
+		
 
 		ArrayList<Integer> minute = new ArrayList<>();
 		ArrayList<Integer> hour = new ArrayList<>();
 
 
 		int j=0;
-		minute.add(minuteDebut);
+		minute.add(minuteDebut%60);
 
-		hour.add(hourDebut);
+		hour.add(hourDebut%24);
 
 		if(minute.get(j)>=55)
 			hour.add((hour.get(j)+1)%24);
@@ -86,6 +89,7 @@ public class ScheduledLineController {
 				hour.add((hour.get(j)+1)%24);
 			else
 				hour.add((hour.get(j))%24);
+			
 			minute.add((minute.get(j++)+5) %60);
 
 
@@ -99,7 +103,6 @@ public class ScheduledLineController {
 			if (minute.get(i) >= 60 || minute.get(i) < 0 || hour.get(i) >= 24 || hour.get(i) < 0)
 				throw new DataException("Time is invalid");
 		}
-
 
 
 
