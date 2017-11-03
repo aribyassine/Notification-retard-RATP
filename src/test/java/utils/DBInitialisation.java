@@ -6,7 +6,7 @@ import model.dao.ScheduleDAO;
 import model.dao.ScheduledLineDAO;
 import model.entities.Line;
 import model.entities.Schedule;
-import model.entities.ScheduledLine;
+import model.entities.UserScheduledLine;
 
 /**
  * @author Mohamed T. KASSAR
@@ -47,22 +47,22 @@ public class DBInitialisation {
 
 		ScheduledLineDAO sld = DAOFactory.scheduledLineDAO();
 
-		ScheduledLine ls = new ScheduledLine();
+		UserScheduledLine ls = new UserScheduledLine();
 		ls.setLine(line11);
 		ls.setSchedule(sat9am);
 		sld.save(ls);
 
-		ls = new ScheduledLine();
+		ls = new UserScheduledLine();
 		ls.setLine(line11);
 		ls.setSchedule(sat8am);
 		sld.save(ls);
 
-		ls = new ScheduledLine();
+		ls = new UserScheduledLine();
 		ls.setLine(lineB);
 		ls.setSchedule(sat9am);
 		sld.save(ls);
 
-		ls = new ScheduledLine();
+		ls = new UserScheduledLine();
 		ls.setLine(lineB);
 		ls.setSchedule(sat8am);
 		sld.save(ls);

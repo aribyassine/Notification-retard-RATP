@@ -7,12 +7,11 @@ package model.dao;
 public class DAOFactory {
 
 	private static LineDAO lineDAO;
-	private static ScheduleDAO scheduleDAO;
-	private static ScheduledLineDAO scheduledLineDAO;
 	private static UserDAO userDAO;
 	private static NotificationDAO notificationDAO;
 	private static UserScheduledLineDAO userScheduledLineDAO;
 	private static CommentDAO commentDAO;
+	private static UserNotificationDAO userNotificationDAO;
 
 	public static LineDAO lineDAO() {
 		if (lineDAO == null)
@@ -20,17 +19,7 @@ public class DAOFactory {
 		return lineDAO;
 	}
 
-	public static ScheduleDAO scheduleDAO() {
-		if (scheduleDAO == null)
-			scheduleDAO = new ScheduleDAO();
-		return scheduleDAO;
-	}
 
-	public static ScheduledLineDAO scheduledLineDAO() {
-		if (scheduledLineDAO == null)
-			scheduledLineDAO = new ScheduledLineDAO();
-		return scheduledLineDAO;
-	}
 
 	public static UserDAO userDAO() {
 		if (userDAO == null)
@@ -54,5 +43,11 @@ public class DAOFactory {
 		if (commentDAO == null)
 			commentDAO = new CommentDAO();
 		return commentDAO;
+	}
+
+	public static UserNotificationDAO userNotificationDAO() {
+		if (userNotificationDAO == null)
+			userNotificationDAO = new UserNotificationDAO();
+		return userNotificationDAO;
 	}
 }

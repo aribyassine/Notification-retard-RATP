@@ -1,16 +1,25 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.time.LocalTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+
+import util.Converter;
 
 /**
  * @author Mohamed T. KASSAR
@@ -18,30 +27,67 @@ import javax.persistence.UniqueConstraint;
  */
 
 @Entity
-@Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "SCHEDULED_LINE", "USER" }))
-public class UserScheduledLine implements Serializable{
+@Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "USER", "LINE", "BEGIN_TIME",
+		"END_TIME", "DAY" }))
+@NamedQuery(name = "getByTime", query = "from SCHEDULED_LINE s where "
+		+ "TIME_TO_SEC(time(s.beginTime)) <= TIME_TO_SEC(time(:time)) "
+		+ "and TIME_TO_SEC(time(s.endTime)) >= TIME_TO_SEC(time(:time)) " + "and s.day = :day ")
+
+public class UserScheduledLine implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	public static enum Day {
+		monday, tuesday, wednesday, thursday, friday, saturday, sunday
+	}
+
 	@Id
 	@Column(name = "USER_SCHEDULED_LINE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int userScheduledLineId;
+	private int lineScheduleId;
 
 	@ManyToOne
 	@JoinColumn(name = "USER")
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "SCHEDULED_LINE")
-	private ScheduledLine scheduledLine;
+	@JoinColumn(name = "LINE")
+	private Line line;
 
-	public int getUserScheduledLineId() {
-		return userScheduledLineId;
+	@Temporal(TemporalType.TIME)
+	@Column(name = "BEGIN_TIME")
+	private Date beginTime;
+
+	@Temporal(TemporalType.TIME)
+	@Column(name = "END_TIME")
+	private Date endTime;
+
+	@Column(name = "DAY")
+	private Day day;
+
+	public void setBeginTime(LocalTime beginTime) {
+		this.beginTime = Converter.localTimeToDate(beginTime);
 	}
 
-	public void setUserScheduledLineId(int userScheduledLine) {
-		this.userScheduledLineId = userScheduledLine;
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = Converter.localTimeToDate(endTime);
+	}
+
+	public LocalTime getBeginTime() {
+		return Converter.dateToLocalTime(beginTime);
+	}
+
+	public LocalTime getEndTime() {
+		return Converter.dateToLocalTime(endTime);
+	}
+
+	@Enumerated(EnumType.STRING)
+	public Day getDay() {
+		return day;
+	}
+
+	public void setDay(Day day) {
+		this.day = day;
 	}
 
 	public User getUser() {
@@ -52,20 +98,27 @@ public class UserScheduledLine implements Serializable{
 		this.user = user;
 	}
 
-	public ScheduledLine getScheduledLine() {
-		return scheduledLine;
+	public int getId() {
+		return lineScheduleId;
 	}
 
-	public void setScheduledLine(ScheduledLine scheduledLine) {
-		this.scheduledLine = scheduledLine;
+	public void setId(int lineScheduleId) {
+		this.lineScheduleId = lineScheduleId;
+	}
+
+	public Line getLine() {
+		return line;
+	}
+
+	public void setLine(Line line) {
+		this.line = line;
 	}
 
 	@Override
-	public String toString() {
-		return "UserScheduledLine{" +
-				"userScheduledLineId=" + userScheduledLineId +
-//				", user=" + user + TODO
-//				", scheduledLine=" + scheduledLine + TODO
+	public String toString() {// TODO
+		return "ScheduledLine{" + "lineScheduleId=" + lineScheduleId +
+		// ", schedule=" + schedule + TODO
+		// ", line=" + line + TODO
 				'}';
 	}
 }

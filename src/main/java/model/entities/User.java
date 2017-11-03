@@ -35,17 +35,24 @@ public class User implements Serializable {
 	private String password;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private Set<UserScheduledLine> affectedScheduledLine;
+	private Set<UserScheduledLine> scheduledLines;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<Comment> comments;
 
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private Set<UserNotification> notifications;
+	
 	public Set<Comment> getComments() {
 		return comments;
 	}
 
-	public Set<UserScheduledLine> getAffectedScheduledLine() {
-		return affectedScheduledLine;
+	public Set<UserNotification> getUserNotifications() {
+		return notifications;
+	}
+	
+	public Set<UserScheduledLine> getScheduledLines() {
+		return scheduledLines;
 	}
 
 	public String getUserName() {
@@ -91,6 +98,6 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User{" + "userName='" + userName + '\'' + ", email='" + email + '\'' + ", phoneNumber='" + phoneNumber
-				+ '\'' + ", affectedScheduledLine=" + affectedScheduledLine + ", comments=" + comments + '}';
+				+ '\'' + ", affectedScheduledLine=" + scheduledLines + ", comments=" + comments + '}';
 	}
 }

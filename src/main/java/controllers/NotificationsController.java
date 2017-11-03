@@ -8,7 +8,7 @@ import org.hibernate.TransientObjectException;
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
 import model.entities.Notification;
-import model.entities.ScheduledLine;
+import model.entities.UserScheduledLine;
 
 /**
  * @author Mohamed Tarek KASSAR
@@ -16,12 +16,12 @@ import model.entities.ScheduledLine;
 
 public class NotificationsController {
 
-	public Notification addNotification(String message, ScheduledLine sl) throws DataException {
+	public Notification addNotification(String message, UserScheduledLine sl) throws DataException {
 
 		if(message.isEmpty())
 			throw new DataException("message is empty");
 		try {
-			ScheduledLine tmp = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(sl.getLine(), sl.getSchedule());
+			UserScheduledLine tmp = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(sl.getLine(), sl.getSchedule());
 			if(tmp==null)
 				throw new DataException("Scheduled line is invalid ");
 		}

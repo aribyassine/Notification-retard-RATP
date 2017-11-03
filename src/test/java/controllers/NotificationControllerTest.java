@@ -9,7 +9,7 @@ import model.entities.Line;
 import model.entities.Line.LineType;
 import model.entities.Schedule;
 import model.entities.Schedule.Day;
-import model.entities.ScheduledLine;
+import model.entities.UserScheduledLine;
 import model.entities.UserScheduledLine;
 
 public class NotificationControllerTest {
@@ -55,7 +55,7 @@ public class NotificationControllerTest {
 	public void NotificationController_NegativeTest1() {
 		NotificationsController controller = new NotificationsController();
 	
-		ScheduledLine tmp = new ScheduledLine();
+		UserScheduledLine tmp = new UserScheduledLine();
 		Line tmp1 = new Line();
 		Schedule tmp2 = new Schedule();
 		tmp1.setLineName("1");
