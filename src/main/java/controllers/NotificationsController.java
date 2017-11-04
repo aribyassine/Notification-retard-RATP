@@ -10,7 +10,7 @@ import model.entities.Line;
 import model.entities.Notification;
 
 /**
- * @author Mohamed Tarek KASSAR
+ * @author Mohamed T. KASSAR
  */
 
 public class NotificationsController {

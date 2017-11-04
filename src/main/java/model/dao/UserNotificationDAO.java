@@ -5,7 +5,7 @@ import model.entities.UserNotification;
 
 
 /**
- * @author Mohamed t. KASSAR
+ * @author Mohamed T. KASSAR
  *
  */
 

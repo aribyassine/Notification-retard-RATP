@@ -111,13 +111,13 @@ public class ScheduledLineControllerTest {
 		}
 		int size = 0;
 		try {
-			assertNotNull(controller.addUserScheduledLine("2", "metro", "10:56", "11:05", days, "azaz"));
+			assertTrue(controller.addUserScheduledLine("2", "metro", "10:56", "11:05", days, "azaz").size() == 3);
 			size = DAOFactory.userScheduledLineDAO().selectAll().size();
 		} catch (Exception e) {
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}
 		try {
-			assertNotNull(controller.addUserScheduledLine("2", "metro", "10:56", "11:05", days, "azaz"));
+			assertTrue(controller.addUserScheduledLine("2", "metro", "10:56", "11:05", days, "azaz").size() == 0);
 			assertTrue(size == DAOFactory.userScheduledLineDAO().selectAll().size());
 		} catch (Exception e) {
 			Assert.fail("add schedule line error : " + e.getMessage());
