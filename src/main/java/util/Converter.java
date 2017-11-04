@@ -24,4 +24,12 @@ public class Converter {
 		return date.toInstant().atZone(ZoneId.of("GMT+01:00")).toLocalDateTime();
 	}
 
+	
+	public static void main(String[] args) {
+		java.sql.Date d = new java.sql.Date(1370931664);
+		
+		System.out.println(d);
+		System.out.println(dateToLocalDateTime(d));
+		System.out.println(dateToLocalTime(d));
+	}
 }

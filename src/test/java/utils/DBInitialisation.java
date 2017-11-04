@@ -1,12 +1,10 @@
 package utils;
 
+import controllers.AuthentificationController;
+import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
 import model.dao.LineDAO;
-import model.dao.ScheduleDAO;
-import model.dao.ScheduledLineDAO;
 import model.entities.Line;
-import model.entities.Schedule;
-import model.entities.UserScheduledLine;
 
 /**
  * @author Mohamed T. KASSAR
@@ -15,7 +13,7 @@ import model.entities.UserScheduledLine;
 
 public class DBInitialisation {
 	
-	public static void initScheduledLines() {
+	public static void initLines() {
 		LineDAO ld = DAOFactory.lineDAO();
 
 		Line line11 = new Line();
@@ -24,49 +22,21 @@ public class DBInitialisation {
 		ld.save(line11);
 
 		Line lineB = new Line();
-		lineB.setLineName("b");
+		lineB.setLineName("bb");
 		lineB.setLineType(Line.LineType.rer);
 		ld.save(lineB);
 
 		Line lineD = new Line();
-		lineD.setLineName("d");
+		lineD.setLineName("dd");
 		lineD.setLineType(Line.LineType.rer);
 		ld.save(lineD);
-
-		ScheduleDAO sd = DAOFactory.scheduleDAO();
-
-		Schedule sat8am = new Schedule();
-		sat8am.setDay(Schedule.Day.saturday);
-		sat8am.setHour(8);
-		sd.save(sat8am);
-
-		Schedule sat9am = new Schedule();
-		sat9am.setDay(Schedule.Day.saturday);
-		sat9am.setHour(9);
-		sd.save(sat9am);
-
-		ScheduledLineDAO sld = DAOFactory.scheduledLineDAO();
-
-		UserScheduledLine ls = new UserScheduledLine();
-		ls.setLine(line11);
-		ls.setSchedule(sat9am);
-		sld.save(ls);
-
-		ls = new UserScheduledLine();
-		ls.setLine(line11);
-		ls.setSchedule(sat8am);
-		sld.save(ls);
-
-		ls = new UserScheduledLine();
-		ls.setLine(lineB);
-		ls.setSchedule(sat9am);
-		sld.save(ls);
-
-		ls = new UserScheduledLine();
-		ls.setLine(lineB);
-		ls.setSchedule(sat8am);
-		sld.save(ls);
-
 	}
 
+	public static void initUsers() throws DataException {
+		AuthentificationController ac = new AuthentificationController();
+		ac.registerUser("user0", "ktarek1994@gmail.com", "0769128000", "pwd01");
+		ac.registerUser("user1", "ktiko1994@yahoo.fr", "0769128020", "pwd02");
+		ac.registerUser("user2", "ktarek1994@outlook.com", "0769128019", "pwd03");
+		ac.registerUser("user3", "mtkassar@altirc.com", "0769128021", "pwd04");
+	}
 }

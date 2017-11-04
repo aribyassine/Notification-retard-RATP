@@ -14,7 +14,7 @@ public class AuthentificationControllerTest {
 	public void userRegestrationAndLogInPositiveTest() {
 		AuthentificationController controller = new AuthentificationController();
 		try {
-			controller.registerUser("tiko", "ktarek1994@gmail.com", "0769128018", "tikotiko");
+			controller.registerUser("tiko", "ktarek@gmail.com", "0769128018", "tikotiko");
 		} catch (Exception e) {
 			Assert.fail("Regestration error : " + e.getMessage());
 		}
@@ -36,7 +36,7 @@ public class AuthentificationControllerTest {
 	public void userRegestrationNegativeTest_emptyUserName() {
 		AuthentificationController controller = new AuthentificationController();
 		try {
-			controller.registerUser("", "ktarek1994@gmail.com", "0769128018", "tikotiko");
+			controller.registerUser("", "ktarek@gmail.com", "0769128018", "tikotiko");
 		} catch (Exception e) {
 			assertTrue("User name cannot be empty".equals(e.getMessage()));
 		}
@@ -46,7 +46,7 @@ public class AuthentificationControllerTest {
 	public void userRegestrationNegativeTest_emptyPassword() {
 		AuthentificationController controller = new AuthentificationController();
 		try {
-			controller.registerUser("holoulou", "ktarek1994@gmail.com", "0769128018", "");
+			controller.registerUser("holoulou", "ktarek@gmail.com", "0769128018", "");
 		} catch (Exception e) {
 			assertTrue("Password cannot be empty".equals(e.getMessage()));
 		}

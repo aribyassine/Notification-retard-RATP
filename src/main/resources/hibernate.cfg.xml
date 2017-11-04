@@ -21,9 +21,7 @@
 		<!-- Enable Hibernate's automatic session context management -->
 		<property name="current_session_context_class">thread</property>
 
-		<!-- Disable the second-level cache
-		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
--->
+		<!-- Disable the second-level cache <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property> -->
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">false</property>
 
@@ -35,12 +33,11 @@
 		<!-- <mapping resource="dao/produit.hbm.xml"/> -->
 
 		<mapping class="model.entities.Line" />
-		<mapping class="model.entities.Schedule" />
-		<mapping class="model.entities.ScheduledLine" />
 		<mapping class="model.entities.User" />
 		<mapping class="model.entities.UserScheduledLine" />
 		<mapping class="model.entities.Notification" />
 		<mapping class="model.entities.Comment" />
+		<mapping class="model.entities.UserNotification" />
 
 	</session-factory>
 </hibernate-configuration>

@@ -13,6 +13,7 @@ import model.entities.UserScheduledLine;
 import model.entities.UserScheduledLine.Day;
 import util.Converter;
 import util.HibernateUtil;
+import model.entities.Line;
 import model.entities.User;
 
 /**
@@ -20,11 +21,17 @@ import model.entities.User;
  *
  */
 public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO<UserScheduledLine> {
-	
-	public UserScheduledLine getUserScheduledLineByScheduledLineNUser(UserScheduledLine scheduledLine, User user ) {
-		return findOne(new String[] {"scheduledLine", "user"}, new Object[] {scheduledLine, user});
+
+	public UserScheduledLine getUserScheduledLineByLineNUser(Line line, User user) {
+		return findOne(new String[] { "line", "user" }, new Object[] { line, user });
 	}
-	
+
+	public UserScheduledLine getUserScheduledLineByAllInfos(Line line, User user, LocalTime begin, LocalTime end,
+			Day day) {
+		return findOne(new String[] { "line", "user", "beginTime", "endTime", "day" },
+				new Object[] { line, user, Converter.localTimeToDate(begin), Converter.localTimeToDate(end), day });
+	}
+
 	public Set<UserScheduledLine> getSchedulesByTime(int hour, int minute, Day day) {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session s = factory.openSession();

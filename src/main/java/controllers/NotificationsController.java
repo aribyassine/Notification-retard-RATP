@@ -1,14 +1,13 @@
 package controllers;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import org.hibernate.TransientObjectException;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
+import model.entities.Line;
 import model.entities.Notification;
-import model.entities.UserScheduledLine;
 
 /**
  * @author Mohamed Tarek KASSAR
@@ -16,24 +15,21 @@ import model.entities.UserScheduledLine;
 
 public class NotificationsController {
 
-	public Notification addNotification(String message, UserScheduledLine sl) throws DataException {
+	public Notification addNotification(String message, Line l) throws DataException {
 
-		if(message.isEmpty())
+		if (message.isEmpty())
 			throw new DataException("message is empty");
-		try {
-			UserScheduledLine tmp = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(sl.getLine(), sl.getSchedule());
-			if(tmp==null)
-				throw new DataException("Scheduled line is invalid ");
-		}
-		catch(TransientObjectException e) {
-			throw new DataException("Scheduled line is invalid ");
-		}
 
+		Line tmp = DAOFactory.lineDAO().getByNameNType(l.getLineName(), l.getLineType());
+		if (tmp == null)
+			throw new DataException("Line is invalid");
+
+		//TODO: test 30 min request
 		Notification notif = new Notification();
 
-		notif.setDate(LocalDate.now(ZoneId.of("GMT+01:00")));
+		notif.setDate(LocalDateTime.now(ZoneId.of("GMT+01:00")));
 		notif.setNotificationText(message);
-		notif.setScheduledLine(sl);
+		notif.setLine(l);
 
 		DAOFactory.notificationDAO().save(notif);
 		return notif;

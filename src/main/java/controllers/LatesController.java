@@ -25,11 +25,9 @@
 //import model.entities.Line;
 //import model.entities.Line.LineType;
 //import model.entities.Notification;
-//import model.entities.Schedule;
-//import model.entities.Schedule.Day;
-//import model.entities.ScheduledLine;
 //import model.entities.User;
 //import model.entities.UserScheduledLine;
+//import model.entities.UserScheduledLine.Day;
 //
 ///**
 // * @author Mohamed T. KASSAR

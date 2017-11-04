@@ -26,13 +26,13 @@ import util.Converter;
  *
  */
 
-@Entity
-@Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "USER", "LINE", "BEGIN_TIME",
-		"END_TIME", "DAY" }))
-@NamedQuery(name = "getByTime", query = "from SCHEDULED_LINE s where "
+@NamedQuery(name = "getByTime", query = "select s from UserScheduledLine s where "
 		+ "TIME_TO_SEC(time(s.beginTime)) <= TIME_TO_SEC(time(:time)) "
 		+ "and TIME_TO_SEC(time(s.endTime)) >= TIME_TO_SEC(time(:time)) " + "and s.day = :day ")
 
+@Entity
+@Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "USER", "LINE", "BEGIN_TIME",
+		"END_TIME", "DAY" }))
 public class UserScheduledLine implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -54,14 +54,15 @@ public class UserScheduledLine implements Serializable {
 	@JoinColumn(name = "LINE")
 	private Line line;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "BEGIN_TIME")
 	private Date beginTime;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "END_TIME")
 	private Date endTime;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "DAY")
 	private Day day;
 
@@ -81,7 +82,6 @@ public class UserScheduledLine implements Serializable {
 		return Converter.dateToLocalTime(endTime);
 	}
 
-	@Enumerated(EnumType.STRING)
 	public Day getDay() {
 		return day;
 	}

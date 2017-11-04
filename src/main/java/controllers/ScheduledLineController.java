@@ -1,16 +1,17 @@
 package controllers;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
 import model.entities.Line;
 import model.entities.Line.LineType;
-import model.entities.Schedule;
-import model.entities.Schedule.Day;
 import model.entities.UserScheduledLine;
+import model.entities.UserScheduledLine.Day;
 import model.entities.User;
-import model.entities.UserScheduledLine;
 
 /**
  * @author Ayyoub LABIB
@@ -18,13 +19,13 @@ import model.entities.UserScheduledLine;
 
 public class ScheduledLineController {
 
-	public UserScheduledLine addUserScheduledLine(String LineName, String type, String debut, String fin, String[] days,
+	public Set<UserScheduledLine> addUserScheduledLine(String LineName, String type, String debut, String fin, String[] days,
 			String userName) throws DataException {
 
 		if (userName.isEmpty())
 			throw new DataException("User name is empty");
 
-		if (LineName.isEmpty() || type.isEmpty() || debut.isEmpty() || fin.isEmpty())
+		if (LineName.isEmpty() || type.isEmpty() || debut.isEmpty() || fin.isEmpty() || days.length != 7)
 			throw new DataException("Not enough infos");
 
 		String timeDebut[] = debut.split(":");
@@ -81,48 +82,45 @@ public class ScheduledLineController {
 			throw new DataException("Invalid line type");
 		}
 
-		ArrayList<Day> d = new ArrayList<>();
-		int g = 0;
+		ArrayList<Day> _days = new ArrayList<>();
 		for (int k = 0; k < days.length; k++) {
 
 			if (days[k].matches("true")) {
-				g = 1;
 				switch (k) {
 				case 6:
-					d.add(Day.sunday);
+					_days.add(Day.sunday);
 					break;
 				case 0:
-					d.add(Day.monday);
+					_days.add(Day.monday);
 					break;
 				case 1:
-					d.add(Day.tuesday);
+					_days.add(Day.tuesday);
 					break;
 				case 2:
-					d.add(Day.wednesday);
+					_days.add(Day.wednesday);
 					break;
 				case 3:
-					d.add(Day.thursday);
+					_days.add(Day.thursday);
 					break;
 				case 4:
-					d.add(Day.friday);
+					_days.add(Day.friday);
 					break;
 				case 5:
-					d.add(Day.saturday);
+					_days.add(Day.saturday);
 					break;
 				default:
 					throw new DataException("Server broke down");
 				}
 			}
 		}
-		if (g == 0)
+
+		if (_days.isEmpty())
 			throw new DataException("Invalid day infos");
 
 		User user = DAOFactory.userDAO().getByName(userName);
-
 		if (user == null)
 			throw new DataException("User was not found");
 
-		System.out.println("05");
 		Line line = DAOFactory.lineDAO().getByNameNType(LineName, linetype);
 		if (line == null) {
 			line = new Line();
@@ -131,39 +129,30 @@ public class ScheduledLineController {
 			DAOFactory.lineDAO().save(line);
 		}
 
-	
-		UserScheduledLine scheduledLine;
-		UserScheduledLine userSL = null;
-//		scheduledLine = DAOFactory.scheduledLineDAO().getScheduledLineByObjects(line, );
-		
-		for (int i = 0; i < schedule.length; i++) {
-			
-			if (scheduledLine == null) {
+		LocalTime begin = LocalTime.of(hourDebut, minuteDebut);
+		LocalTime end = LocalTime.of(hourfin, minuteFin);
 
-				scheduledLine = new UserScheduledLine();
-				scheduledLine.setLine(line);
-				scheduledLine.setSchedule(schedule[i]);
-				DAOFactory.scheduledLineDAO().save(scheduledLine);
+		Set<UserScheduledLine> result = new LinkedHashSet<>();
+		for (Day day : _days) {
 
-				userSL = new UserScheduledLine();
-				userSL.setUser(user);
-				userSL.setScheduledLine(scheduledLine);
-				DAOFactory.userScheduledLineDAO().save(userSL);
-			} else {
-				userSL = DAOFactory.userScheduledLineDAO().getUserScheduledLineByScheduledLineNUser(scheduledLine, user);
-				if (userSL != null) {
-					throw new DataException("User scheduled line already exists");
-				}
-				userSL = new UserScheduledLine();
-				userSL.setUser(user);
-				userSL.setScheduledLine(scheduledLine);
-				DAOFactory.userScheduledLineDAO().save(userSL);
-			}
+			// TODO : verifier chevauchement !!
+			UserScheduledLine usl = DAOFactory.userScheduledLineDAO().getUserScheduledLineByAllInfos(line, user, begin,
+					end, day);
+
+			if (usl != null)
+				continue;
+
+			usl = new UserScheduledLine();
+			usl.setBeginTime(begin);
+			usl.setEndTime(end);
+			usl.setDay(day);
+			usl.setUser(user);
+			usl.setLine(line);
+			result.add(usl);
+			DAOFactory.userScheduledLineDAO().save(usl);
 		}
 
-		System.out.println("08");
-
-		return userSL;
+		return result;
 
 	}
 

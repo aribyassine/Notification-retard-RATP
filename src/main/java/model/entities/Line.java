@@ -41,7 +41,7 @@ public class Line implements Serializable {
 	@Column(name = "LINE_TYPE")
 	private LineType lineType;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "schedule")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "line")
 	private Set<UserScheduledLine> lineSchedules;
 
 	public Set<UserScheduledLine> getlineSchedules() {
