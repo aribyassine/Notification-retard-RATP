@@ -1,18 +1,23 @@
 <template>
   <div class="container">
     <div class="row">
-      <editable v-model="fromServeur"></editable>
+      <editable v-for="i in size" :i="i - 1" :key="i -1"></editable>
     </div>
   </div>
 </template>
 
 <script>
   import Editable from './Editable.vue'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'edit',
     components: {
       'editable': Editable
+    },
+    computed: {
+      // rajouter les accesseurs dans `computed` avec l'opérateur de décomposition
+      ...mapGetters(['size'])
     },
     data () {
       return {

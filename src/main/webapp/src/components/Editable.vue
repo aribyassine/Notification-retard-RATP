@@ -3,8 +3,9 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="row">
+
         <div class="col-md-12">
-          <autocomplete @update="updated" :fuse="fuse"></autocomplete>
+          <autocomplete @update="updated"></autocomplete>
         </div>
         <div class="col-md-12 slider">
           <vue-slider v-model="interval" :data="intervals"></vue-slider>
@@ -22,14 +23,6 @@
         </div>
       </div>
     </div>
-
-    <ul>
-      <li>{{ligne.name}}</li>
-      <li>{{interval}}</li>
-      <li>{{value.days}}</li>
-      <li>{{days}}</li>
-      <li v-for="(v, k) in days" v-if="v">{{k}}</li>
-    </ul>
   </div>
 </template>
 
@@ -38,31 +31,43 @@
   import vueSlider from 'vue-slider-component'
   import _ from 'lodash'
   import Switches from 'vue-switches'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Editable',
 
+    props: ['i'],
     components: {
       'autocomplete': Autocomplete,
       'vue-slider': vueSlider,
       'switches': Switches
     },
-    data () {
-      return {
-        ligne: this.value.ligne,
-        interval: this.value.interval,
-        intervals: null,
-        days: this.value.days
-      }
-    },
-    created: function () {
-      let hours = _.range(24)
-      let minutes = _.range(0, 60, 10)
-      let res = []
-      hours.forEach((h) => minutes.forEach((m) => res.push((h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m)))
-      this.intervals = res
-    },
     computed: {
+      ...mapGetters(['itemByIndex', 'intervals']),
+      item: {
+        get () {
+          return this.itemByIndex(this.i)
+        },
+        set (v) {}
+      },
+      days: {
+        get () {
+          return this.item.days
+        },
+        set (v) {}
+      },
+      ligne: {
+        get () {
+          return this.item.ligne
+        },
+        set (v) {}
+      },
+      interval: {
+        get () {
+          return this.item.interval
+        },
+        set (v) {}
+      },
       everyDay: {
         get: function () { return _.values(this.days).reduce((acc, day) => day && acc, true) },
         set: function (v) { this.days = _.mapValues(this.days, (day) => v) }
