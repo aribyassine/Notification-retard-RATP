@@ -91,7 +91,7 @@ public class NotificationControllerTest {
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}
 		try {
-			controller.addNotification("Test 03", tmp.getLine());
+			controller.addNotification("", tmp.getLine());
 		} catch (Exception e) {
 			Assert.assertTrue("message is empty".equals(e.getMessage()));		}
 
