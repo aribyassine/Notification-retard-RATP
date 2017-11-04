@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import util.Converter;
 
 /**
  * @author Mohamed T. KASSAR
@@ -38,11 +41,11 @@ public class Comment implements Serializable {
 	@JoinColumn(name = "USER")
 	private User user;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "COMMENT_DATE")
 	private Date date;
 
-	@Column(name = "NOTIFICATION_TEXT")
+	@Column(name = "COMMENT_TEXT")
 	private String commentText;
 
 	public int getCommentId() {
@@ -69,12 +72,12 @@ public class Comment implements Serializable {
 		this.user = user;
 	}
 
-	public Date getDate() {
-		return date;
+	public LocalDateTime getDate() {
+		return Converter.dateToLocalDateTime(date);
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(LocalDateTime date) {
+		this.date = Converter.localDateTimeToDate(date);
 	}
 
 	public String getCommentText() {

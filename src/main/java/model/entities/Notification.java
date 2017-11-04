@@ -1,8 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import util.Converter;
 
 /**
  * @author Mohamed T. KASSAR
@@ -40,10 +41,10 @@ public class Notification implements Serializable {
 	private int notificationId;
 
 	@ManyToOne
-	@JoinColumn(name = "SCHEDULED_LINE")
-	private ScheduledLine scheduledLine;
+	@JoinColumn(name = "LINE")
+	private Line line;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "NOTIFICATION_DATE")
 	private Date date;
 
@@ -53,8 +54,16 @@ public class Notification implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notification")
 	private Set<Comment> comments;
 	
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notification")
+	private Set<UserNotification> users;
+	
 	public Set<Comment> getComments() {
 		return comments;
+	}
+	
+	public Set<UserNotification> getUsersNotification() {
+		return users;
 	}
 	
 	public int getNotificationId() {
@@ -65,20 +74,20 @@ public class Notification implements Serializable {
 		this.notificationId = notificationId;
 	}
 
-	public ScheduledLine getScheduledLine() {
-		return scheduledLine;
+	public Line getLine() {
+		return line;
+	}
+	
+	public void setLine(Line line) {
+		this.line = line;
+	}
+	
+	public LocalDateTime getDate() {
+		return Converter.dateToLocalDateTime(date);
 	}
 
-	public void setScheduledLine(ScheduledLine scheduledLine) {
-		this.scheduledLine = scheduledLine;
-	}
-
-	public LocalDate getDate() {
-		return date.toInstant().atZone(ZoneId.of("GMT+01:00")).toLocalDate();
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = Date.from(date.atStartOfDay(ZoneId.of("GMT+01:00")).toInstant());
+	public void setDate(LocalDateTime date) {
+		this.date = Converter.localDateTimeToDate(date);
 	}
 
 	public String getNotificationText() {
