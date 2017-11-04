@@ -1,7 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import _ from 'lodash'
 
 Vue.use(Vuex)
+
+function intervals () {
+  let hours = _.range(24)
+  let minutes = _.range(0, 60, 10)
+  let res = []
+  hours.forEach((h) => minutes.forEach((m) => res.push((h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m)))
+  return res
+}
 
 const state = {
   serveur: [{
@@ -23,7 +32,8 @@ const state = {
     }
   }],
   lines: null,
-  fuse: null
+  fuse: null,
+  intervals: intervals()
 }
 
 export default new Vuex.Store({
@@ -37,6 +47,12 @@ export default new Vuex.Store({
       state.fuse = payload
     }
   },
-  getters: {},
+  getters: {
+    itemByIndex: (state) => (i) => {
+      return state.serveur[i]
+    },
+    size: (state) => state.serveur.length,
+    intervals: (state) => state.intervals
+  },
   actions: {}
 })
