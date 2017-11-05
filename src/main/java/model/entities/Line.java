@@ -21,7 +21,7 @@ import javax.persistence.UniqueConstraint;
  */
 
 @Entity
-@Table(name = "LINE" , uniqueConstraints = @UniqueConstraint(columnNames = { "LINE_NAME", "LINE_TYPE" }))
+@Table(name = "LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "LINE_NAME", "LINE_TYPE" }))
 public class Line implements Serializable {
 
 	public static enum LineType {
@@ -29,12 +29,12 @@ public class Line implements Serializable {
 	}
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "LINE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int lineId;
-	
+
 	@Column(name = "LINE_NAME")
 	private String lineName;
 
@@ -76,12 +76,18 @@ public class Line implements Serializable {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Line) {
+			Line temp = (Line) obj;
+			return lineName.equals(temp.lineName) && lineType.equals(temp.lineType);
+		}
+		return false;
+	}
+
+	@Override
 	public String toString() {
-		return "Line{" +
-				"lineId=" + lineId +
-				", lineName='" + lineName + '\'' +
-				", lineType=" + lineType +
-				", lineSchedules=" + lineSchedules +
-				'}';
+		return "Line{" + "lineId=" + lineId + ", lineName='" + lineName + '\'' + ", lineType=" + lineType
+		// + ", lineSchedules=" + lineSchedules
+				+ '}';
 	}
 }

@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,14 +25,18 @@ import util.Converter;
  * @author Mohamed T. KASSAR
  *
  */
-
+@NamedQuery(name = "getLatestNotificationForLine", query = "select n1 from Notification n1 "
+		+ "where n1.date = " + "(select max(n2.date) " + "from Notification n2 "
+		+ "where n1.line = n2.line and n1.line = :line)")
 @Entity
 @Table(name = "NOTIFICATION")
-public class Notification implements Serializable { 
-	
+public class Notification implements Serializable {
+
 	// remove notificationId and make scheduledLine as ID
-	// NOT TODO : NO, we can't make scheduledLine ad ID, a scheduledLine may have many notifications
-	// On the other hand we can make scheduledLine and date as a compound key but it is DJEBDA in hibernate
+	// NOT TODO : NO, we can't make scheduledLine ad ID, a scheduledLine may have
+	// many notifications
+	// On the other hand we can make scheduledLine and date as a compound key but it
+	// is DJEBDA in hibernate
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,19 +58,18 @@ public class Notification implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notification")
 	private Set<Comment> comments;
-	
-	
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notification")
 	private Set<UserNotification> users;
-	
+
 	public Set<Comment> getComments() {
 		return comments;
 	}
-	
+
 	public Set<UserNotification> getUsersNotification() {
 		return users;
 	}
-	
+
 	public int getNotificationId() {
 		return notificationId;
 	}
@@ -77,11 +81,11 @@ public class Notification implements Serializable {
 	public Line getLine() {
 		return line;
 	}
-	
+
 	public void setLine(Line line) {
 		this.line = line;
 	}
-	
+
 	public LocalDateTime getDate() {
 		return Converter.dateToLocalDateTime(date);
 	}
@@ -100,12 +104,8 @@ public class Notification implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Notification{" +
-				"notificationId=" + notificationId +
-//				", scheduledLine=" + scheduledLine + TODO
-				", date=" + date +
-				", notificationText='" + notificationText + '\'' +
-				", comments=" + comments +
-				'}';
+		return "Notification{" + "notificationId=" + notificationId + ", line=" + line  + 
+		// ", scheduledLine=" + scheduledLine + TODO
+				", date=" + date + ", notificationText='" + notificationText + '\'' + ", comments=" + comments + '}';
 	}
 }

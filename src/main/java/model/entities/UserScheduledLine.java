@@ -26,10 +26,9 @@ import util.Converter;
  *
  */
 
-@NamedQuery(name = "getByTime", query = "select s from UserScheduledLine s where "
+@NamedQuery(name = "getUserScheduledLineByTime", query = "select s from UserScheduledLine s where "
 		+ "TIME_TO_SEC(time(s.beginTime)) <= TIME_TO_SEC(time(:time)) "
 		+ "and TIME_TO_SEC(time(s.endTime)) >= TIME_TO_SEC(time(:time)) " + "and s.day = :day ")
-
 @Entity
 @Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "USER", "LINE", "BEGIN_TIME",
 		"END_TIME", "DAY" }))

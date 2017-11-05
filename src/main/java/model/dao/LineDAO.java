@@ -14,4 +14,8 @@ public class LineDAO extends DAO<Line> implements IDAO<Line> {
 		return findOne(new String[] {"lineName", "lineType"}, new Object[] {name, type});
 	}
 	
+	public boolean isExist(Line line) {
+		Line temp = getByNameNType(line.getLineName(), line.getLineType());
+		return temp != null;
+	}
 }

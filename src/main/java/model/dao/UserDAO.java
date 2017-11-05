@@ -55,4 +55,9 @@ public class UserDAO extends DAO<User> implements IDAO<User> {
 
 		return entity;
 	}
+	
+	public boolean isExist(User user) {
+		User temp = getByName(user.getUserName());
+		return temp != null;
+	}
 }

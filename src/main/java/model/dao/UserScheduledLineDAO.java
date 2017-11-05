@@ -37,7 +37,7 @@ public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO
 		Session s = factory.openSession();
 		s.beginTransaction();
 		Set<UserScheduledLine> result = null;
-		List<?> list = s.getNamedQuery("getByTime")
+		List<?> list = s.getNamedQuery("getUserScheduledLineByTime")
 				.setParameter("time", Converter.localTimeToDate(LocalTime.of(hour, minute))).setParameter("day", day)
 				.list();
 		result = list.stream().map(sc -> (UserScheduledLine) sc).collect(Collectors.toSet());
