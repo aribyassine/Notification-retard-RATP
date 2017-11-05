@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -103,7 +104,7 @@ public class LatesController {
 		map.entrySet().forEach(entry -> {
 			Line line = entry.getKey();
 			if (thereAreLatesForLine(line)) {
-				Set<User> users = entry.getValue();
+				Set<User> users = entry.getValue().stream().distinct().collect(Collectors.toSet());
 				// get the last notification created for this line
 				Notification notification = null;
 				try {

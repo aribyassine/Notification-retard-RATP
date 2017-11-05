@@ -90,7 +90,7 @@ public class User implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof User) {
-			return userName.equals(((User) obj).getUserName());
+			return userName.equals(((User) obj).userName);
 		}
 		return false;
 	}
