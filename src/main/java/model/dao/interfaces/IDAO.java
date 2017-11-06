@@ -1,5 +1,6 @@
 package model.dao.interfaces;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -13,7 +14,7 @@ public interface IDAO<E> {
 
 	void remove(E entity);
 
-	E getById(int id);
+	E getById(Serializable id);
 
 	E update(E entity);
 

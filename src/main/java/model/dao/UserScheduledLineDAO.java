@@ -25,6 +25,10 @@ public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO
 	public UserScheduledLine getUserScheduledLineByLineNUser(Line line, User user) {
 		return findOne(new String[] { "line", "user" }, new Object[] { line, user });
 	}
+	
+	public UserScheduledLine getUserScheduledLineByLineNUserNDay(Line line, User user, Day day) {
+		return findOne(new String[] { "line", "user", "day" }, new Object[] { line, user, day });
+	}
 
 	public UserScheduledLine getUserScheduledLineByAllInfos(Line line, User user, LocalTime begin, LocalTime end,
 			Day day) {

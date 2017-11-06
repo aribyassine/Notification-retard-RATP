@@ -1,5 +1,6 @@
 package model.dao;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,9 +46,9 @@ public class DAO<E> implements IDAO<E> {
 		s.getTransaction().commit();
 		s.close();
 	}
-
+	
 	@Override
-	public E getById(int id) {
+	public E getById(Serializable id) {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session s = factory.openSession();
 		s.beginTransaction();
@@ -56,7 +57,7 @@ public class DAO<E> implements IDAO<E> {
 		s.close();
 		return entity;
 	}
-
+	
 	@Override
 	public E update(E entity) {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
