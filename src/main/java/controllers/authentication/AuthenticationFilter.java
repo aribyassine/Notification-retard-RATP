@@ -36,7 +36,6 @@ public class AuthenticationFilter implements Filter {
             }
         }
         System.out.println(request.getRequestURL());
-        System.out.println(excludedURLs);
         if (isExcludedURL) {
             filterChain.doFilter(request, response);
         } else {
