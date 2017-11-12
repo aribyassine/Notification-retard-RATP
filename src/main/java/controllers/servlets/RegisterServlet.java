@@ -13,12 +13,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "register", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private AuthentificationController auth = new AuthentificationController();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,13 +37,19 @@ public class RegisterServlet extends HttpServlet {
 
         try {
             User user = auth.registerUser(login,email,phone,pwd);
+            HttpSession session = req.getSession(true);
+            session.setAttribute("username", login);
+            resp.sendRedirect(req.getContextPath() + "/");
+/*
             ServletOutputStream out = resp.getOutputStream();
             out.write(user.toString().getBytes());
             out.flush();
             out.close();
+*/
         } catch (DataException e) {
             e.printStackTrace();
-            resp.sendRedirect("");
+            req.setAttribute("err",e.getMessage());
+            this.getServletContext().getRequestDispatcher("/jsp/register.jsp").forward(req,resp);
         }
     }
 

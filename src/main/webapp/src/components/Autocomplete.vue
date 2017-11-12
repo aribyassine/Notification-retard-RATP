@@ -1,22 +1,31 @@
 <template>
-  <v-autocomplete :items="linesAutocomplete" :get-label="getLabel"
-                  @update-items="updateAutocomplete" @item-selected="itemSelected"
-                  :component-item='template' :min-len='1'></v-autocomplete>
+    <v-autocomplete :items="linesAutocomplete" v-model="item" :get-label="getLabel"
+                    @update-items="updateAutocomplete" @item-selected="itemSelected"
+                    :component-item='template' :min-len='1' :placeholder="value.name.toString()"></v-autocomplete>
 </template>
 
 <script>
   import ligneTemplate from './AutocompleteLigneTemplate.vue'
   import Autocomplete from 'v-autocomplete'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Autocomplete',
     components: {'v-autocomplete': Autocomplete},
-    props: { fuse: { required: true } },
+    props: {
+      value: {
+        required: true
+      }
+    },
     data () {
       return {
+        item: this.value,
         linesAutocomplete: [],
         template: ligneTemplate
       }
+    },
+    computed: {
+      ...mapGetters(['fuse'])
     },
     methods: {
       itemSelected (item) {

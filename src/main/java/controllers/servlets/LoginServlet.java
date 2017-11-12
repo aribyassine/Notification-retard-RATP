@@ -30,17 +30,18 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String pwd = req.getParameter("pwd");
-      
-        
 
         try {
-            User user = auth.checkLogin(login,pwd);
+            auth.checkLogin(login,pwd);
             HttpSession session = req.getSession(true);
             session.setAttribute("username", login);
+            resp.sendRedirect(req.getContextPath() + "/");
+/*
             ServletOutputStream out = resp.getOutputStream();
             out.write(user.toString().getBytes());
             out.flush();
             out.close();
+*/
         } catch (DataException e) {
             e.printStackTrace();
             resp.sendError(403,e.getMessage());

@@ -1,43 +1,31 @@
 <template>
   <div class="container">
     <div class="row">
-      <editable v-for="i in size" :i="i - 1" :key="i -1"></editable>
+      <editable v-for="(item, index) in server" :key="index" :ligne="item.ligne" :days="item.days"
+                :interval="item.interval" :index="index"></editable>
+      <button class="btn btn-default btn-block" @click="newItem">
+        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> new <span
+        class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
   import Editable from './Editable.vue'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
 
   export default {
     name: 'edit',
     components: {
       'editable': Editable
     },
+    methods: {
+      ...mapMutations({ newItem: 'addNewItem' })
+    },
     computed: {
       // rajouter les accesseurs dans `computed` avec l'opérateur de décomposition
-      ...mapGetters(['size'])
-    },
-    data () {
-      return {
-        fromServeur: {
-          ligne: {
-            directions: 'yolo',
-            name: 'hey'
-          },
-          interval: ['06:00', '08:00'],
-          days: {
-            lun: true,
-            mar: true,
-            mer: false,
-            jeu: false,
-            ven: false,
-            sam: false,
-            dim: false
-          }
-        }
-      }
+      ...mapGetters(['server'])
     }
   }
 </script>

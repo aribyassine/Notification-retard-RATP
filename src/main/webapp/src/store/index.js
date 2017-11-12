@@ -12,28 +12,25 @@ function intervals () {
   return res
 }
 
-const state = {
-  serveur: [{
-    ligne: {
-      code: 1,
-      name: 'Métro 1',
-      directions: 'La Defense / Chateau de Vincennes',
-      id: 62
-    },
-    interval: ['06:00', '08:00'],
-    days: {
-      lun: true,
-      mar: true,
-      mer: false,
-      jeu: false,
-      ven: false,
-      sam: false,
-      dim: false
+function fromServeur () {
+  return [
+    {
+      ligne: {code: 1, name: 'Métro 1', directions: 'La Defense / Chateau de Vincennes', id: 62},
+      interval: ['06:00', '08:00'],
+      days: {lun: true, mar: true, mer: false, jeu: false, ven: false, sam: false, dim: false}
     }
-  }],
+  ]
+}
+
+const state = {
+  server: fromServeur(),
   lines: null,
   fuse: null,
   intervals: intervals()
+}
+
+function pushToServer (item) {
+  Vue.http.post('scheduledline', item).then((response) => console.log(response), (err) => console.log(err))
 }
 
 export default new Vuex.Store({
@@ -45,14 +42,41 @@ export default new Vuex.Store({
     },
     setFuse (state, payload) {
       state.fuse = payload
+    },
+    updateStore (state, payload) {
+      if (!isNaN(parseInt(payload.ligne.code))) {
+        payload.ligne.code = parseInt(payload.ligne.code)
+      }
+      if (!isNaN(parseInt(payload.ligne.id))) {
+        payload.ligne.id = parseInt(payload.ligne.id)
+      }
+      state.server[payload.index].ligne = payload.ligne
+      state.server[payload.index].interval = payload.interval
+      state.server[payload.index].days = payload.days
+      pushToServer(state.server[payload.index])
+    },
+    setLigneAt (state, payload) {
+      state.server[payload.index].ligne = payload.ligne
+    },
+    addNewItem (state) {
+      state.server.push({
+        ligne: {code: 0, name: '', directions: '', id: 0},
+        interval: ['06:00', '08:00'],
+        days: {lun: false, mar: false, mer: false, jeu: false, ven: false, sam: false, dim: false}
+      })
+    },
+    remove (state, payload) {
+      state.server.splice(payload.index, 1)
     }
   },
   getters: {
     itemByIndex: (state) => (i) => {
-      return state.serveur[i]
+      return state.server[i]
     },
-    size: (state) => state.serveur.length,
-    intervals: (state) => state.intervals
-  },
-  actions: {}
+    items: (state) => state.server,
+    server: (state) => state.server,
+    size: (state) => state.server.length,
+    intervals: (state) => state.intervals,
+    fuse: (state) => state.fuse
+  }
 })

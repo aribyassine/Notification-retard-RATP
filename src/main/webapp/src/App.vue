@@ -3,8 +3,6 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <ul class="nav navbar-nav">
-          <li><router-link to="/login">Login</router-link></li>
-          <li><router-link to="/register">Register</router-link></li>
           <li><router-link to="/edit">Edit</router-link></li>
         </ul>
       </div>
