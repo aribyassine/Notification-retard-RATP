@@ -3,6 +3,7 @@ package controllers;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import controllers.exceptions.DataException;
@@ -142,6 +143,72 @@ public class ScheduledLineController {
 			if (usl != null)
 				continue;
 
+			//usl = DAOFactory.userScheduledLineDAO().getUserScheduledLineByLineNUserNDay(line, user,day);
+			
+//			if(usl!=null && usl.getDay() == day) {
+//				System.out.println("if(usl!=null && usl.getDay().equals(day))");
+//				LocalTime b = usl.getBeginTime();
+//				LocalTime e = usl.getEndTime();
+//				if(begin.isBefore(b)) {
+//					DAOFactory.userScheduledLineDAO().remove(usl);
+//					if(end.isAfter(e)) {
+//						usl = new UserScheduledLine();
+//						usl.setBeginTime(begin);
+//						usl.setEndTime(end);
+//						usl.setDay(day);
+//						usl.setUser(user);
+//						usl.setLine(line);
+//						result.add(usl);
+//						DAOFactory.userScheduledLineDAO().save(usl);
+//					}
+//					else {
+//						usl = new UserScheduledLine();
+//						usl.setBeginTime(begin);
+//						usl.setEndTime(e);
+//						usl.setDay(day);
+//						usl.setUser(user);
+//						usl.setLine(line);
+//						result.add(usl);
+//						DAOFactory.userScheduledLineDAO().save(usl);
+//
+//					}
+//				}
+//				else if(b.isBefore(begin)) {
+//					if(end.isAfter(e)) {
+//						DAOFactory.userScheduledLineDAO().remove(usl);
+//						usl = new UserScheduledLine();
+//						usl.setBeginTime(b);
+//						usl.setEndTime(end);
+//						usl.setDay(day);
+//						usl.setUser(user);
+//						usl.setLine(line);
+//						result.add(usl);
+//						DAOFactory.userScheduledLineDAO().save(usl);
+//					}
+//					else 
+//						continue;
+//				}
+//				else {
+//					if(end.isAfter(e)) {
+//						DAOFactory.userScheduledLineDAO().remove(usl);
+//						usl = new UserScheduledLine();
+//						usl.setBeginTime(b);
+//						usl.setEndTime(end);
+//						usl.setDay(day);
+//						usl.setUser(user);
+//						usl.setLine(line);
+//						result.add(usl);
+//						DAOFactory.userScheduledLineDAO().save(usl);
+//					}
+//					else
+//						continue;
+//
+//
+//				}
+//
+//
+//			}
+
 			usl = new UserScheduledLine();
 			usl.setBeginTime(begin);
 			usl.setEndTime(end);
@@ -155,5 +222,35 @@ public class ScheduledLineController {
 		return result;
 
 	}
+
+	public Set<UserScheduledLine> modifyUserScheduledLine(int id, String LineName, String type, String debut, String fin, String[] days,
+			String userName) throws DataException{
+		if(!deleteUserScheduledLine(id))
+			throw new DataException("User schedule line doesn't exist");
+		return (addUserScheduledLine(LineName, type, debut, fin, days, userName));
+
+
+
+	}
+
+
+	public boolean deleteUserScheduledLine(int id) throws DataException{
+		UserScheduledLine tmp = DAOFactory.userScheduledLineDAO().getById(id);
+		if(tmp!=null) {
+			DAOFactory.userScheduledLineDAO().remove(tmp);
+			return true;
+		}
+		else return false;
+	}
+	 
+	public List<UserScheduledLine> setOfUserScheduledLine(String username){
+		
+		List<UserScheduledLine> a= DAOFactory.userScheduledLineDAO().getListOfUserScheduledLinesOfUser(username);
+		
+		return a;
+		
+	}
+
+		
 
 }

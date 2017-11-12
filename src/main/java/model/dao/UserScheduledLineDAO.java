@@ -15,6 +15,7 @@ import util.Converter;
 import util.HibernateUtil;
 import model.entities.Line;
 import model.entities.User;
+import model.entities.UserNotification;
 
 /**
  * @author Mohamed T. KASSAR
@@ -25,10 +26,8 @@ public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO
 	public UserScheduledLine getUserScheduledLineByLineNUser(Line line, User user) {
 		return findOne(new String[] { "line", "user" }, new Object[] { line, user });
 	}
+
 	
-	public UserScheduledLine getUserScheduledLineByLineNUserNDay(Line line, User user, Day day) {
-		return findOne(new String[] { "line", "user", "day" }, new Object[] { line, user, day });
-	}
 
 	public UserScheduledLine getUserScheduledLineByAllInfos(Line line, User user, LocalTime begin, LocalTime end,
 			Day day) {
@@ -48,6 +47,20 @@ public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO
 		s.getTransaction().commit();
 		s.close();
 		return result;
+	}
+
+	public List getListOfUserScheduledLinesOfUser( String user) {
+		SessionFactory factory = HibernateUtil.getSessionFactory();
+		Session s = factory.openSession();
+		s.beginTransaction();
+		List<?> list = s.createSQLQuery("select *  from user_scheduled_line "
+				+ "  where `USER` ='" + user+"'").addEntity(UserScheduledLine.class).list();
+		if (list.isEmpty())
+			return null;
+
+		s.getTransaction().commit();
+		s.close();
+		return list;
 	}
 
 }

@@ -4,10 +4,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import model.dao.DAOFactory;
+import model.entities.UserScheduledLine;
+import model.entities.UserScheduledLine.Day;
 
 /**
  * @author Mohamed T. KASSAR
@@ -35,40 +42,28 @@ public class ScheduledLineControllerTest {
 		}
 
 		try {
-			assertNotNull(controller.addUserScheduledLine("b", "rer", "10:00", "10:04", days, "addScheduleLine_PositiveTest"));
+			assertNotNull(controller.addUserScheduledLine("b", "rer", "10:05", "10:11", days, "addScheduleLine_PositiveTest"));
 		} catch (Exception e) {
+			Assert.fail("add schedule line error : " + e.getMessage());
+		}
+
+		try {
+			assertNotNull(controller.addUserScheduledLine("b", "rer", "10:02", "10:15", days, "addScheduleLine_PositiveTest"));
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+			Assert.fail("add schedule line error : " + e.getMessage());
+		}
+
+		try {
+			assertNotNull(controller.deleteUserScheduledLine(1));
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}
 
 	}
 
-	//
-	// @Test
-	// public void addScheduleLine_PositiveTest1() {
-	// int[] minute = new int[2];
-	// int[] hour = new int[2];
-	// minute[0] = 4;
-	// minute[1] = 8;
-	// hour[0] = 9;
-	// hour[0] = 4;
-	// ScheduledLineController controller = new ScheduledLineController();
-	// AuthentificationController controller1 = new AuthentificationController();
-	// try {
-	// controller1.registerUser("tikoo", "fzefzdfd@gmail.com", "0769125018",
-	// "tikotiko");
-	// } catch (Exception e) {
-	// Assert.fail("Regestration error : " + e.getMessage());
-	// }
-	//
-	// try {
-	// assertNotNull(controller.addScheduledLine("b", "rer", minute, hour, "friday",
-	// "tikoo"));
-	// } catch (Exception e) {
-	// Assert.fail("add schedule line error : " + e.getMessage());
-	// }
-	//
-	// }
-	//
+
 
 	@Test
 	public void addScheduleLine_NegativeTest_unknownUser() {
@@ -90,7 +85,7 @@ public class ScheduledLineControllerTest {
 
 	}
 
-	//
+
 	@Test
 	public void addScheduleLine_NegativeTest1() {
 		ScheduledLineController controller = new ScheduledLineController();
@@ -287,6 +282,26 @@ public class ScheduledLineControllerTest {
 			assertTrue("Time is invalid".equals(e.getMessage()));
 		}
 	}
+
+	@Test
+	public void modifyScheduleLine_PositiveTest() {
+
+		try{
+			ScheduledLineController controller = new ScheduledLineController();
+			List<UserScheduledLine> a = controller.setOfUserScheduledLine("addScheduleLine_PositiveTest");
+			for (UserScheduledLine t : a) {
+				System.out.println(t);
+				
+			}
+		}catch (Exception e) {
+			e.printStackTrace(System.out);
+		}
+
+	}
+
+
+
+
 	//
 	// @Test
 	// public void addScheduleLine_NegativeTest2_emptyInfos() {
