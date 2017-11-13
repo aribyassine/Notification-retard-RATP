@@ -15,7 +15,6 @@ import util.Converter;
 import util.HibernateUtil;
 import model.entities.Line;
 import model.entities.User;
-import model.entities.UserNotification;
 
 /**
  * @author Mohamed T. KASSAR
@@ -49,11 +48,12 @@ public class UserScheduledLineDAO extends DAO<UserScheduledLine> implements IDAO
 		return result;
 	}
 
-	public List getListOfUserScheduledLinesOfUser( String user) {
+	public List<UserScheduledLine> getListOfUserScheduledLinesOfUser( String user) {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session s = factory.openSession();
 		s.beginTransaction();
-		List<?> list = s.createSQLQuery("select *  from user_scheduled_line "
+		@SuppressWarnings("unchecked")
+		List<UserScheduledLine> list = s.createSQLQuery("select *  from user_scheduled_line "
 				+ "  where `USER` ='" + user+"'").addEntity(UserScheduledLine.class).list();
 		if (list.isEmpty())
 			return null;
