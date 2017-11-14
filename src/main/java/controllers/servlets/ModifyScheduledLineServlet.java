@@ -1,3 +1,4 @@
+
 package controllers.servlets;
 
 import controllers.ScheduledLineController;
@@ -13,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 
-@WebServlet(name = "scheduledline", urlPatterns = {"/scheduledline"})
-public class ScheduledLineServlet extends HttpServlet {
+@WebServlet(name = "modifyscheduledline", urlPatterns = {"/modifyscheduledline"})
+public class ModifyScheduledLineServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private ScheduledLineController slc = new ScheduledLineController();
@@ -26,7 +27,7 @@ public class ScheduledLineServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    	int id = Integer.parseInt(req.getParameter("id"));
         String LineName = req.getParameter("lineName");
         String type = req.getParameter("type");
         String minute = req.getParameter("minuteBegin");
@@ -51,8 +52,8 @@ public class ScheduledLineServlet extends HttpServlet {
             if (login.isEmpty())
                 throw new DataException("cookie missing");
             ServletOutputStream out = resp.getOutputStream();
-            slc.addUserScheduledLine(LineName, type, minute, hour, days, login);
-            out.write("schedule added".getBytes());
+            slc.modifyUserScheduledLine(id,LineName, type, minute, hour, days, login);
+            out.write("".getBytes());
             out.flush();
             out.close();
         } catch (DataException e) {

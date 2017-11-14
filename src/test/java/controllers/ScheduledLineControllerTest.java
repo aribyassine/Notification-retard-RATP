@@ -286,12 +286,48 @@ public class ScheduledLineControllerTest {
 	@Test
 	public void modifyScheduleLine_PositiveTest() {
 
+		ScheduledLineController controller = new ScheduledLineController();
+		String[] days = new String[7];
+		days[0] = "f";
+		days[1] = "f";
+		days[2] = "f";
+		days[5] = "f";
+		days[6] = "true";
+		days[3] = "true";
+		days[4] = "true";
+		AuthentificationController controller1 = new AuthentificationController();
+		try {
+			controller1.registerUser("modifyScheduleLine_PositiveTest", "tikoootidkooo@gmail.com", "0764622218", "123lkj");
+		} catch (Exception e) {
+			Assert.fail("Regestration error : " + e.getMessage());
+		}
+
+		try {
+			assertNotNull(controller.addUserScheduledLine("b", "rer", "10:05", "10:11", days, "modifyScheduleLine_PositiveTest"));
+		} catch (Exception e) {
+			Assert.fail("add schedule line error : " + e.getMessage());
+		}
+
+		try {
+			assertNotNull(controller.addUserScheduledLine("b", "rer", "10:02", "10:15", days, "modifyScheduleLine_PositiveTest"));
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+			Assert.fail("add schedule line error : " + e.getMessage());
+		}
+
+		try {
+			assertNotNull(controller.deleteUserScheduledLine(1));
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+			Assert.fail("add schedule line error : " + e.getMessage());
+		}
+
 		try{
-			ScheduledLineController controller = new ScheduledLineController();
-			List<UserScheduledLine> a = controller.setOfUserScheduledLine("addScheduleLine_PositiveTest");
+
+			List<UserScheduledLine> a = controller.setOfUserScheduledLine("modifyScheduleLine_PositiveTest");
 			for (UserScheduledLine t : a) {
 				System.out.println(t);
-				
+
 			}
 		}catch (Exception e) {
 			e.printStackTrace(System.out);
