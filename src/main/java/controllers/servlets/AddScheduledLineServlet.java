@@ -27,37 +27,25 @@ public class AddScheduledLineServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String LineName = req.getParameter("lineName");
-        String type = req.getParameter("type");
-        String minute = req.getParameter("minuteBegin");
-        String hour = req.getParameter("hourEnd");
-        String[] days = new String[7];
-        days[0] = req.getParameter("lundi");
-        days[1] = req.getParameter("mardi");
-        days[2] = req.getParameter("mercredi");
-        days[3] = req.getParameter("jeudi");
-        days[4] = req.getParameter("vendredi");
-        days[5] = req.getParameter("samedi");
-        days[6] = req.getParameter("dimanche");
-
-
-        req.getParameterMap().forEach((key, value) -> System.out.println(key + " " + Arrays.toString(value)));
-
+        req.getParameterMap().forEach((k, v) -> System.out.println(k + " - " + Arrays.toString(v)));
+        System.out.println(req.getParameter("type"));
         try {
+            String LineName = req.getParameter("lineName");
+            String type = req.getParameter("type");
+            String[] interval = req.getParameterValues("interval[]");
+            String[] days = req.getParameterValues("days[]");
+
             HttpSession session = req.getSession(true);
             if (session.isNew())
                 throw new DataException("user logged out");
             String login = (String) session.getAttribute("username");
             if (login.isEmpty())
                 throw new DataException("cookie missing");
-            ServletOutputStream out = resp.getOutputStream();
-            slc.addUserScheduledLine(LineName, type, minute, hour, days, login);
-            out.write("".getBytes());
-            out.flush();
-            out.close();
-        } catch (DataException e) {
+            System.out.println(slc.addUserScheduledLine(LineName, type, interval[0], interval[1], days, login));
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect("");
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }

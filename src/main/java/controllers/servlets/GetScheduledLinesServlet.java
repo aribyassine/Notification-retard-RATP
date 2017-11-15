@@ -1,7 +1,7 @@
 package controllers.servlets;
 
 import controllers.ScheduledLineController;
-import controllers.exceptions.DataException;
+import model.entities.UserScheduledLine;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -9,9 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Set;
 
 @WebServlet(name = "getscheduledlines", urlPatterns = {"/getscheduledlines"})
 public class GetScheduledLinesServlet extends HttpServlet {
@@ -21,43 +20,17 @@ public class GetScheduledLinesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getOutputStream().println(req.getSession().getAttribute("username").toString());
+        Set<UserScheduledLine> scheduledLines = slc.getAllUserScheduledLine(req.getSession().getAttribute("username").toString());
+        System.out.println(scheduledLines);
+        resp.setHeader("Content-Type","application/json; charset=utf-8");
+        ServletOutputStream out = resp.getOutputStream();
+        out.println(scheduledLines.toString());
+        out.flush();
+        out.close();
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String LineName = req.getParameter("lineName");
-        String type = req.getParameter("type");
-        String minute = req.getParameter("minuteBegin");
-        String hour = req.getParameter("hourEnd");
-        String[] days = new String[7];
-        days[0] = req.getParameter("lundi");
-        days[1] = req.getParameter("mardi");
-        days[2] = req.getParameter("mercredi");
-        days[3] = req.getParameter("jeudi");
-        days[4] = req.getParameter("vendredi");
-        days[5] = req.getParameter("samedi");
-        days[6] = req.getParameter("dimanche");
-
-
-        req.getParameterMap().forEach((key, value) -> System.out.println(key + " " + Arrays.toString(value)));
-
-        try {
-            HttpSession session = req.getSession(true);
-            if (session.isNew())
-                throw new DataException("user logged out");
-            String login = (String) session.getAttribute("username");
-            if (login.isEmpty())
-                throw new DataException("cookie missing");
-            ServletOutputStream out = resp.getOutputStream();
-            slc.addUserScheduledLine(LineName, type, minute, hour, days, login);
-            out.write("".getBytes());
-            out.flush();
-            out.close();
-        } catch (DataException e) {
-            e.printStackTrace();
-            resp.sendRedirect("");
-        }
     }
 }

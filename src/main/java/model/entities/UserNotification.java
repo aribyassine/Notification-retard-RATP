@@ -79,7 +79,7 @@ public class UserNotification implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserNotification{" + "userNotificationId=" + userNotificationId + ", notification=" + notification
-				+ ", user=" + user + ", date=" + date + '}';
+		return "{" + "userNotificationId:" + userNotificationId + ", notification:" + notification
+				+ ", user:" + user + ", date:" + date + '}';
 	}
 }

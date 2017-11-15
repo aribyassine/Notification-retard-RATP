@@ -97,7 +97,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User{" + "userName='" + userName + '\'' + ", email='" + email + '\'' + ", phoneNumber='" + phoneNumber
+		return "{" + "userName:'" + userName + '\'' + ", email:'" + email + '\'' + ", phoneNumber:'" + phoneNumber
 				+ '\'' + '}';
 	}
 }

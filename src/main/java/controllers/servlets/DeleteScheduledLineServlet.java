@@ -41,14 +41,11 @@ public class DeleteScheduledLineServlet extends HttpServlet {
             if (login.isEmpty())
                 throw new DataException("cookie missing");
             
-            ServletOutputStream out = resp.getOutputStream();
-            slc.deleteUserScheduledLine(id) ;           
-            out.write("scheduled line deleted".getBytes());
-            out.flush();
-            out.close();
-        } catch (DataException e) {
+            slc.deleteUserScheduledLine(id) ;
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect(e.getMessage());
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }

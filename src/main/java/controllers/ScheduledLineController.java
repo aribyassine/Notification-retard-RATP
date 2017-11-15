@@ -20,6 +20,11 @@ import model.entities.User;
 
 public class ScheduledLineController {
 
+	public Set<UserScheduledLine> getAllUserScheduledLine(String userName){
+		User user = DAOFactory.userDAO().getByName(userName);
+		return user.getScheduledLines();
+	}
+
 	public Set<UserScheduledLine> addUserScheduledLine(String LineName, String type, String debut, String fin,
 			String[] days, String userName) throws DataException {
 
@@ -64,19 +69,19 @@ public class ScheduledLineController {
 		LineType linetype;
 
 		switch (type.toLowerCase()) {
-		case "rer":
+		case "rers":
 			linetype = LineType.rer;
 			break;
-		case "metro":
+		case "metros":
 			linetype = LineType.metro;
 			break;
 		case "bus":
 			linetype = LineType.bus;
 			break;
-		case "transilien":
+		case "noctiliens":
 			linetype = LineType.transilien;
 			break;
-		case "tramway":
+		case "tramways":
 			linetype = LineType.tramway;
 			break;
 		default:

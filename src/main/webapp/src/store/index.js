@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
-import axios from 'axios'
+import jquery from 'jquery'
 
 Vue.use(Vuex)
 
@@ -14,10 +14,10 @@ function intervals () {
 }
 
 function fromServeur () {
-  axios.get('/getscheduledlines').then((response) => console.log(response), (err) => console.log(err))
+  jquery.get('/getscheduledlines').then((response) => console.log(response.content), (err) => console.log(err))
   return [
     {
-      ligne: {code: 1, name: 'Métro 1', directions: 'La Defense / Chateau de Vincennes', id: 62},
+      ligne: {code: 1, name: 'Métro 1', directions: 'La Defense / Chateau de Vincennes', id: 62, type: 'metros'},
       interval: ['06:00', '08:00'],
       days: {lun: true, mar: true, mer: false, jeu: false, ven: false, sam: false, dim: false}
     }
@@ -32,7 +32,12 @@ const state = {
 }
 
 function pushToServer (item) {
-  // Vue.http.post('scheduledline', item).then((response) => console.log(response), (err) => console.log(err))
+  jquery.post('/addscheduledline', {
+    lineName: item.ligne.name,
+    type: item.ligne.type,
+    interval: item.interval,
+    days: [item.days.lun, item.days.mar, item.days.mer, item.days.jeu, item.days.ven, item.days.sam, item.days.dim]
+  }, (response) => console.log(response))
 }
 
 export default new Vuex.Store({

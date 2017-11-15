@@ -103,7 +103,7 @@ public class Notification implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Notification{" + "notificationId=" + notificationId + ", line=" + line + ", date=" + date
-				+ ", notificationText='" + notificationText + '\'' + '}';
+		return "{" + "notificationId:" + notificationId + ", line:" + line + ", date:" + date
+				+ ", notificationText:'" + notificationText + '\'' + '}';
 	}
 }

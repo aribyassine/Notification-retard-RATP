@@ -26,7 +26,10 @@
         let res = response.body.result
         let lines = []
         for (let type in res) {
-          res[type].forEach((ligne) => lines.push(ligne))
+          res[type].forEach((ligne) => {
+            ligne.type = type
+            lines.push(ligne)
+          })
         }
         this.setLines(lines)
         this.setFuse(new Fuse(lines, options))

@@ -36,12 +36,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession(true);
             session.setAttribute("username", login);
             resp.sendRedirect(req.getContextPath() + "/");
-/*
-            ServletOutputStream out = resp.getOutputStream();
-            out.write(user.toString().getBytes());
-            out.flush();
-            out.close();
-*/
+
         } catch (DataException e) {
             e.printStackTrace();
             req.setAttribute("err",e.getMessage());

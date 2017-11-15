@@ -29,10 +29,9 @@ public class LinesServlet extends HttpServlet {
 			out.write(new LinesController().getLinesOnJSON().getBytes());
 			out.flush();
 			out.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
-			resp.sendRedirect("");
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
 }

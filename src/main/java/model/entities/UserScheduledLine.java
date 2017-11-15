@@ -1,25 +1,11 @@
 package model.entities;
 
+import util.Converter;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
-
-import util.Converter;
 
 /**
  * @author Mohamed T. KASSAR
@@ -115,7 +101,13 @@ public class UserScheduledLine implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserScheduledLine{" + "lineScheduleId=" + lineScheduleId + ", user=" + user + ", line=" + line
-				+ ", beginTime=" + beginTime + ", endTime=" + endTime + ", day= '" + day + '\'' + '}';
+		return "{" +
+				"lineScheduleId:" + lineScheduleId +
+				", user:" + user +
+				", line:" + line +
+				", beginTime:'" + beginTime.getMinutes() +'\''+
+				", endTime:'" + endTime.getMinutes() +'\''+
+				", day:" + day +
+				'}';
 	}
 }
