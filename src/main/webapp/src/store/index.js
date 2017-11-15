@@ -30,7 +30,7 @@ const state = {
 }
 
 function pushToServer (item) {
-  Vue.http.post('scheduledline', item).then((response) => console.log(response), (err) => console.log(err))
+  // Vue.http.post('scheduledline', item).then((response) => console.log(response), (err) => console.log(err))
 }
 
 export default new Vuex.Store({
@@ -66,7 +66,9 @@ export default new Vuex.Store({
       })
     },
     remove (state, payload) {
-      state.server.splice(payload.index, 1)
+      Vue.delete(state.server, payload.index)
+      // console.log(_.without(state.server, state.server[payload.index]), payload.index)
+      // state.server = _.without(state.server, state.server[payload.index])
     }
   },
   getters: {

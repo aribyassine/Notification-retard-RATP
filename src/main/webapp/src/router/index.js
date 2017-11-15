@@ -9,7 +9,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/edit',
+      path: '/',
       name: 'Edit',
       component: Edit
     }

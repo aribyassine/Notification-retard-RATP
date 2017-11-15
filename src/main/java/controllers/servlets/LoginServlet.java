@@ -44,7 +44,8 @@ public class LoginServlet extends HttpServlet {
 */
         } catch (DataException e) {
             e.printStackTrace();
-            resp.sendError(403,e.getMessage());
+            req.setAttribute("err",e.getMessage());
+            this.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req,resp);
         }
     }
 

@@ -26,13 +26,13 @@
 
             <button type="button" class="btn btn-danger aligner-item" @click="remove()" v-if="saved && isValid"><span
               class="glyphicon glyphicon-remove"></span>
-              remove
+              Supprimer
             </button>
 
 
             <button type="button" class="btn btn-success aligner-item" v-if="!saved && isValid"
                     @click="updateStore(daysCopy, intervalCopy, ligneCopy, index)">
-              <span class="glyphicon glyphicon-saved"></span> save
+              <span class="glyphicon glyphicon-saved"></span> Enregistrer
             </button>
 
           </div>
@@ -70,6 +70,12 @@
         intervalCopy: this.interval,
         ligneCopy: this.ligne
       }
+    },
+
+    watch: {
+      ligne: function (ligne) { this.ligneCopy = ligne },
+      days: function (days) { this.daysCopy = _.values(days) },
+      interval: function (interval) { this.intervalCopy = interval }
     },
     methods: {
       ...mapMutations({rm: 'remove', dup: 'duplicate'}),

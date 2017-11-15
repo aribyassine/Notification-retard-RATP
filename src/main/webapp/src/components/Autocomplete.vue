@@ -24,6 +24,9 @@
         template: ligneTemplate
       }
     },
+    watch: {
+      value: function (ligne) { this.item = ligne }
+    },
     computed: {
       ...mapGetters(['fuse'])
     },

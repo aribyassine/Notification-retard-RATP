@@ -1,12 +1,5 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <ul class="nav navbar-nav">
-          <li><router-link to="/edit">Edit</router-link></li>
-        </ul>
-      </div>
-    </nav>
     <router-view/>
   </div>
 </template>
@@ -51,5 +44,5 @@
 
 <style lang="scss">
   @import "assets/scss/app.scss";
-  body{padding-top: 60px}
+  body{padding-top: 20px}
 </style>
