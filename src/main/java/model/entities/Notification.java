@@ -25,9 +25,8 @@ import util.Converter;
  * @author Mohamed T. KASSAR
  *
  */
-@NamedQuery(name = "getLatestNotificationForLine", query = "select n1 from Notification n1 "
-		+ "where n1.date = " + "(select max(n2.date) " + "from Notification n2 "
-		+ "where n1.line = n2.line and n1.line = :line)")
+@NamedQuery(name = "getLatestNotificationForLine", query = "select n1 from Notification n1 " + "where n1.date = "
+		+ "(select max(n2.date) " + "from Notification n2 " + "where n1.line = n2.line and n1.line = :line)")
 @Entity
 @Table(name = "NOTIFICATION")
 public class Notification implements Serializable {
@@ -104,8 +103,7 @@ public class Notification implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Notification{" + "notificationId=" + notificationId + ", line=" + line  + 
-		// ", scheduledLine=" + scheduledLine + TODO
-				", date=" + date + ", notificationText='" + notificationText + '\'' + ", comments=" + comments + '}';
+		return "Notification{" + "notificationId=" + notificationId + ", line=" + line + ", date=" + date
+				+ ", notificationText='" + notificationText + '\'' + '}';
 	}
 }

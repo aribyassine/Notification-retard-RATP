@@ -86,8 +86,7 @@ public class Line implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Line{" + "lineId=" + lineId + ", lineName='" + lineName + '\'' + ", lineType=" + lineType
-		// + ", lineSchedules=" + lineSchedules
+		return "Line{" + "lineId=" + lineId + ", lineName='" + lineName + '\'' + ", lineType='" + lineType + '\''
 				+ '}';
 	}
 }

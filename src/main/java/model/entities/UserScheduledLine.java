@@ -114,10 +114,8 @@ public class UserScheduledLine implements Serializable {
 	}
 
 	@Override
-	public String toString() {// TODO
-		return "ScheduledLine{" + "lineScheduleId=" + lineScheduleId +
-		// ", schedule=" + schedule + TODO
-		// ", line=" + line + TODO
-				'}';
+	public String toString() {
+		return "UserScheduledLine{" + "lineScheduleId=" + lineScheduleId + ", user=" + user + ", line=" + line
+				+ ", beginTime=" + beginTime + ", endTime=" + endTime + ", day= '" + day + '\'' + '}';
 	}
 }

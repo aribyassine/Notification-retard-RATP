@@ -76,4 +76,10 @@ public class UserNotification implements Serializable {
 	public LocalDateTime getDate() {
 		return Converter.dateToLocalDateTime(date);
 	}
+
+	@Override
+	public String toString() {
+		return "UserNotification{" + "userNotificationId=" + userNotificationId + ", notification=" + notification
+				+ ", user=" + user + ", date=" + date + '}';
+	}
 }

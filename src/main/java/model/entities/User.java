@@ -42,7 +42,7 @@ public class User implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<UserNotification> notifications;
-	
+
 	public Set<Comment> getComments() {
 		return comments;
 	}
@@ -50,7 +50,7 @@ public class User implements Serializable {
 	public Set<UserNotification> getUserNotifications() {
 		return notifications;
 	}
-	
+
 	public Set<UserScheduledLine> getScheduledLines() {
 		return scheduledLines;
 	}
@@ -98,6 +98,6 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User{" + "userName='" + userName + '\'' + ", email='" + email + '\'' + ", phoneNumber='" + phoneNumber
-				+ '\'' + ", affectedScheduledLine=" + scheduledLines + ", comments=" + comments + '}';
+				+ '\'' + '}';
 	}
 }
