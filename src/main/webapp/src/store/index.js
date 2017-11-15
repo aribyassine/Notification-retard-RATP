@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ function intervals () {
 }
 
 function fromServeur () {
+  axios.get('/getscheduledlines').then((response) => console.log(response), (err) => console.log(err))
   return [
     {
       ligne: {code: 1, name: 'Métro 1', directions: 'La Defense / Chateau de Vincennes', id: 62},

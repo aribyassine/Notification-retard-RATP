@@ -34,11 +34,5 @@ public class LinesServlet extends HttpServlet {
 			e.printStackTrace();
 			resp.sendRedirect("");
 		}
-
-
-
 	}
-
-
-
 }
