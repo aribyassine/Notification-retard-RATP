@@ -115,9 +115,9 @@ public class LatesController {
 				}
 
 				if (notification != null) {
-					if (notification.getDate().plusMinutes(30).isBefore(localDateTime)) {
+					if (notification.getDate().plusMinutes(120).isBefore(localDateTime)) {
 						
-						// the perturbation has exceeded 30 min
+						// the perturbation has exceeded 120 min
 						// create a new notification
 						try {
 							notification = notificationsController.addNotification(generateNotificationText(), line);
