@@ -17,48 +17,37 @@ import java.util.Arrays;
 @WebServlet(name = "modifyscheduledline", urlPatterns = {"/modifyscheduledline"})
 public class ModifyScheduledLineServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-    private ScheduledLineController slc = new ScheduledLineController();
+	private static final long serialVersionUID = 1L;
+	private ScheduledLineController slc = new ScheduledLineController();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    }
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	int id = Integer.parseInt(req.getParameter("id"));
-        String LineName = req.getParameter("lineName");
-        String type = req.getParameter("type");
-        String minute = req.getParameter("minuteBegin");
-        String hour = req.getParameter("hourEnd");
-        String[] days = new String[7];
-        days[0] = req.getParameter("lundi");
-        days[1] = req.getParameter("mardi");
-        days[2] = req.getParameter("mercredi");
-        days[3] = req.getParameter("jeudi");
-        days[4] = req.getParameter("vendredi");
-        days[5] = req.getParameter("samedi");
-        days[6] = req.getParameter("dimanche");
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
+		req.getParameterMap().forEach((k, v) -> System.out.println(k + " - " + Arrays.toString(v)));
+		try {
+			int id = Integer.parseInt(req.getParameter("id"));
+			String LineName = req.getParameter("lineName");
+			String type = req.getParameter("type");
+			String[] interval = req.getParameterValues("interval[]");
+			String[] days = req.getParameterValues("days[]");
 
+			HttpSession session = req.getSession(true);
+			if (session.isNew())
+				throw new DataException("user logged out");
+			String login = (String) session.getAttribute("username");
+			if (login.isEmpty())
+				throw new DataException("cookie missing");
+			System.out.println(slc.modifyUserScheduledLine(id,LineName, type, interval[0], interval[1], days, login));
+			resp.setStatus(HttpServletResponse.SC_OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 
-        req.getParameterMap().forEach((key, value) -> System.out.println(key + " " + Arrays.toString(value)));
-
-        try {
-            HttpSession session = req.getSession(true);
-            if (session.isNew())
-                throw new DataException("user logged out");
-            String login = (String) session.getAttribute("username");
-            if (login.isEmpty())
-                throw new DataException("cookie missing");
-            ServletOutputStream out = resp.getOutputStream();
-            slc.modifyUserScheduledLine(id,LineName, type, minute, hour, days, login);
-            out.write("".getBytes());
-            out.flush();
-            out.close();
-        } catch (DataException e) {
-            e.printStackTrace();
-            resp.sendRedirect("");
-        }
-    }
+	}
 }

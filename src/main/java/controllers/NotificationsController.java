@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -60,5 +61,13 @@ public class NotificationsController {
 		if (line == null || !DAOFactory.lineDAO().isExist(line))
 			throw new DataException("Line is invalid");
 		return DAOFactory.notificationDAO().getLatestNotificationForLine(line);
+	}
+	
+	public Notification getNotificationById(Serializable id) throws DataException {
+		Notification no = null;
+		if(id==null || (no=DAOFactory.notificationDAO().getById(id))==null)
+			throw new DataException("Notifications is not found");
+		return no;
+			
 	}
 }
