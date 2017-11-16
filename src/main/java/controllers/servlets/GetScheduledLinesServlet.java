@@ -22,9 +22,11 @@ public class GetScheduledLinesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Set<UserScheduledLine> scheduledLines = slc.getAllUserScheduledLine(req.getSession().getAttribute("username").toString());
         System.out.println(scheduledLines);
-        resp.setHeader("Content-Type","application/json; charset=utf-8");
+        resp.setHeader("Content-Type","application/json; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
         ServletOutputStream out = resp.getOutputStream();
-        out.println(scheduledLines.toString());
+        out.write(scheduledLines.toString().getBytes());
         out.flush();
         out.close();
 

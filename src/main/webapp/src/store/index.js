@@ -14,7 +14,19 @@ function intervals () {
 }
 
 function fromServeur () {
-  jquery.get('/getscheduledlines').then((response) => console.log(response.content), (err) => console.log(err))
+  let res = JSON.parse('[{"lineScheduleId":6,"line":{"lineId":2,"lineName":"RER C","lineType":"rer"},"beginTime":"6:0","endTime":"8:40","day":"tuesday"},{"lineScheduleId":8,"line":{"lineId":2,"lineName":"RER C","lineType":"rer"},"beginTime":"18:50","endTime":"20:40","day":"sunday"},{"lineScheduleId":5,"line":{"lineId":2,"lineName":"RER C","lineType":"rer"},"beginTime":"6:0","endTime":"8:40","day":"monday"},{"lineScheduleId":7,"line":{"lineId":2,"lineName":"RER C","lineType":"rer"},"beginTime":"18:50","endTime":"20:40","day":"saturday"},{"lineScheduleId":4,"line":{"lineId":1,"lineName":"Métro 1","lineType":"metro"},"beginTime":"6:0","endTime":"8:40","day":"tuesday"},{"lineScheduleId":3,"line":{"lineId":1,"lineName":"Métro 1","lineType":"metro"},"beginTime":"6:0","endTime":"8:40","day":"monday"},{"lineScheduleId":1,"line":{"lineId":1,"lineName":"Métro 1","lineType":"metro"},"beginTime":"6:0","endTime":"10:10","day":"monday"},{"lineScheduleId":2,"line":{"lineId":1,"lineName":"Métro 1","lineType":"metro"},"beginTime":"6:0","endTime":"10:10","day":"tuesday"}]')
+  // jquery.get('/getscheduledlines').then(function (response) { res = response.content }, (err) => console.log(err))
+  res = res.map(function (e) {
+    console.log(e, e.line)
+    return {
+      ligne: {name: e.lineName},
+      interval: [
+        e.beginTime.split(':').map((time) => (parseInt(time) < 10 ? '0' : '') + parseInt(time)).join(':'),
+        e.endTime.split(':').map((time) => (parseInt(time) < 10 ? '0' : '') + parseInt(time)).join(':')
+      ]
+    }
+  })
+  console.log(res)
   return [
     {
       ligne: {code: 1, name: 'Métro 1', directions: 'La Defense / Chateau de Vincennes', id: 62, type: 'metros'},

@@ -102,12 +102,11 @@ public class UserScheduledLine implements Serializable {
 	@Override
 	public String toString() {
 		return "{" +
-				"lineScheduleId:" + lineScheduleId +
-				", user:" + user +
-				", line:" + line +
-				", beginTime:'" + beginTime.getMinutes() +'\''+
-				", endTime:'" + endTime.getMinutes() +'\''+
-				", day:" + day +
+				"\"lineScheduleId\":" + lineScheduleId +
+				", \"line\":" + line +
+				", \"beginTime\":\"" + beginTime.getHours() +':'+beginTime.getMinutes() +'\"'+
+				", \"endTime\":\"" + endTime.getHours() +':'+ endTime.getMinutes() +'\"'+
+				", \"day\":\"" + day +'\"'+
 				'}';
 	}
 }
