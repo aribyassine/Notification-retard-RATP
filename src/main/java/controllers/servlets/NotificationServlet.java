@@ -31,20 +31,15 @@ public class NotificationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			
-			HttpSession session = req.getSession(true);
-            if (session.isNew())
-                throw new DataException("user logged out");
-            String login = (String) session.getAttribute("username");
-            if (login.isEmpty())
-                throw new DataException("cookie missing");
+		
 			int id = Integer.parseInt(req.getParameter("id"));
-			
+			System.out.println("here");
 			Notification not = nct.getNotificationById(id);
 			ArrayList<Comment> com= new ArrayList<>(not.getComments());
 			req.setAttribute("notification", not);
 			req.setAttribute("comments", com);
 			
-			System.out.println(not.toString());
+			//System.out.println(not.toString());
 
 			
 			req.getRequestDispatcher("./Notification.jsp").forward(req,resp);

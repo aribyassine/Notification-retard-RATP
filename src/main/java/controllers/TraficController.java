@@ -8,6 +8,8 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
+import com.google.common.graph.ElementOrder.Type;
+
 import controllers.exceptions.DataException;
 import model.entities.Line.LineType;
 
@@ -17,21 +19,38 @@ public class TraficController {
 		private String line;
 		private String slug;
 		private String message;
-		public TraficInfo(String line, String slug, String message) {
+		private String title;
+	
+		public TraficInfo(String line, String slug, String message, String title) {
 			super();
 			this.line = line;
 			this.slug = slug;
 			this.message = message;
+			this.title = title;
 		}
+
 		public String getLine() {
 			return line;
 		}
+
 		public String getSlug() {
 			return slug;
 		}
+
 		public String getMessage() {
 			return message;
 		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		@Override
+		public String toString() {
+			return "TraficInfo [line=" + line + ", slug=" + slug + ", message=" + message + ", title=" + title + "]";
+		}
+
+	
 		
 	}
 
@@ -68,7 +87,7 @@ public class TraficController {
 			JSONObject obj = new JSONObject(tmp);
 			JSONObject result = obj.getJSONObject("result");
 
-			return new TraficInfo(result.getString("line"), result.getString("slug"), result.getString("slug"));
+			return new TraficInfo(result.getString("line"), result.getString("slug"), result.getString("message"),result.getString("title"));
 			
 		} catch ( IOException mue) {
 			mue.printStackTrace();
@@ -84,7 +103,7 @@ public class TraficController {
 		
 
 	}
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) throws DataException {
+		System.out.println(checkLineTrafic(LineType.metro,"1"));
 	}
 }
