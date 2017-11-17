@@ -43,13 +43,13 @@
 
 	<h1>
 		<%
-			out.print(n.getNotificationText());
+			out.print(n);
 		%>
 	</h1>
 
 
 	<%
-		out.println(n.getLine().toString());
+		out.println(n);
 	%>
 	<br /> Comments:
 	<div id="head">
@@ -59,7 +59,8 @@
 				for (Comment p : c) {
 		%>
 		<li>
-			<%	out.println(p);%>
+			<%	out.println(p.getCommentText()+".  " + p.getDate().getHour()+":"+ p.getDate().getMinute()+ " "+ p.getDate().getDayOfMonth() + "-"+p.getDate().getDayOfMonth()+"-"+ p.getDate().getYear() 
+					+"   "+ p.getUser().getUserName());%>
 			
 		</li>
 

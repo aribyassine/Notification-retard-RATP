@@ -38,14 +38,10 @@ public class AddCommentServlet extends HttpServlet {
 			System.out.println(req.getParameter("comment"));
 			System.out.println(req.getParameter("notification"));
 			slc.addComment(req.getParameter("comment"), "addScheduleLine_PositiveTest", Integer.parseInt(req.getParameter("notification")));
+			resp.setStatus(HttpServletResponse.SC_OK);
 		} catch (DataException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
-
-
-
-
-
 	}
 }

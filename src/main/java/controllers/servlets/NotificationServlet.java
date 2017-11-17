@@ -38,10 +38,7 @@ public class NotificationServlet extends HttpServlet {
 			ArrayList<Comment> com= new ArrayList<>(not.getComments());
 			req.setAttribute("notification", not);
 			req.setAttribute("comments", com);
-			
-			//System.out.println(not.toString());
-
-			
+					
 			req.getRequestDispatcher("./Notification.jsp").forward(req,resp);
 			resp.setStatus(HttpServletResponse.SC_OK);
 		}catch (Exception e) {
