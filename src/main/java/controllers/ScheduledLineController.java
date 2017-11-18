@@ -247,7 +247,9 @@ public class ScheduledLineController {
 			return false;
 	}
 
-	public List<UserScheduledLine> setOfUserScheduledLine(String username) {
+	public List<UserScheduledLine> setOfUserScheduledLine(String username) throws DataException {
+		if (username.isEmpty() || DAOFactory.userDAO().getById(username)==null)
+			throw new DataException("User is invalid");
 		List<UserScheduledLine> a = DAOFactory.userScheduledLineDAO().getListOfUserScheduledLinesOfUser(username);
 		return a;
 	}
