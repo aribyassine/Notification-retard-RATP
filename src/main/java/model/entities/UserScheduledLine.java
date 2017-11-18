@@ -16,7 +16,7 @@ import java.util.Date;
 		+ "TIME_TO_SEC(time(s.beginTime)) <= TIME_TO_SEC(time(:time)) "
 		+ "and TIME_TO_SEC(time(s.endTime)) >= TIME_TO_SEC(time(:time)) " + "and s.day = :day ")
 @Entity
-@Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "USER", "LINE", "BEGIN_TIME",
+@Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "USERS", "LINE", "BEGIN_TIME",
 		"END_TIME", "DAY" }))
 public class UserScheduledLine implements Serializable {
 
@@ -32,7 +32,7 @@ public class UserScheduledLine implements Serializable {
 	private int lineScheduleId;
 
 	@ManyToOne
-	@JoinColumn(name = "USER")
+	@JoinColumn(name = "USERS")
 	private User user;
 
 	@ManyToOne
