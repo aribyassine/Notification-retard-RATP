@@ -7,3 +7,6 @@ target
 .settings/
 bin/
 src/main/java/myTests/
+dist/css/
+dist/index.html
+dist/jsp/
