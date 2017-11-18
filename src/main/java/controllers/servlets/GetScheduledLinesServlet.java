@@ -20,6 +20,7 @@ public class GetScheduledLinesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         Set<UserScheduledLine> scheduledLines = slc.getAllUserScheduledLine(req.getSession().getAttribute("username").toString());
         System.out.println(scheduledLines);
         resp.setHeader("Content-Type","application/json; charset=UTF-8");

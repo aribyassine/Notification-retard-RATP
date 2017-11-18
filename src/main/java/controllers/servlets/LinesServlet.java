@@ -22,6 +22,7 @@ public class LinesServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		resp.setHeader("Content-Type","application/json");
 		resp.setHeader("Access-Control-Allow-Origin","*");
 		ServletOutputStream out = resp.getOutputStream();

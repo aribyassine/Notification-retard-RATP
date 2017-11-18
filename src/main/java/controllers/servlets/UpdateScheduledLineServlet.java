@@ -39,12 +39,11 @@ public class UpdateScheduledLineServlet extends HttpServlet {
             String[] interval = req.getParameterValues("interval[]");
             String[] days = req.getParameterValues("days[]");
 
-            HttpSession session = req.getSession(true);
-            if (session.isNew())
-                throw new DataException("user logged out");
+            HttpSession session = req.getSession();
             String login = (String) session.getAttribute("username");
-            if (login.isEmpty())
-                throw new DataException("cookie missing");
+
+            if (login.isEmpty()) throw new DataException("cookie missing");
+
             List<Integer> newIds = new ArrayList<>();
             for (Integer id : ids) {
                 newIds = slc.modifyUserScheduledLine(id, LineName, type, interval[0], interval[1], days, login)

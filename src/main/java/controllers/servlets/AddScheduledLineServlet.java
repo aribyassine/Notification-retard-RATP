@@ -26,9 +26,8 @@ public class AddScheduledLineServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         req.getParameterMap().forEach((k, v) -> System.out.println(k + " - " + Arrays.toString(v)));
-        System.out.println(req.getParameter("type"));
+
         try {
             String LineName = req.getParameter("lineName");
             String type = req.getParameter("type");

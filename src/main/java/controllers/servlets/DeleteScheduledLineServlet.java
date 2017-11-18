@@ -1,18 +1,14 @@
 package controllers.servlets;
 
-import java.io.IOException;
-import java.util.Arrays;
+import controllers.ScheduledLineController;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import controllers.ScheduledLineController;
-import controllers.exceptions.DataException;
+import java.io.IOException;
+import java.util.Arrays;
 
 @WebServlet(name = "deletescheduledline", urlPatterns = {"/deletescheduledline"})
 public class DeleteScheduledLineServlet extends HttpServlet {
@@ -27,20 +23,13 @@ public class DeleteScheduledLineServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         req.getParameterMap().forEach((key, value) -> System.out.println(key + " " + Arrays.toString(value)));
         String[] ids = req.getParameterValues("ids[]");
 
         try {
-            HttpSession session = req.getSession(true);
-            if (session.isNew())
-                throw new DataException("user logged out");
-            String login = (String) session.getAttribute("username");
-            if (login.isEmpty())
-                throw new DataException("cookie missing");
-            for (String id : ids) {
-                slc.deleteUserScheduledLine(Integer.parseInt(id)) ;
-            }
+            for (String id : ids)
+                slc.deleteUserScheduledLine(Integer.parseInt(id));
+
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
