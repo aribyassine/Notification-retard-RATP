@@ -37,6 +37,9 @@ public class TraficController {
 			return slug;
 		}
 
+		public boolean areTherePerturbation() {
+			return !"normal".equals(slug);
+		}
 		public String getMessage() {
 			return message;
 		}

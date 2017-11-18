@@ -1,5 +1,6 @@
 package launch;
 
+import controllers.LatesController;
 import controllers.LinesController;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
@@ -82,7 +83,7 @@ public class Main {
         tomcat.start();
 
         LinesController.startLinesUpdater();
-
+        LatesController.startNotifier();
         tomcat.getServer().await();
     }
 }

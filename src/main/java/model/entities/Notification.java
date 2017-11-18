@@ -25,7 +25,6 @@ import util.Converter;
  * @author Mohamed T. KASSAR
  *
  */
-// URL  /notification?id=1	
 @NamedQuery(name = "getLatestNotificationForLine", query = "select n1 from Notification n1 " + "where n1.date = "
 		+ "(select max(n2.date) " + "from Notification n2 " + "where n1.line = n2.line and n1.line = :line)")
 @Entity

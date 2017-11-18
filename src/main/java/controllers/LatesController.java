@@ -22,6 +22,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import controllers.TraficController.TraficInfo;
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
 import model.entities.Line;
@@ -40,10 +41,10 @@ public class LatesController {
 	private static NotificationsController notificationsController = new NotificationsController();
 	private static UserNotificationsController userNotificationsController = new UserNotificationsController();
 
-	public static void startLinesUpdater() {
+	public static void startNotifier() {
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1, (Runnable r) -> {
 			Thread t = Executors.defaultThreadFactory().newThread(r);
-			t.setDaemon(false);
+			t.setDaemon(true);
 			return t;
 		});
 
@@ -82,7 +83,6 @@ public class LatesController {
 			break;
 		}
 
-		System.out.println(localDateTime);
 		Set<UserScheduledLine> usls = DAOFactory.userScheduledLineDAO().getSchedulesByTime(localDateTime.getHour(),
 				localDateTime.getMinute(), day);
 
@@ -103,7 +103,9 @@ public class LatesController {
 
 		map.entrySet().forEach(entry -> {
 			Line line = entry.getKey();
-			if (thereAreLatesForLine(line)) {
+			TraficInfo info;
+
+			if ((info = checkLatesForLine(line)) != null && info.areTherePerturbation()) {
 				Set<User> users = entry.getValue().stream().distinct().collect(Collectors.toSet());
 				// get the last notification created for this line
 				Notification notification = null;
@@ -116,20 +118,22 @@ public class LatesController {
 
 				if (notification != null) {
 					if (notification.getDate().plusMinutes(120).isBefore(localDateTime)) {
-						
+
 						// the perturbation has exceeded 120 min
 						// create a new notification
 						try {
-							notification = notificationsController.addNotification(generateNotificationText(), line);
+							notification = notificationsController.addNotification(generateNotificationText(info),
+									line);
 						} catch (DataException e) {
 							e.printStackTrace();
 							return;
 						}
-					} else if (!notification.getNotificationText().equals("text"/* TODO */)) {
+					} else if (!notification.getNotificationText().equals(info.getMessage())) {
 						// a new perturbation in less than 30 min and the perturbation is changed
 						// create new notif. notify all
 						try {
-							notification = notificationsController.addNotification(generateNotificationText(), line);
+							notification = notificationsController.addNotification(generateNotificationText(info),
+									line);
 						} catch (DataException e) {
 							e.printStackTrace();
 							return;
@@ -160,7 +164,7 @@ public class LatesController {
 				} else {
 					// notify all
 					try {
-						notification = notificationsController.addNotification(generateNotificationText(), line);
+						notification = notificationsController.addNotification(generateNotificationText(info), line);
 					} catch (DataException e) {
 						e.printStackTrace();
 						return;
@@ -174,14 +178,19 @@ public class LatesController {
 
 	}
 
-	private static String generateNotificationText() {
-		// TODO:
-		return "text";
+	private static String generateNotificationText(TraficInfo info) {
+		return info.getMessage();
 	}
 
-	private static boolean thereAreLatesForLine(Line line) {
-		// TODO check in RATP
-		return true;
+	private static TraficInfo checkLatesForLine(Line line) {
+		TraficInfo info;
+		try {
+			info = TraficController.checkLineTrafic(line.getLineType(), line.getLineName());
+		} catch (DataException e) {
+			e.printStackTrace();
+			info = null;
+		}
+		return info;
 	}
 
 	private static void notifyUser(User user, Line line, Notification notification) {
@@ -190,22 +199,29 @@ public class LatesController {
 		} catch (DataException e) {
 			e.printStackTrace();
 			return;
-		}
-		System.err.println("notify : " + user.getEmail() + ", for line : "+ line.getLineName());
-		//sendMail(user.getEmail(), decorateEmailMessage(notification.getNotificationText()), line);
+		} 
+		sendMail(user.getEmail(), decorateEmailMessage(notification.getNotificationText()) + "\n"
+				+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id=" + notification.getNotificationId(),
+				line);
+		sendSMS(user.getPhoneNumber(), notification.getNotificationText()
+				+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id=" + notification.getNotificationId(),
+				line);
 	}
 
 	private static String decorateEmailMessage(String message) {
-		// TODO add prefix and postfix
 		return message;
 	}
 
 	private static void sendSMS(String phoneNumber, String message, Line line) {
-		// TODO intercept error and try to send with another server
-
 		String url = "http://smsgateway.me/api/v3/messages/send?"
-				+ "email=labib.ayyoub@gmail.com&password=abc123456&device=64842&number=" + phoneNumber + "&message="
-				+ message;
+				+ "email=labib.ayyoub@gmail.com&password=abc123456&device=66597&number=" + phoneNumber + "&message="// TODO
+																													// :
+																													// dvice
+																													// id
+																													// here
+				+ "Des perturbation sur la ligne : " + line.getLineType().toString().toUpperCase() + " "
+				+ line.getLineName().toUpperCase() + ". " + message.replaceAll("'", "`").replaceAll("à", "a")
+						.replaceAll("é", "e").replaceAll("è", "à").replaceAll("ç", "c").replaceAll("\n", ". ");
 
 		URL obj;
 		try {
@@ -222,11 +238,12 @@ public class LatesController {
 	private static void sendMail(String email, String mailText, Line line) {
 		try {
 			String host = "smtp.gmail.com";
-			String user = "mailnotification12@gmail.com"; // TODO : to be changed
+			String user = "mailnotification12@gmail.com";
 			String pass = "mailnotification";
 			String to = email;
 			String from = "RATP-NOTIFICATIONS";
-			String subject = "NoReply - Late notification for " + line.getLineType() + " " + line.getLineName();
+			String subject = "NoReply - Des perturbation sur la ligne : " + line.getLineType().toString().toUpperCase()
+					+ " " + line.getLineName().toUpperCase();
 			String messageText = mailText;
 			boolean sessionDebug = false;
 
@@ -258,81 +275,95 @@ public class LatesController {
 
 	}
 
-	public static void main(String[] args) throws DataException {
-		AuthentificationController ac = new AuthentificationController();
-
-		ac.registerUser("user0", "ktarek1994@gmail.com", "0769128018", "pwd01");
-		ac.registerUser("user1", "ktiko1994@yahoo.fr", "0769128020", "pwd02");
-		ac.registerUser("user2", "ktarek1994@outlook.com", "0769128019", "pwd03");
-		ac.registerUser("user3", "mtkassar@altirc.com", "0769128021", "pwd04");
-
-		ScheduledLineController slc = new ScheduledLineController();
-
-		slc.addUserScheduledLine("d", "rer", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user0");
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("d", "rer", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user1");
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("a", "rer", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user0");
-
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("a", "rer", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user1");
-
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("a", "rer", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user2");
-
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user0");
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user1");
-
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user2");
-
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user3");
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user0");
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user1");
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user2");
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user3");
-		System.out.println("ok");
-
-		System.out.println("ok");
-
-		slc.addUserScheduledLine("9", "tramway", "00:00", "23:59",
-				new String[] { "true", "true", "true", "true", "true", "true", "true" }, "user0");
-
-		System.out.println("FIN -------------------------------------");
-
-		startLinesUpdater();
-	}
-
+	// public static void main(String[] args) throws DataException {
+	// AuthentificationController ac = new AuthentificationController();
+	//
+	// ac.registerUser("user0", "ktarek1994@gmail.com", "0769128018", "pwd01");
+	// ac.registerUser("user1", "ktiko1994@yahoo.fr", "0769128020", "pwd02");
+	// ac.registerUser("user2", "ktarek1994@outlook.com", "0769128019", "pwd03");
+	// ac.registerUser("user3", "mtkassar@altirc.com", "0769128021", "pwd04");
+	//
+	// ScheduledLineController slc = new ScheduledLineController();
+	//
+	// slc.addUserScheduledLine("d", "rer", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user0");
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("d", "rer", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user1");
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("a", "rer", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user0");
+	//
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("a", "rer", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user1");
+	//
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("a", "rer", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user2");
+	//
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user0");
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user1");
+	//
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user2");
+	//
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("8", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user3");
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user0");
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user1");
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user2");
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("15", "metro", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user3");
+	// System.out.println("ok");
+	//
+	// System.out.println("ok");
+	//
+	// slc.addUserScheduledLine("9", "tramway", "00:00", "23:59",
+	// new String[] { "true", "true", "true", "true", "true", "true", "true" },
+	// "user0");
+	//
+	// System.out.println("FIN -------------------------------------");
+	//
+	// startLinesUpdater();
+	// }
+	//
 }
