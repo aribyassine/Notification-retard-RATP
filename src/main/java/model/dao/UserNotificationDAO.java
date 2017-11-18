@@ -1,12 +1,14 @@
 package model.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import model.dao.interfaces.IDAO;
 import model.entities.Line;
+import model.entities.Notification;
 import model.entities.User;
 import model.entities.UserNotification;
 import util.HibernateUtil;
@@ -40,5 +42,28 @@ public class UserNotificationDAO extends DAO<UserNotification> implements IDAO<U
 		s.close();
 		return (UserNotification) list.get(0);
 	}
+	
+	public List<Notification> getUserNotifications(String user) {
+		SessionFactory factory = HibernateUtil.getSessionFactory();
+		Session s = factory.openSession();
+		s.beginTransaction();
+		List<Notification> list = s.createSQLQuery("select`n`.* from notification as n, user_notification as n1 where `n1`.`user`='"
+				+ user + "' and  `n`.`notification_id`=`n1`.`NOTIFICATION` order by `n1`.`USER_NOTIFICATION_DATE` desc").addEntity(Notification.class).list();
+		if (list.isEmpty())
+			return null;
+
+//		result = list.stream().map(o -> (Notification) o).collect(Collectors.toList()).stream().max((n1, n2) -> {
+//			if (n1.getDate().isAfter(n2.getDate()))
+//				return 1;
+//			if (n2.getDate().isAfter(n1.getDate()))
+//				return -1;
+//			return 0;
+//		}).get();
+
+		s.getTransaction().commit();
+		s.close();
+		return  list;
+	}
+
 
 }

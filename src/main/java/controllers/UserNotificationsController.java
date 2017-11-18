@@ -2,6 +2,8 @@ package controllers;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Set;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
@@ -36,6 +38,16 @@ public class UserNotificationsController {
 			throw new DataException("Line is invalid");
 
 		return DAOFactory.userNotificationDAO().getLatestNotificationForUserNLine(line, user);
+	}
+	
+	
+	public List<Notification> getUserNotifications(String User) throws DataException{
+		if (User.isEmpty() || DAOFactory.userDAO().getById(User)==null)
+			throw new DataException("User is invalid");
+		
+		
+		return DAOFactory.userNotificationDAO().getUserNotifications(User);
+		
 	}
 
 }
