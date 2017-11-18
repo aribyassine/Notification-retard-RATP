@@ -28,10 +28,8 @@ public class DeleteScheduledLineServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        int id = Integer.parseInt(req.getParameter("id"));
-     
-
         req.getParameterMap().forEach((key, value) -> System.out.println(key + " " + Arrays.toString(value)));
+        String[] ids = req.getParameterValues("ids[]");
 
         try {
             HttpSession session = req.getSession(true);
@@ -40,8 +38,9 @@ public class DeleteScheduledLineServlet extends HttpServlet {
             String login = (String) session.getAttribute("username");
             if (login.isEmpty())
                 throw new DataException("cookie missing");
-            
-            slc.deleteUserScheduledLine(id) ;
+            for (String id : ids) {
+                slc.deleteUserScheduledLine(Integer.parseInt(id)) ;
+            }
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
