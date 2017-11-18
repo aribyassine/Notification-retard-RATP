@@ -30,9 +30,12 @@ public class NotificationServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
+			
+			HttpSession session = req.getSession(true);
+			if (session.isNew())
+				throw new DataException("user logged out");
+			
 			String login = (String) req.getSession().getAttribute("username");
-
-
 			int id = Integer.parseInt(req.getParameter("id"));
 			System.out.println("here");
 			Notification not = nct.getNotificationById(id);
