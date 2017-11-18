@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,8 +38,7 @@ public class UpdateScheduledLineServlet extends HttpServlet {
             String[] interval = req.getParameterValues("interval[]");
             String[] days = req.getParameterValues("days[]");
 
-            HttpSession session = req.getSession();
-            String login = (String) session.getAttribute("username");
+            String login = (String) req.getSession().getAttribute("username");
 
             if (login.isEmpty()) throw new DataException("cookie missing");
 

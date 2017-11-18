@@ -30,8 +30,9 @@ public class NotificationServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			
-		
+			String login = (String) req.getSession().getAttribute("username");
+
+
 			int id = Integer.parseInt(req.getParameter("id"));
 			System.out.println("here");
 			Notification not = nct.getNotificationById(id);

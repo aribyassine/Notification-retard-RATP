@@ -1,6 +1,7 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <ul class="nav navbar-nav">
+        <a class="navbar-brand" href="/">Notifieur</a>
+        <ul class="nav navbar-nav navbar-right">
             <li><a href="login">Connexion</a></li>
             <li><a href="register">Inscription</a></li>
         </ul>
