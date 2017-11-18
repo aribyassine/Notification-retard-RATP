@@ -28,7 +28,6 @@ function fromServeur () {
   })
   res = _.flatMap(_.values(_.groupBy(maped, 'ligne.name')).map(elem => _.values(_.groupBy(elem, 'interval'))))
   console.log(res)
-  console.log()
   console.log(res.map(elem =>
     elem.reduce(function (acc, val) {
       acc.ligne = val.ligne
