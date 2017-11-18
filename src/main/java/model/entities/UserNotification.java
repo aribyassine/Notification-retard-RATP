@@ -34,7 +34,7 @@ public class UserNotification implements Serializable {
 	private int userNotificationId;
 
 	@ManyToOne
-	@JoinColumn(name = "USER")
+	@JoinColumn(name = "USERS")
 	private User user;
 
 	@ManyToOne

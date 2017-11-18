@@ -7,16 +7,16 @@
 	<session-factory>
 
 		<!-- Database connection settings -->
-		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/dar</property>
-		<property name="connection.username">root</property>
-		<property name="connection.password"></property>
+		<property name="connection.driver_class">org.postgresql.Driver</property>
+		<property name="connection.url">jdbc:postgresql://localhost:5432/dar</property>
+		<property name="connection.username">postgres</property>
+		<property name="connection.password">root</property>
 
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">1</property>
 
 		<!-- SQL dialect -->
-		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
 
 		<!-- Enable Hibernate's automatic session context management -->
 		<property name="current_session_context_class">thread</property>
@@ -32,12 +32,12 @@
 		<!-- <mapping resource="dao/Categorie.hbm.xml"/> -->
 		<!-- <mapping resource="dao/produit.hbm.xml"/> -->
 
-		<mapping class="model.entities.Line" />
 		<mapping class="model.entities.User" />
-		<mapping class="model.entities.UserScheduledLine" />
+		<mapping class="model.entities.Line" />
 		<mapping class="model.entities.Notification" />
-		<mapping class="model.entities.Comment" />
+		<mapping class="model.entities.UserScheduledLine" />
 		<mapping class="model.entities.UserNotification" />
+		<mapping class="model.entities.Comment" />
 
 	</session-factory>
 </hibernate-configuration>

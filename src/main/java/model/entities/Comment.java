@@ -38,7 +38,7 @@ public class Comment implements Serializable {
 	private Notification notification;
 
 	@ManyToOne
-	@JoinColumn(name = "USER")
+	@JoinColumn(name = "USERS")
 	private User user;
 
 	@Temporal(TemporalType.TIMESTAMP)
