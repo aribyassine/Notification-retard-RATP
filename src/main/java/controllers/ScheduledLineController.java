@@ -34,6 +34,11 @@ public class ScheduledLineController {
 		if (LineName.isEmpty() || type.isEmpty() || debut.isEmpty() || fin.isEmpty() || days.length != 7)
 			throw new DataException("Not enough infos");
 
+		if(LineName.toLowerCase().matches("tramway")) {
+			LineName = LineName.substring(9);
+		}else {
+			LineName = LineName.split(" ")[1];
+		}
 		String timeDebut[] = debut.split(":");
 		if (timeDebut.length != 2)
 			throw new DataException("Time is invalid");
