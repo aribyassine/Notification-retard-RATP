@@ -83,7 +83,7 @@ public class Main {
         tomcat.start();
 
         LinesController.startLinesUpdater();
-        LatesController.startNotifier();
+        //LatesController.startNotifier();
         tomcat.getServer().await();
     }
 }
