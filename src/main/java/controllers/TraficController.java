@@ -14,13 +14,13 @@ import controllers.exceptions.DataException;
 import model.entities.Line.LineType;
 
 public class TraficController {
-	
-	public static class TraficInfo{
+
+	public static class TraficInfo {
 		private String line;
 		private String slug;
 		private String message;
 		private String title;
-	
+
 		public TraficInfo(String line, String slug, String message, String title) {
 			super();
 			this.line = line;
@@ -40,6 +40,7 @@ public class TraficController {
 		public boolean areTherePerturbation() {
 			return !"normal".equals(slug);
 		}
+
 		public String getMessage() {
 			return message;
 		}
@@ -53,16 +54,22 @@ public class TraficController {
 			return "TraficInfo [line=" + line + ", slug=" + slug + ", message=" + message + ", title=" + title + "]";
 		}
 
-	
-		
 	}
 
-	public static TraficInfo checkLineTrafic(LineType type, String name ) throws DataException {
+	public static TraficInfo checkLineTrafic(LineType type, String name) throws DataException {
+		System.err.println("before:"+name+".");
+		if (name.toLowerCase().startsWith("tramway")) {
+			name = name.substring(9);
+		} else {
+			name = name.split(" ")[1];
+		}
+		System.err.println("after:"+name+".");
+
 		URL url;
 		InputStream is = null;
 		BufferedReader br;
 		String line;
-		String tmp="";
+		String tmp = "";
 		String type1;
 		try {
 			switch (type) {
@@ -75,38 +82,40 @@ public class TraficController {
 			case tramway:
 				type1 = "tramways";
 				break;
-	
+
 			default:
 				throw new DataException("Invalid line type");
 			}
 
-			url = new URL("https://api-ratp.pierre-grimaud.fr/v3/traffic/"+type1+"/"+name);
-			is = url.openStream();  
+			url = new URL("https://api-ratp.pierre-grimaud.fr/v3/traffic/" + type1 + "/" + name);
+			is = url.openStream();
 			br = new BufferedReader(new InputStreamReader(is));
 
 			while ((line = br.readLine()) != null) {
-				tmp+=line;
+				tmp += line;
 			}
 			JSONObject obj = new JSONObject(tmp);
 			JSONObject result = obj.getJSONObject("result");
 
-			return new TraficInfo(result.getString("line"), result.getString("slug"), result.getString("message"),result.getString("title"));
-			
-		} catch ( IOException mue) {
+			return new TraficInfo(result.getString("line"), result.getString("slug"), result.getString("message"),
+					result.getString("title"));
+
+		} catch (IOException mue) {
 			mue.printStackTrace();
 			throw new DataException("Server couldn't get information about the line's traffic");
-		}  finally {
+		} finally {
 			try {
-				if (is != null) is.close();
+				if (is != null)
+					is.close();
 			} catch (final IOException ioe) {
 
 			}
-			
+
 		}
-		
 
 	}
+
 	public static void main(String[] args) throws DataException {
-		System.out.println(checkLineTrafic(LineType.metro,"1"));
+		System.out.println(checkLineTrafic(LineType.tramway, "Tramway T3a"));
 	}
 }
