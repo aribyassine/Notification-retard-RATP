@@ -35,6 +35,7 @@ public class AuthenticationFilter implements Filter {
                 break;
             }
         }
+
         System.out.println(request.getRequestURL());
 
         if (isExcludedURL) {
