@@ -199,12 +199,16 @@ public class LatesController {
 		} catch (DataException e) {
 			e.printStackTrace();
 			return;
-		} 
-		sendMail(user.getEmail(), decorateEmailMessage(notification.getNotificationText()) + "\n"
-				+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id=" + notification.getNotificationId(),
+		}
+		sendMail(user.getEmail(),
+				decorateEmailMessage(notification.getNotificationText()) + "\n"
+						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
+						+ notification.getNotificationId(),
 				line);
-		sendSMS(user.getPhoneNumber(), notification.getNotificationText()
-				+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id=" + notification.getNotificationId(),
+		sendSMS(user.getPhoneNumber(),
+				notification.getNotificationText()
+						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
+						+ notification.getNotificationId(),
 				line);
 	}
 
@@ -219,9 +223,9 @@ public class LatesController {
 																													// dvice
 																													// id
 																													// here
-				+ "Des perturbation sur la ligne : " + line.getLineType().toString().toUpperCase() + " "
-				+ line.getLineName().toUpperCase() + ". " + message.replaceAll("'", "`").replaceAll("à", "a")
-						.replaceAll("é", "e").replaceAll("è", "à").replaceAll("ç", "c").replaceAll("\n", ". ");
+				+ "Des perturbation sur la ligne : " + line.getLineName().toUpperCase() + ". "
+				+ message.replaceAll("'", "`").replaceAll("à", "a").replaceAll("é", "e").replaceAll("è", "à")
+						.replaceAll("ç", "c").replaceAll("\n", ". ");
 
 		URL obj;
 		try {
@@ -242,8 +246,7 @@ public class LatesController {
 			String pass = "mailnotification";
 			String to = email;
 			String from = "RATP-NOTIFICATIONS";
-			String subject = "NoReply - Des perturbation sur la ligne : " + line.getLineType().toString().toUpperCase()
-					+ " " + line.getLineName().toUpperCase();
+			String subject = "NoReply - Des perturbation sur la ligne : " + line.getLineName().toUpperCase();
 			String messageText = mailText;
 			boolean sessionDebug = false;
 
