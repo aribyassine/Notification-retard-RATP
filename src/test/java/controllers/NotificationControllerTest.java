@@ -2,12 +2,12 @@ package controllers;
 
 import static org.junit.Assert.assertNotNull;
 
+import model.entities.ClientScheduledLine;
 import org.junit.Assert;
 import org.junit.Test;
 
 import model.entities.Line;
 import model.entities.Line.LineType;
-import model.entities.UserScheduledLine;
 
 public class NotificationControllerTest {
 	
@@ -34,9 +34,9 @@ public class NotificationControllerTest {
 		} catch (Exception e) {
 			Assert.fail("Regestration error : " + e.getMessage());
 		}
-		UserScheduledLine tmp = null;
+		ClientScheduledLine tmp = null;
 		try {
-			assertNotNull(tmp=(controller2.addUserScheduledLine("b", "rer", "10:00", "10:04", days, "tikooo").toArray(new UserScheduledLine[0])[0]));
+			assertNotNull(tmp=(controller2.addUserScheduledLine("b", "rer", "10:00", "10:04", days, "tikooo").toArray(new ClientScheduledLine[0])[0]));
 		} catch (Exception e) {
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}
@@ -84,9 +84,9 @@ public class NotificationControllerTest {
 		} catch (Exception e) {
 			Assert.fail("Regestration error : " + e.getMessage());
 		}
-		UserScheduledLine tmp = null;
+		ClientScheduledLine tmp = null;
 		try {
-			assertNotNull(tmp=controller2.addUserScheduledLine("a", "rer", "10:00", "10:04", days, "NotificationController_NegativeTest2").toArray(new UserScheduledLine[0])[0]);
+			assertNotNull(tmp=controller2.addUserScheduledLine("a", "rer", "10:00", "10:04", days, "NotificationController_NegativeTest2").toArray(new ClientScheduledLine[0])[0]);
 		} catch (Exception e) {
 			Assert.fail("add schedule line error : " + e.getMessage());
 		}

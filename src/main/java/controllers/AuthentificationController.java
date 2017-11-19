@@ -6,7 +6,7 @@ import com.google.common.hash.Hashing;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
-import model.entities.User;
+import model.entities.Client;
 
 /**
  * @author Mohamed T. KASSAR
@@ -14,18 +14,18 @@ import model.entities.User;
 
 public class AuthentificationController {
 
-    public User checkLogin(String userName, String password) throws DataException {
-        User user = DAOFactory.userDAO().getByName(userName);
-        if (user == null || userName.isEmpty() || password.isEmpty() || !user.getPassword().equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString()))
-            throw new DataException("Invalid user name or password");
-        return user;
+    public Client checkLogin(String userName, String password) throws DataException {
+        Client client = DAOFactory.userDAO().getByName(userName);
+        if (client == null || userName.isEmpty() || password.isEmpty() || !client.getPassword().equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString()))
+            throw new DataException("Invalid client name or password");
+        return client;
     }
 
-    public User registerUser(String userName, String email, String phoneNumber, String password)
+    public Client registerUser(String userName, String email, String phoneNumber, String password)
             throws DataException {
 
         if (userName.isEmpty())
-            throw new DataException("User name cannot be empty");
+            throw new DataException("Client name cannot be empty");
 
         if (password.isEmpty())
             throw new DataException("Password cannot be empty");
@@ -42,21 +42,21 @@ public class AuthentificationController {
         if (DAOFactory.userDAO().getByPhoneNumber(phoneNumber) != null)
             throw new DataException("Phone number already used");
 
-        User user = DAOFactory.userDAO().getByName(userName);
+        Client client = DAOFactory.userDAO().getByName(userName);
 
-        if (user != null)
-            throw new DataException("user name alredy existant");
+        if (client != null)
+            throw new DataException("client name alredy existant");
 
         String hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
 
-        user = new User();
-        user.setEmail(email);
-        user.setUserName(userName);
-        user.setPhoneNumber(phoneNumber);
-        user.setPassword(hashedPassword);
+        client = new Client();
+        client.setEmail(email);
+        client.setUserName(userName);
+        client.setPhoneNumber(phoneNumber);
+        client.setPassword(hashedPassword);
 
-        DAOFactory.userDAO().save(user);
-        return user;
+        DAOFactory.userDAO().save(client);
+        return client;
     }
 
     /*

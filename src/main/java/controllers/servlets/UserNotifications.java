@@ -3,9 +3,6 @@
 package controllers.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -15,13 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import controllers.NotificationsController;
-import controllers.ScheduledLineController;
 import controllers.UserNotificationsController;
 import controllers.exceptions.DataException;
-import model.entities.Comment;
-import model.entities.Notification;
-import model.entities.UserScheduledLine;
 
 
 @WebServlet(name = "usernotifications", urlPatterns = {"/usernotifications"})

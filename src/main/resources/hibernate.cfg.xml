@@ -23,7 +23,7 @@
 
 		<!-- Disable the second-level cache <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property> -->
 		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">false</property>
+		<property name="show_sql">true</property>
 
 		<!-- Drop and re-create the database schema on startup -->
 
@@ -32,11 +32,11 @@
 		<!-- <mapping resource="dao/Categorie.hbm.xml"/> -->
 		<!-- <mapping resource="dao/produit.hbm.xml"/> -->
 
-		<mapping class="model.entities.User" />
+		<mapping class="model.entities.Client" />
 		<mapping class="model.entities.Line" />
 		<mapping class="model.entities.Notification" />
-		<mapping class="model.entities.UserScheduledLine" />
-		<mapping class="model.entities.UserNotification" />
+		<mapping class="model.entities.ClientScheduledLine" />
+		<mapping class="model.entities.ClientNotification" />
 		<mapping class="model.entities.Comment" />
 
 	</session-factory>

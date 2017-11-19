@@ -25,8 +25,8 @@ import util.Converter;
  * @author Mohamed T. KASSAR
  *
  */
-@NamedQuery(name = "getLatestNotificationForLine", query = "select n1 from Notification n1 " + "where n1.date = "
-		+ "(select max(n2.date) " + "from Notification n2 " + "where n1.line = n2.line and n1.line = :line)")
+@NamedQuery(name = "getLatestNotificationForLine", query = "select n1 from Notification n1 where " +
+        "n1.date = (select max(n2.date) from Notification n2 where n1.line = n2.line and n1.line = :line)")
 @Entity
 @Table(name = "NOTIFICATION")
 public class Notification implements Serializable {
@@ -59,13 +59,13 @@ public class Notification implements Serializable {
 	private Set<Comment> comments;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notification")
-	private Set<UserNotification> users;
+	private Set<ClientNotification> users;
 
 	public Set<Comment> getComments() {
 		return comments;
 	}
 
-	public Set<UserNotification> getUsersNotification() {
+	public Set<ClientNotification> getUsersNotification() {
 		return users;
 	}
 

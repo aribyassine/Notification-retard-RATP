@@ -38,7 +38,7 @@ public class AuthentificationControllerTest {
 		try {
 			controller.registerUser("", "ktarek@gmail.com", "0769128018", "tikotiko");
 		} catch (Exception e) {
-			assertTrue("User name cannot be empty".equals(e.getMessage()));
+			assertTrue("Client name cannot be empty".equals(e.getMessage()));
 		}
 	}
 

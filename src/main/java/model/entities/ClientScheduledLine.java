@@ -12,13 +12,11 @@ import java.util.Date;
  *
  */
 
-@NamedQuery(name = "getUserScheduledLineByTime", query = "select s from UserScheduledLine s where "
-		+ "TIME_TO_SEC(time(s.beginTime)) <= TIME_TO_SEC(time(:time)) "
-		+ "and TIME_TO_SEC(time(s.endTime)) >= TIME_TO_SEC(time(:time)) " + "and s.day = :day ")
+@NamedQuery(name = "getClientScheduledLineByTime", query = "select s from ClientScheduledLine s where s.beginTime <= :time and s.endTime >= :time and s.day = :day ")
 @Entity
-@Table(name = "USER_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "USERS", "LINE", "BEGIN_TIME",
+@Table(name = "CLIENT_SCHEDULED_LINE", uniqueConstraints = @UniqueConstraint(columnNames = { "CLIENT", "LINE", "BEGIN_TIME",
 		"END_TIME", "DAY" }))
-public class UserScheduledLine implements Serializable {
+public class ClientScheduledLine implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,13 +25,13 @@ public class UserScheduledLine implements Serializable {
 	}
 
 	@Id
-	@Column(name = "USER_SCHEDULED_LINE_ID")
+	@Column(name = "CLIENT_SCHEDULED_LINE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int lineScheduleId;
 
 	@ManyToOne
-	@JoinColumn(name = "USERS")
-	private User user;
+	@JoinColumn(name = "CLIENT")
+	private Client client;
 
 	@ManyToOne
 	@JoinColumn(name = "LINE")
@@ -75,12 +73,12 @@ public class UserScheduledLine implements Serializable {
 		this.day = day;
 	}
 
-	public User getUser() {
-		return user;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public int getId() {

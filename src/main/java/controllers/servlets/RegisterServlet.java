@@ -2,13 +2,12 @@ package controllers.servlets;
 
 import controllers.AuthentificationController;
 import controllers.exceptions.DataException;
-import model.entities.User;
+import model.entities.Client;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
         req.getParameterMap().forEach((key, value) -> System.out.println(key + " " + Arrays.toString(value)));
 
         try {
-            User user = auth.registerUser(login,email,phone,pwd);
+            Client client = auth.registerUser(login,email,phone,pwd);
             HttpSession session = req.getSession(true);
             session.setAttribute("username", login);
             resp.sendRedirect(req.getContextPath() + "/");

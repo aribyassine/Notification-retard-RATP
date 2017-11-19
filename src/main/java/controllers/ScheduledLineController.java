@@ -8,11 +8,11 @@ import java.util.Set;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
+import model.entities.Client;
+import model.entities.ClientScheduledLine;
 import model.entities.Line;
 import model.entities.Line.LineType;
-import model.entities.UserScheduledLine;
-import model.entities.UserScheduledLine.Day;
-import model.entities.User;
+import model.entities.ClientScheduledLine.Day;
 
 /**
  * @author Ayyoub LABIB
@@ -20,16 +20,16 @@ import model.entities.User;
 
 public class ScheduledLineController {
 
-	public Set<UserScheduledLine> getAllUserScheduledLine(String userName){
-		User user = DAOFactory.userDAO().getByName(userName);
-		return user.getScheduledLines();
+	public Set<ClientScheduledLine> getAllUserScheduledLine(String userName){
+		Client client = DAOFactory.userDAO().getByName(userName);
+		return client.getScheduledLines();
 	}
 
-	public Set<UserScheduledLine> addUserScheduledLine(String LineName, String type, String debut, String fin,
-			String[] days, String userName) throws DataException {
+	public Set<ClientScheduledLine> addUserScheduledLine(String LineName, String type, String debut, String fin,
+                                                         String[] days, String userName) throws DataException {
 
 		if (userName.isEmpty())
-			throw new DataException("User name is empty");
+			throw new DataException("Client name is empty");
 
 		if (LineName.isEmpty() || type.isEmpty() || debut.isEmpty() || fin.isEmpty() || days.length != 7)
 			throw new DataException("Not enough infos");
@@ -123,9 +123,9 @@ public class ScheduledLineController {
 		if (_days.isEmpty())
 			throw new DataException("Invalid day infos");
 
-		User user = DAOFactory.userDAO().getByName(userName);
-		if (user == null)
-			throw new DataException("User was not found");
+		Client client = DAOFactory.userDAO().getByName(userName);
+		if (client == null)
+			throw new DataException("Client was not found");
 
 		Line line = DAOFactory.lineDAO().getByNameNType(LineName, linetype);
 		if (line == null) {
@@ -138,11 +138,11 @@ public class ScheduledLineController {
 		LocalTime begin = LocalTime.of(hourDebut, minuteDebut);
 		LocalTime end = LocalTime.of(hourfin, minuteFin);
 
-		Set<UserScheduledLine> result = new LinkedHashSet<>();
+		Set<ClientScheduledLine> result = new LinkedHashSet<>();
 		for (Day day : _days) {
 
 			// TODO : verifier chevauchement !!
-			UserScheduledLine usl = DAOFactory.userScheduledLineDAO().getUserScheduledLineByAllInfos(line, user, begin,
+			ClientScheduledLine usl = DAOFactory.userScheduledLineDAO().getUserScheduledLineByAllInfos(line, client, begin,
 					end, day);
 
 			if (usl != null)
@@ -150,7 +150,7 @@ public class ScheduledLineController {
 
 			// usl =
 			// DAOFactory.userScheduledLineDAO().getUserScheduledLineByLineNUserNDay(line,
-			// user,day);
+			// client,day);
 
 			// if(usl!=null && usl.getDay() == day) {
 			// System.out.println("if(usl!=null && usl.getDay().equals(day))");
@@ -159,21 +159,21 @@ public class ScheduledLineController {
 			// if(begin.isBefore(b)) {
 			// DAOFactory.userScheduledLineDAO().remove(usl);
 			// if(end.isAfter(e)) {
-			// usl = new UserScheduledLine();
+			// usl = new ClientScheduledLine();
 			// usl.setBeginTime(begin);
 			// usl.setEndTime(end);
 			// usl.setDay(day);
-			// usl.setUser(user);
+			// usl.setClient(client);
 			// usl.setLine(line);
 			// result.add(usl);
 			// DAOFactory.userScheduledLineDAO().save(usl);
 			// }
 			// else {
-			// usl = new UserScheduledLine();
+			// usl = new ClientScheduledLine();
 			// usl.setBeginTime(begin);
 			// usl.setEndTime(e);
 			// usl.setDay(day);
-			// usl.setUser(user);
+			// usl.setClient(client);
 			// usl.setLine(line);
 			// result.add(usl);
 			// DAOFactory.userScheduledLineDAO().save(usl);
@@ -183,11 +183,11 @@ public class ScheduledLineController {
 			// else if(b.isBefore(begin)) {
 			// if(end.isAfter(e)) {
 			// DAOFactory.userScheduledLineDAO().remove(usl);
-			// usl = new UserScheduledLine();
+			// usl = new ClientScheduledLine();
 			// usl.setBeginTime(b);
 			// usl.setEndTime(end);
 			// usl.setDay(day);
-			// usl.setUser(user);
+			// usl.setClient(client);
 			// usl.setLine(line);
 			// result.add(usl);
 			// DAOFactory.userScheduledLineDAO().save(usl);
@@ -198,11 +198,11 @@ public class ScheduledLineController {
 			// else {
 			// if(end.isAfter(e)) {
 			// DAOFactory.userScheduledLineDAO().remove(usl);
-			// usl = new UserScheduledLine();
+			// usl = new ClientScheduledLine();
 			// usl.setBeginTime(b);
 			// usl.setEndTime(end);
 			// usl.setDay(day);
-			// usl.setUser(user);
+			// usl.setClient(client);
 			// usl.setLine(line);
 			// result.add(usl);
 			// DAOFactory.userScheduledLineDAO().save(usl);
@@ -216,11 +216,11 @@ public class ScheduledLineController {
 			//
 			// }
 
-			usl = new UserScheduledLine();
+			usl = new ClientScheduledLine();
 			usl.setBeginTime(begin);
 			usl.setEndTime(end);
 			usl.setDay(day);
-			usl.setUser(user);
+			usl.setClient(client);
 			usl.setLine(line);
 			result.add(usl);
 			DAOFactory.userScheduledLineDAO().save(usl);
@@ -230,16 +230,16 @@ public class ScheduledLineController {
 
 	}
 
-	public Set<UserScheduledLine> modifyUserScheduledLine(int id, String LineName, String type, String debut,
-			String fin, String[] days, String userName) throws DataException {
+	public Set<ClientScheduledLine> modifyUserScheduledLine(int id, String LineName, String type, String debut,
+                                                            String fin, String[] days, String userName) throws DataException {
 		if (!deleteUserScheduledLine(id))
-			throw new DataException("User schedule line doesn't exist");
+			throw new DataException("Client schedule line doesn't exist");
 		return (addUserScheduledLine(LineName, type, debut, fin, days, userName));
 
 	}
 
 	public boolean deleteUserScheduledLine(int id) throws DataException {
-		UserScheduledLine tmp = DAOFactory.userScheduledLineDAO().getById(id);
+		ClientScheduledLine tmp = DAOFactory.userScheduledLineDAO().getById(id);
 		if (tmp != null) {
 			DAOFactory.userScheduledLineDAO().remove(tmp);
 			return true;
@@ -247,10 +247,10 @@ public class ScheduledLineController {
 			return false;
 	}
 
-	public List<UserScheduledLine> setOfUserScheduledLine(String username) throws DataException {
+	public List<ClientScheduledLine> setOfUserScheduledLine(String username) throws DataException {
 		if (username.isEmpty() || DAOFactory.userDAO().getById(username)==null)
-			throw new DataException("User is invalid");
-		List<UserScheduledLine> a = DAOFactory.userScheduledLineDAO().getListOfUserScheduledLinesOfUser(username);
+			throw new DataException("Client is invalid");
+		List<ClientScheduledLine> a = DAOFactory.userScheduledLineDAO().getListOfUserScheduledLinesOfUser(username);
 		return a;
 	}
 

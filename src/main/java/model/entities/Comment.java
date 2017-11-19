@@ -38,8 +38,8 @@ public class Comment implements Serializable {
 	private Notification notification;
 
 	@ManyToOne
-	@JoinColumn(name = "USERS")
-	private User user;
+	@JoinColumn(name = "CLIENT")
+	private Client client;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "COMMENT_DATE")
@@ -64,12 +64,12 @@ public class Comment implements Serializable {
 		this.notification = notification;
 	}
 
-	public User getUser() {
-		return user;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public LocalDateTime getDate() {
@@ -93,7 +93,7 @@ public class Comment implements Serializable {
 		return "{" +
 				"commentId:" + commentId +
 				", notification:" + notification +
-				", user:" + user +
+				", client:" + client +
 				", date:" + date +
 				", commentText:'" + commentText + '\'' +
 				'}';

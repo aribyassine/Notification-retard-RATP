@@ -2,7 +2,7 @@ package controllers.servlets;
 
 import controllers.ScheduledLineController;
 import controllers.exceptions.DataException;
-import model.entities.UserScheduledLine;
+import model.entities.ClientScheduledLine;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -51,7 +51,7 @@ public class UpdateScheduledLineServlet extends HttpServlet {
             List<Integer> newIds = new ArrayList<>();
             for (Integer id : ids) {
                 newIds = slc.modifyUserScheduledLine(id, LineName, type, interval[0], interval[1], days, login)
-                        .stream().mapToInt(UserScheduledLine::getId).boxed().collect(Collectors.toList());
+                        .stream().mapToInt(ClientScheduledLine::getId).boxed().collect(Collectors.toList());
             }
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setHeader("Content-Type", "application/json; charset=UTF-8");

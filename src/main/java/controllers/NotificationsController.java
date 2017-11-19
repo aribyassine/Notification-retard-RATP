@@ -3,14 +3,13 @@ package controllers;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Set;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
+import model.entities.Client;
 import model.entities.Line;
 import model.entities.Notification;
-import model.entities.User;
-import model.entities.UserNotification;
+import model.entities.ClientNotification;
 
 /**
  * @author Mohamed T. KASSAR
@@ -40,18 +39,18 @@ public class NotificationsController {
 		return notif;
 	}
 
-	public UserNotification addUserNotification(User user, Notification notification) throws DataException {
+	public ClientNotification addUserNotification(Client client, Notification notification) throws DataException {
 
-		if (user == null || !DAOFactory.userDAO().isExist(user))
-			throw new DataException("User is invalid");
+		if (client == null || !DAOFactory.userDAO().isExist(client))
+			throw new DataException("Client is invalid");
 
 		if (notification == null)
 			throw new DataException("Notification is invalid");
 
-		UserNotification un = new UserNotification();
+		ClientNotification un = new ClientNotification();
 		un.setDate(LocalDateTime.now(ZoneId.of("GMT+01:00")));
 		un.setNotification(notification);
-		un.setUser(user);
+		un.setClient(client);
 
 		DAOFactory.userNotificationDAO().save(un);
 

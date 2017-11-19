@@ -25,12 +25,9 @@ import javax.mail.internet.MimeMessage;
 import controllers.TraficController.TraficInfo;
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
-import model.entities.Line;
-import model.entities.Notification;
-import model.entities.User;
-import model.entities.UserNotification;
-import model.entities.UserScheduledLine;
-import model.entities.UserScheduledLine.Day;
+import model.entities.*;
+import model.entities.Client;
+import model.entities.ClientScheduledLine.Day;
 
 /**
  * @author Mohamed T. KASSAR
@@ -83,20 +80,20 @@ public class LatesController {
 			break;
 		}
 
-		Set<UserScheduledLine> usls = DAOFactory.userScheduledLineDAO().getSchedulesByTime(localDateTime.getHour(),
+		Set<ClientScheduledLine> usls = DAOFactory.userScheduledLineDAO().getSchedulesByTime(localDateTime.getHour(),
 				localDateTime.getMinute(), day);
 
 		if (usls.size() == 0)
 			return;
 
-		Map<Line, Set<User>> map = new HashMap<>();
+		Map<Line, Set<Client>> map = new HashMap<>();
 
 		usls.forEach(usl -> {
 			if (map.containsKey(usl.getLine())) {
-				map.get(usl.getLine()).add(usl.getUser());
+				map.get(usl.getLine()).add(usl.getClient());
 			} else {
-				Set<User> temp = new LinkedHashSet<>();
-				temp.add(usl.getUser());
+				Set<Client> temp = new LinkedHashSet<>();
+				temp.add(usl.getClient());
 				map.put(usl.getLine(), temp);
 			}
 		});
@@ -106,7 +103,7 @@ public class LatesController {
 			TraficInfo info;
 
 			if ((info = checkLatesForLine(line)) != null && info.areTherePerturbation()) {
-				Set<User> users = entry.getValue().stream().distinct().collect(Collectors.toSet());
+				Set<Client> clients = entry.getValue().stream().distinct().collect(Collectors.toSet());
 				// get the last notification created for this line
 				Notification notification = null;
 				try {
@@ -138,25 +135,25 @@ public class LatesController {
 							e.printStackTrace();
 							return;
 						}
-						for (User user : users) {
-							notifyUser(user, line, notification);
+						for (Client client : clients) {
+							notifyUser(client, line, notification);
 						}
 						return;
 					}
 
-					for (User user : users) {
-						UserNotification userLastNotification = null;
+					for (Client client : clients) {
+						ClientNotification userLastNotification = null;
 						try {
 							userLastNotification = userNotificationsController.getLatestNotificationForUserNLine(line,
-									user);
+									client);
 						} catch (DataException e) {
 							e.printStackTrace();
 							return;
 						}
 						if (userLastNotification == null
 								|| userLastNotification.getDate().plusMinutes(30).isBefore(localDateTime)) {
-							// Notify user
-							notifyUser(user, line, notification);
+							// Notify client
+							notifyUser(client, line, notification);
 						}
 
 					}
@@ -169,8 +166,8 @@ public class LatesController {
 						e.printStackTrace();
 						return;
 					}
-					for (User user : users) {
-						notifyUser(user, line, notification);
+					for (Client client : clients) {
+						notifyUser(client, line, notification);
 					}
 				}
 			}
@@ -193,19 +190,19 @@ public class LatesController {
 		return info;
 	}
 
-	private static void notifyUser(User user, Line line, Notification notification) {
+	private static void notifyUser(Client client, Line line, Notification notification) {
 		try {
-			userNotificationsController.addUserNotification(notification, user);
+			userNotificationsController.addUserNotification(notification, client);
 		} catch (DataException e) {
 			e.printStackTrace();
 			return;
 		}
-		sendMail(user.getEmail(),
+		sendMail(client.getEmail(),
 				decorateEmailMessage(notification.getNotificationText()) + "\n"
 						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
 						+ notification.getNotificationId(),
 				line);
-		sendSMS(user.getPhoneNumber(),
+		sendSMS(client.getPhoneNumber(),
 				notification.getNotificationText()
 						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
 						+ notification.getNotificationId(),
@@ -224,8 +221,8 @@ public class LatesController {
 																													// id
 																													// here
 				+ "Des perturbation sur la ligne : " + line.getLineName().toUpperCase() + ". "
-				+ message.replaceAll("'", "`").replaceAll("à", "a").replaceAll("é", "e").replaceAll("è", "à")
-						.replaceAll("ç", "c").replaceAll("\n", ". ");
+				+ message.replaceAll("'", "`").replaceAll("ï¿½", "a").replaceAll("ï¿½", "e").replaceAll("ï¿½", "ï¿½")
+						.replaceAll("ï¿½", "c").replaceAll("\n", ". ");
 
 		URL obj;
 		try {

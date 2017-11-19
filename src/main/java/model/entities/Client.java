@@ -16,13 +16,13 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "USERS")
-public class User implements Serializable {
+@Table(name = "CLIENT")
+public class Client implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "USER_NAME")
+	@Column(name = "CLIENT_NAME")
 	private String userName;
 
 	@Column(name = "E_MAIL", unique = true)
@@ -34,24 +34,24 @@ public class User implements Serializable {
 	@Column(name = "PASSWORD")
 	private String password;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private Set<UserScheduledLine> scheduledLines;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
+	private Set<ClientScheduledLine> scheduledLines;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
 	private Set<Comment> comments;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private Set<UserNotification> notifications;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
+	private Set<ClientNotification> notifications;
 
 	public Set<Comment> getComments() {
 		return comments;
 	}
 
-	public Set<UserNotification> getUserNotifications() {
+	public Set<ClientNotification> getUserNotifications() {
 		return notifications;
 	}
 
-	public Set<UserScheduledLine> getScheduledLines() {
+	public Set<ClientScheduledLine> getScheduledLines() {
 		return scheduledLines;
 	}
 
@@ -89,8 +89,8 @@ public class User implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof User) {
-			return userName.equals(((User) obj).userName);
+		if (obj instanceof Client) {
+			return userName.equals(((Client) obj).userName);
 		}
 		return false;
 	}

@@ -3,14 +3,13 @@ package controllers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Set;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
+import model.entities.Client;
 import model.entities.Line;
 import model.entities.Notification;
-import model.entities.User;
-import model.entities.UserNotification;
+import model.entities.ClientNotification;
 
 /**
  * @author Mohamed T. KASSAR
@@ -18,32 +17,32 @@ import model.entities.UserNotification;
 
 public class UserNotificationsController {
 
-	public UserNotification addUserNotification(Notification notification, User user) throws DataException {
+	public ClientNotification addUserNotification(Notification notification, Client client) throws DataException {
 
-		if (user == null || !DAOFactory.userDAO().isExist(user))
-			throw new DataException("User is invalid");
-		UserNotification notif = new UserNotification();
+		if (client == null || !DAOFactory.userDAO().isExist(client))
+			throw new DataException("Client is invalid");
+		ClientNotification notif = new ClientNotification();
 		notif.setDate(LocalDateTime.now(ZoneId.of("GMT+01:00")));
 		notif.setNotification(notification);
-		notif.setUser(user);
+		notif.setClient(client);
 		DAOFactory.userNotificationDAO().save(notif);
 		return notif;
 	}
 
-	public UserNotification getLatestNotificationForUserNLine(Line line, User user) throws DataException {
-		if (user == null || !DAOFactory.userDAO().isExist(user))
-			throw new DataException("User is invalid");
+	public ClientNotification getLatestNotificationForUserNLine(Line line, Client client) throws DataException {
+		if (client == null || !DAOFactory.userDAO().isExist(client))
+			throw new DataException("Client is invalid");
 
 		if (line == null || !DAOFactory.lineDAO().isExist(line))
 			throw new DataException("Line is invalid");
 
-		return DAOFactory.userNotificationDAO().getLatestNotificationForUserNLine(line, user);
+		return DAOFactory.userNotificationDAO().getLatestNotificationForUserNLine(line, client);
 	}
 	
 	
 	public List<Notification> getUserNotifications(String User) throws DataException{
 		if (User.isEmpty() || DAOFactory.userDAO().getById(User)==null)
-			throw new DataException("User is invalid");
+			throw new DataException("Client is invalid");
 		
 		
 		return DAOFactory.userNotificationDAO().getUserNotifications(User);

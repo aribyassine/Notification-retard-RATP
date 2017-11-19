@@ -23,34 +23,34 @@ import util.Converter;
  */
 
 @Entity
-@Table(name = "USER_NOTIFICATION")
-public class UserNotification implements Serializable {
+@Table(name = "CLIENT_NOTIFICATION")
+public class ClientNotification implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "USER_NOTIFICATION_ID")
+	@Column(name = "CLIENT_NOTIFICATION_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userNotificationId;
 
 	@ManyToOne
-	@JoinColumn(name = "USERS")
-	private User user;
+	@JoinColumn(name = "CLIENT")
+	private Client client;
 
 	@ManyToOne
 	@JoinColumn(name = "NOTIFICATION")
 	private Notification notification;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "USER_NOTIFICATION_DATE")
+	@Column(name = "CLIENT_NOTIFICATION_DATE")
 	private Date date;
 
 	public void setUserNotificationId(int userNotificationId) {
 		this.userNotificationId = userNotificationId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public void setNotification(Notification notification) {
@@ -65,8 +65,8 @@ public class UserNotification implements Serializable {
 		return userNotificationId;
 	}
 
-	public User getUser() {
-		return user;
+	public Client getClient() {
+		return client;
 	}
 
 	public Notification getNotification() {
@@ -80,6 +80,6 @@ public class UserNotification implements Serializable {
 	@Override
 	public String toString() {
 		return "{" + "userNotificationId:" + userNotificationId + ", notification:" + notification
-				+ ", user:" + user + ", date:" + date + '}';
+				+ ", client:" + client + ", date:" + date + '}';
 	}
 }

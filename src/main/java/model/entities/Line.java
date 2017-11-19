@@ -22,9 +22,9 @@ public class Line implements Serializable {
     @Column(name = "LINE_TYPE")
     private LineType lineType;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "line")
-    private Set<UserScheduledLine> lineSchedules;
+    private Set<ClientScheduledLine> lineSchedules;
 
-    public Set<UserScheduledLine> getlineSchedules() {
+    public Set<ClientScheduledLine> getlineSchedules() {
         // return lineSchedules.stream().map(ls ->
         // ls.getSchedule()).collect(Collectors.toList());
         return lineSchedules;

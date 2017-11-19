@@ -1,16 +1,15 @@
 package model.dao;
 
 import java.util.List;
-import java.util.Set;
 
+import model.entities.Client;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import model.dao.interfaces.IDAO;
 import model.entities.Line;
 import model.entities.Notification;
-import model.entities.User;
-import model.entities.UserNotification;
+import model.entities.ClientNotification;
 import util.HibernateUtil;
 
 /**
@@ -18,15 +17,15 @@ import util.HibernateUtil;
  *
  */
 
-public class UserNotificationDAO extends DAO<UserNotification> implements IDAO<UserNotification> {
+public class UserNotificationDAO extends DAO<ClientNotification> implements IDAO<ClientNotification> {
 
-	public UserNotification getLatestNotificationForUserNLine(Line line, User user) {
+	public ClientNotification getLatestNotificationForUserNLine(Line line, Client client) {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session s = factory.openSession();
 		s.beginTransaction();
-		List<?> list = s.createSQLQuery("select`n1`.* from notification as n, user_notification as n1 where `n`.`line` = "
-				+ line.getLineId() + " and `n1`.`NOTIFICATION` = `n`.`NOTIFICATION_ID` and `n1`.`user`='"
-				+ user.getUserName() + "' order by `n1`.`USER_NOTIFICATION_DATE` desc limit 1").addEntity(UserNotification.class).list();
+		List<?> list = s.createSQLQuery("select n1.* from notification as n, client_notification as n1 where n.line = "
+				+ line.getLineId() + " and n1.notification = n.notification_id and n1.client='"
+				+ client.getUserName() + "' order by n1.client_notification_date desc limit 1").addEntity(ClientNotification.class).list();
 		if (list.isEmpty())
 			return null;
 
@@ -40,15 +39,15 @@ public class UserNotificationDAO extends DAO<UserNotification> implements IDAO<U
 
 		s.getTransaction().commit();
 		s.close();
-		return (UserNotification) list.get(0);
+		return (ClientNotification) list.get(0);
 	}
 	
 	public List<Notification> getUserNotifications(String user) {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session s = factory.openSession();
 		s.beginTransaction();
-		List<Notification> list = s.createSQLQuery("select`n`.* from notification as n, user_notification as n1 where `n1`.`user`='"
-				+ user + "' and  `n`.`notification_id`=`n1`.`NOTIFICATION` order by `n1`.`USER_NOTIFICATION_DATE` desc").addEntity(Notification.class).list();
+		List<Notification> list = s.createSQLQuery("select n.* from notification as n, client_notification as n1 where n1.client='"
+				+ user + "' and  n.notification_id=n1.notification order by n1.client_notification_date desc").addEntity(Notification.class).list();
 		if (list.isEmpty())
 			return null;
 

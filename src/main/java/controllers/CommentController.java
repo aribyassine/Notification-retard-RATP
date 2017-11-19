@@ -14,7 +14,7 @@ public class CommentController {
 		Comment co = new Comment();
 		co.setCommentText(comment);
 		co.setNotification(DAOFactory.notificationDAO().getById(notification));
-		co.setUser(DAOFactory.userDAO().getById(user));
+		co.setClient(DAOFactory.userDAO().getById(user));
 		co.setDate(LocalDateTime.now(ZoneId.of("GMT+01:00")));
 		DAOFactory.commentDAO().save(co);
 	}

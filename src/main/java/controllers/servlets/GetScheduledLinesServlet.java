@@ -2,7 +2,7 @@ package controllers.servlets;
 
 import controllers.ScheduledLineController;
 import controllers.exceptions.DataException;
-import model.entities.UserScheduledLine;
+import model.entities.ClientScheduledLine;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -29,7 +29,7 @@ public class GetScheduledLinesServlet extends HttpServlet {
 				throw new DataException("user logged out");
 			
 			String login = (String) session.getAttribute("username");
-			Set<UserScheduledLine> scheduledLines = slc.getAllUserScheduledLine(req.getSession().getAttribute("username").toString());
+			Set<ClientScheduledLine> scheduledLines = slc.getAllUserScheduledLine(req.getSession().getAttribute("username").toString());
 			System.out.println(scheduledLines);
 			resp.setHeader("Content-Type","application/json; charset=UTF-8");
 			resp.setCharacterEncoding("UTF-8");

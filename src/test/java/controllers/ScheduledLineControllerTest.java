@@ -4,17 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import model.dao.DAOFactory;
-import model.entities.UserScheduledLine;
-import model.entities.UserScheduledLine.Day;
+import model.entities.ClientScheduledLine;
 
 /**
  * @author Mohamed T. KASSAR
@@ -80,7 +76,7 @@ public class ScheduledLineControllerTest {
 			assertNotNull(controller.addUserScheduledLine("b", "rer", "10:56", "11:05", days, "aa"));
 			assertFalse(true);
 		} catch (Exception e) {
-			assertTrue("User was not found".equals(e.getMessage()));
+			assertTrue("Client was not found".equals(e.getMessage()));
 		}
 
 	}
@@ -324,8 +320,8 @@ public class ScheduledLineControllerTest {
 
 		try{
 
-			List<UserScheduledLine> a = controller.setOfUserScheduledLine("modifyScheduleLine_PositiveTest");
-			for (UserScheduledLine t : a) {
+			List<ClientScheduledLine> a = controller.setOfUserScheduledLine("modifyScheduleLine_PositiveTest");
+			for (ClientScheduledLine t : a) {
 				System.out.println(t);
 
 			}
@@ -406,7 +402,7 @@ public class ScheduledLineControllerTest {
 	// assertNotNull(controller.addScheduledLine("b", "rer", minute, hour, "friday",
 	// ""));
 	// } catch (Exception e) {
-	// assertTrue("User name is empty".equals(e.getMessage()));
+	// assertTrue("Client name is empty".equals(e.getMessage()));
 	// }
 	// }
 	//
