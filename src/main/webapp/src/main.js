@@ -7,7 +7,6 @@ import VueResource from 'vue-resource'
 import store from './store'
 
 Vue.use(VueResource)
-Vue.http.options.root = 'http://localhost:5000/'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
