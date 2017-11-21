@@ -3,7 +3,10 @@ package controllers.servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +37,7 @@ public class commentsServlet extends HttpServlet {
             int id = Integer.parseInt(req.getParameter("notificationId"));
             Notification notification = notificationsController.getNotificationById(id);
             req.setAttribute("notification", notification);
+            req.setAttribute("commentaires", notification.getComments().stream().sorted(Comparator.comparing(Comment::getDate)).collect(Collectors.toList()));
             req.getRequestDispatcher("/jsp/comments.jsp").forward(req, resp);
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {

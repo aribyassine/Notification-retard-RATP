@@ -11,7 +11,7 @@
 <%@ page import="java.util.Comparator" %>
 <%
   Notification notification = (Notification) request.getAttribute("notification");
-  List<Comment> coms = new ArrayList<>(notification.getComments());
+  List<Comment> coms = (List<Comment>) request.getAttribute("commentaires");
 %>
 <html>
 <head>
