@@ -30,7 +30,7 @@ public class UserNotifications extends HttpServlet {
 		try {
 			String login = (String) req.getSession().getAttribute("username");
 			List<Notification> nots = nct.getUserNotifications(login).stream()
-					.sorted((n1, n2) -> n2.getDate().compareTo(n1.getDate())).collect(Collectors.toList());
+					.sorted(Comparator.comparing(Notification::getDate).reversed()).distinct().collect(Collectors.toList());
 			req.setAttribute("notifications", nots);
 			req.getRequestDispatcher("/jsp/userNotifications.jsp").forward(req, resp);
 			resp.setStatus(HttpServletResponse.SC_OK);
