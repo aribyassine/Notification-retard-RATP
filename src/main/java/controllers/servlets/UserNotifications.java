@@ -3,6 +3,7 @@
 package controllers.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import controllers.UserNotificationsController;
 import controllers.exceptions.DataException;
+import model.entities.Notification;
 
 
 @WebServlet(name = "usernotifications", urlPatterns = {"/usernotifications"})
@@ -26,16 +28,10 @@ public class UserNotifications extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-	        resp.setHeader("Content-Type","application/json; charset=UTF-8");
-	        resp.setCharacterEncoding("UTF-8");
-	        HttpSession session = req.getSession(true);
-			if (session.isNew())
-				throw new DataException("user logged out");
-			String login = (String) session.getAttribute("username");
-	        ServletOutputStream out = resp.getOutputStream();
-	        out.write(nct.getUserNotifications(login).toString().getBytes());
-	        out.flush();
-	        out.close();
+			String login = (String) req.getSession().getAttribute("username");
+			List<Notification> nots = nct.getUserNotifications(login);
+			req.setAttribute("notifications", nots);
+			req.getRequestDispatcher("/jsp/userNotifications.jsp").forward(req,resp);
 			resp.setStatus(HttpServletResponse.SC_OK);
 		}catch (Exception e) {
 			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

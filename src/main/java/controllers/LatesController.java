@@ -47,37 +47,37 @@ public class LatesController {
 
 		scheduler.scheduleAtFixedRate(() -> {
 
-			checkForLates();
+checkForLates();
 
-		}, 0, 1, TimeUnit.MINUTES);
-	}
+	}, 0, 1, TimeUnit.MINUTES);
+}
 
 	protected static void checkForLates() {
 		LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("GMT+01:00"));
 		Day day = null;
 
 		switch (localDateTime.getDayOfWeek().getValue()) {
-		case 1:
-			day = Day.monday;
-			break;
-		case 2:
-			day = Day.tuesday;
-			break;
-		case 3:
-			day = Day.wednesday;
-			break;
-		case 4:
-			day = Day.thursday;
-			break;
-		case 5:
-			day = Day.friday;
-			break;
-		case 6:
-			day = Day.saturday;
-			break;
-		case 7:
-			day = Day.sunday;
-			break;
+			case 1:
+				day = Day.monday;
+				break;
+			case 2:
+				day = Day.tuesday;
+				break;
+			case 3:
+				day = Day.wednesday;
+				break;
+			case 4:
+				day = Day.thursday;
+				break;
+			case 5:
+				day = Day.friday;
+				break;
+			case 6:
+				day = Day.saturday;
+				break;
+			case 7:
+				day = Day.sunday;
+				break;
 		}
 
 		Set<ClientScheduledLine> usls = DAOFactory.userScheduledLineDAO().getSchedulesByTime(localDateTime.getHour(),
@@ -204,7 +204,7 @@ public class LatesController {
 				line);
 		sendSMS(client.getPhoneNumber(),
 				notification.getNotificationText()
-						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
+						+ ". Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
 						+ notification.getNotificationId(),
 				line);
 	}

@@ -3,6 +3,8 @@ package controllers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import controllers.exceptions.DataException;
 import model.dao.DAOFactory;
@@ -38,15 +40,10 @@ public class UserNotificationsController {
 
 		return DAOFactory.userNotificationDAO().getLatestNotificationForUserNLine(line, client);
 	}
-	
-	
-	public List<Notification> getUserNotifications(String User) throws DataException{
-		if (User.isEmpty() || DAOFactory.userDAO().getById(User)==null)
-			throw new DataException("Client is invalid");
-		
-		
-		return DAOFactory.userNotificationDAO().getUserNotifications(User);
-		
+
+
+	public List<Notification> getUserNotifications(String user) throws DataException{
+		return DAOFactory.userDAO().getByName(user).getUserNotifications().stream().map(ClientNotification::getNotification).collect(Collectors.toList());
 	}
 
 }

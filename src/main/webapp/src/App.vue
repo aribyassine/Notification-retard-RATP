@@ -8,7 +8,7 @@
             <router-link to="/">Accueil</router-link>
           </li>
           <li>
-            <a href="/notification">Notifications</a>
+            <a href="/usernotifications">Notifications</a>
           </li>
         </ul>
       </div>
