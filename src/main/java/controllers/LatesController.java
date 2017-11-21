@@ -199,12 +199,12 @@ checkForLates();
 		}
 		sendMail(client.getEmail(),
 				decorateEmailMessage(notification.getNotificationText()) + "\n"
-						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
+						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/comments?notificationId="
 						+ notification.getNotificationId(),
 				line);
 		sendSMS(client.getPhoneNumber(),
 				notification.getNotificationText()
-						+ ". Lien de la notification : https://warm-coast-18817.herokuapp.com/notification?id="
+						+ ". Lien de la notification : https://warm-coast-18817.herokuapp.com/comments?notificationId="
 						+ notification.getNotificationId(),
 				line);
 	}
