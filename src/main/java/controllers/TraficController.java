@@ -38,7 +38,7 @@ public class TraficController {
 		}
 
 		public boolean areTherePerturbation() {
-			return !slug.matches("normal*");
+			return !slug.matches("normal.*");
 		}
 
 		public String getMessage() {
