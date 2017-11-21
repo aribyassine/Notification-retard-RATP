@@ -199,7 +199,7 @@ checkForLates();
 		}
 		sendMail(client.getEmail(),
 				decorateEmailMessage(notification.getNotificationText()) + "\n"
-						+ "Lien de la notification : https://warm-coast-18817.herokuapp.com/comments?notificationId="
+						+ "Lien de la notification : cd"
 						+ notification.getNotificationId(),
 				line);
 		sendSMS(client.getPhoneNumber(),
