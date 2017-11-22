@@ -4,7 +4,7 @@
       <div class="container">
         <a class="navbar-brand" href="/">Notifieur</a>
         <ul class="nav navbar-nav navbar-right">
-          <li>
+          <li class="active">
             <router-link to="/">Accueil</router-link>
           </li>
           <li>

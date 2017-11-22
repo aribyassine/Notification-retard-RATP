@@ -22,7 +22,7 @@
       <li>
         <a href="/">Accueil</a>
       </li>
-      <li>
+      <li class="active">
         <a href="/usernotifications">Notifications</a>
       </li>
     </ul>
